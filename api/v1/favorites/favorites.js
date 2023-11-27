@@ -7,4 +7,7 @@ const favoritesRouter = express.Router();
 favoritesRouter.get("/", favoritesController.getFavorites);
 favoritesRouter.get("/:id", favoritesController.getFavoriteById);
 
+// POST
+favoritesRouter.post("/:productId", favoritesController.postFavorite);
+
 export { favoritesRouter };

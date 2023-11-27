@@ -1,4 +1,4 @@
-import { getFavoritesFromDB, getFavoriteByIdFromDB } from "./favoritesModel.js";
+import { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB } from "./favoritesModel.js";
 
 async function getFavorites(req, res) {
   const favorites = await getFavoritesFromDB();
@@ -11,4 +11,16 @@ async function getFavoriteById(req, res) {
   res.json(favorite);
 }
 
-export default { getFavorites, getFavoriteById };
+async function postFavorite(req, res){
+  const productId = parseInt(req.params.productId);
+  const customerId = req.body.customerId;
+  try {
+    const favorite = await postFavoriteInDB(productId, customerId);
+    console.log(`New favorite: ${JSON.stringify(favorite)}`)
+    res.status(201).json(favorite);
+  } catch (error){
+    console.error(`Error: ${error.message}`)
+  }
+}
+
+export default { getFavorites, getFavoriteById, postFavorite };
