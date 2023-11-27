@@ -100,4 +100,11 @@ CREATE TABLE products_categories (
     FOREIGN KEY (product_id) REFERENCES products(product_id),
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
---
+
+CREATE TABLE favorites (
+    favorite_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    customer_id INT,
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+)
