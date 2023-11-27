@@ -41,7 +41,9 @@ async function postProducts(productData){
             prices: {
                 create: {
                     price: productData.price,
-                    is_pricematch: productData.is_pricematch,
+                    is_campaign: productData.is_campaign,
+                    starting_at: new Date(productData.starting_at).toISOString(),
+                    ending_at: new Date(productData.ending_at).toISOString(),
                 }
             },
         },
