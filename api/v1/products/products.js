@@ -26,9 +26,11 @@ async function postProducts(productData){
             product_underline: productData.product_underline,
             product_description: productData.product_description,
             labels: {
+                // DETTE ANTAGER AT LABELS HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
                 connect: productData.labels.map(label => ({ label_id: label })),
             },
             categories: {
+                // DETTE ANTAGER AT KATEGORIER HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
                 connect: productData.categories.map(category => ({ category_id: category })),
             },
             inventory: {
@@ -39,7 +41,6 @@ async function postProducts(productData){
             prices: {
                 create: {
                     price: productData.price,
-                    is_member: productData.is_member,
                     is_pricematch: productData.is_pricematch,
                 }
             },
