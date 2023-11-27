@@ -4,7 +4,7 @@ import {PrismaClient} from "@prisma/client";
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
 
-
+// GET PRODUCTS
 async function getProducts(){
     const products = await prisma.product.findMany({
         include: {
@@ -18,7 +18,7 @@ async function getProducts(){
     return products;
 }
 
-// POST PRODUCTS 
+// POST PRODUCT
 async function postProducts(productData){
     const newProduct = await prisma.product.create({
         data: {
@@ -51,6 +51,18 @@ async function postProducts(productData){
     return newProduct;
 }
 
+// DELETE PRODUCT
+async function deleteProduct(productId) {
+// DELETE RELATIONS ON JUNCTION TABLES - USING RAW SQL, AS WE CANT ADD CASCADING DELETES ON MANY-TO-MANY IMPLICIT RELATION TABLES
+await prisma.$queryRaw`DELETE FROM _CategoryToProduct WHERE B = ${productId};`;
+await prisma.$queryRaw`DELETE FROM _LabelToProduct WHERE B = ${productId};`;
+await prisma.$queryRaw`DELETE FROM Inventory WHERE product_id = ${productId};`;
+await prisma.$queryRaw`DELETE FROM Price WHERE product_id = ${productId};`;
+
+// DELETE PRODUCT
+await prisma.product.delete({ where: { product_id: productId }});
+}
+
 productsRouter.get("/", async (req, res) => {
 const products = await getProducts();
 res.json(products);
@@ -62,6 +74,11 @@ productsRouter.post("/", async (req, res) => {
     res.json(newProduct);
 });
 
+productsRouter.delete("/:id", async (req, res) => {
+    const productId = parseInt(req.params.id);
+    const deletedProduct = await deleteProduct(productId);
+    res.json(deletedProduct);
+});
 
 
 export { productsRouter };
