@@ -18,6 +18,21 @@ async function getProducts(){
     return products;
 }
 
+// GET PRODUCT BASED ON ID
+async function getProductById(productId){
+    const product = await prisma.product.findUnique({
+        where: { product_id: productId },
+        include: {
+            labels: true,
+            categories: true,
+            inventory: true,
+            // HVOR FÅR VI DENNE FRA images: true,
+            prices: true
+        }
+    });
+    return product;
+    }
+
 // POST PRODUCT
 async function postProducts(productData){
     const newProduct = await prisma.product.create({
@@ -67,6 +82,12 @@ productsRouter.get("/", async (req, res) => {
 const products = await getProducts();
 res.json(products);
 })
+
+productsRouter.get("/:id", async (req, res) => {
+    const productId = parseInt(req.params.id);
+    const product = await getProductById(productId);
+    res.json(product);
+});
 
 productsRouter.post("/", async (req, res) => {
     const productData = req.body;
