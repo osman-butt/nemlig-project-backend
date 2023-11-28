@@ -10,6 +10,9 @@ productsRouter.get("/:id", productsController.getProductById);
 // POST
 productsRouter.post("/", productsController.postProducts);
 
+// PUT
+productsRouter.put("/:id", productsController.updateProduct);
+
 // DELETE
 productsRouter.delete("/:id", productsController.deleteProduct);
 
