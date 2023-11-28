@@ -28,44 +28,34 @@ async function getProductByIdFromDB(productId){
 }
 
 async function postProductsInDB(productData){
-    console.log("Posting product with data:", productData);
-    const createdProduct = await prisma.product.create({
-        data: {
-            product_name: productData.product_name,
-            product_underline: productData.product_underline,
-            product_description: productData.product_description,
-            labels: {
-                connect: productData.labels.map(label => ({ label_id: label })),
-            },
-            categories: {
-                connect: productData.categories.map(category => ({ category_id: category })),
-            },
-            inventory: {
-                create: {
-                    inventory_stock: productData.inventory_stock,
-                }
+return await prisma.product.create({
+    data: {
+        product_name: productData.product_name,
+        product_underline: productData.product_underline,
+        product_description: productData.product_description,
+        labels: {
+            // DETTE ANTAGER AT LABELS HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
+            connect: productData.labels.map(label => ({ label_id: label })),
+        },
+        categories: {
+            // DETTE ANTAGER AT KATEGORIER HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
+            connect: productData.categories.map(category => ({ category_id: category })),
+        },
+        inventory: {
+            create: {
+                inventory_stock: productData.inventory_stock,
+            }
+        },
+        prices: {
+            create: {
+                price: productData.price,
+                starting_at: new Date(productData.starting_at).toISOString(),
+                is_campaign: productData.is_campaign,
+                ending_at: new Date(productData.ending_at).toISOString(),
             }
         }
-    });
-
-    console.log("Created product:", createdProduct);
-    return createdProduct;
-}
-
-async function postPriceInDB(priceData, productId){
-    console.log("Posting price with data:", priceData, "and product_id:", productId);
-    const createdPrice = await prisma.price.create({
-        data: {
-            price: priceData.price,
-            starting_at: new Date(priceData.starting_at).toISOString(),
-            is_campaign: priceData.is_campaign,
-            ending_at: new Date(priceData.ending_at).toISOString(),
-            product_id: productId
-        }
-    });
-
-    console.log("Created price:", createdPrice);
-    return createdPrice;
+    }
+});
 }
 
 async function deleteProductFromDB(productId){
@@ -79,4 +69,4 @@ async function deleteProductFromDB(productId){
        await prisma.product.delete({ where: { product_id: productId }}); 
 }
 
-export {getProductsFromDB, getProductByIdFromDB, postProductsInDB, postPriceInDB, deleteProductFromDB}
+export {getProductsFromDB, getProductByIdFromDB, postProductsInDB, deleteProductFromDB}
