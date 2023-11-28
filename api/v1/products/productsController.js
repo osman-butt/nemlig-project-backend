@@ -1,4 +1,4 @@
-import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB } from "./productsModel.js";
+import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB } from "./productsModel.js";
 
 async function getProducts(req, res) {
   const page = parseInt(req.query.page) || 1;
@@ -57,4 +57,10 @@ async function deleteProduct(req, res) {
   res.json({ msg: `Product with id ${productId} deleted` });
 }
 
-export default { getProducts, getProductById, postProducts, deleteProduct, updateProduct };
+async function searchProducts(req, res) {
+  const search = req.query.search;
+  const products = await searchProductsFromDB(search);
+  res.json(products);
+}
+
+export default { getProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts };

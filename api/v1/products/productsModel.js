@@ -185,4 +185,22 @@ async function deleteProductFromDB(productId) {
   await prisma.product.delete({ where: { product_id: productId } });
 }
 
-export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB };
+// SEARCH FUNCTIONALITY
+async function searchProductsFromDB(search){
+  return await prisma.product.findMany({
+    where: {
+      product_name: {
+        contains: search,
+      }
+    },
+    include: {
+      //productimages: true,
+      labels: true,
+      categories: true,
+      inventory: true,
+      prices: true,
+    },
+  })
+}
+
+export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB };
