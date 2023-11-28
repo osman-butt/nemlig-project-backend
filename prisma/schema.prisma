@@ -19,6 +19,14 @@ model Product {
   categories          Category[]
   labels              Label[]
   cart                Cart[]
+  images              Productimage[]
+}
+
+model Productimage {
+  image_id    Int       @id @default(autoincrement())
+  image_url   String    @db.VarChar(256)
+  product_id  Int
+  product     Product  @relation(fields: [product_id], references: [product_id])
 }
 
 model Address {
