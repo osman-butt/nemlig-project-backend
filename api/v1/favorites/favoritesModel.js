@@ -49,4 +49,14 @@ async function postFavoriteInDB(productId, customerId) {
   });
 }
 
-export { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB };
+async function deleteFavoriteFromDB(productId, customerId) {
+  return await prisma.favorite.delete({
+    where: {
+      product_id: productId,
+      customer_id: customerId,
+    },
+  });
+}
+
+
+export { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB };

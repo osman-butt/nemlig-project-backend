@@ -1,4 +1,4 @@
-import { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB } from "./favoritesModel.js";
+import { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB } from "./favoritesModel.js";
 
 async function getFavorites(req, res) {
   const favorites = await getFavoritesFromDB();
@@ -23,4 +23,15 @@ async function postFavorite(req, res){
   }
 }
 
-export default { getFavorites, getFavoriteById, postFavorite };
+async function deleteFavorite(req, res){
+  const productId = req.body.product_id;
+  const customerId = req.body.customer_id;
+  try {
+    await deleteFavoriteFromDB(productId, customerId);
+    console.log(`Deleted favorite with product ID: ${productId}`)
+  } catch (error){
+    console.error(`Error: ${error.message}`)
+  }
+}
+
+export default { getFavorites, getFavoriteById, postFavorite, deleteFavorite };
