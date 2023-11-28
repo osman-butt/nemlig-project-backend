@@ -8,6 +8,6 @@ favoritesRouter.get("/", favoritesController.getFavorites);
 favoritesRouter.get("/:id", favoritesController.getFavoriteById);
 
 // POST
-favoritesRouter.post("/:productId", favoritesController.postFavorite);
+favoritesRouter.post("/", favoritesController.postFavorite);
 
 export { favoritesRouter };

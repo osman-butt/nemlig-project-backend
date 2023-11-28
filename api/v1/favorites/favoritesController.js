@@ -12,8 +12,8 @@ async function getFavoriteById(req, res) {
 }
 
 async function postFavorite(req, res){
-  const productId = parseInt(req.params.productId);
-  const customerId = req.body.customerId;
+  const productId = req.body.product_id;
+  const customerId = req.body.customer_id;
   try {
     const favorite = await postFavoriteInDB(productId, customerId);
     console.log(`New favorite: ${JSON.stringify(favorite)}`)

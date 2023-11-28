@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// VI KAN GETTE PÅ BEGGE MÅDER SOM NEDENFOR - ENTEN JOINER VI PRODUCTS IND PÅ FAVORITES, ELLER OGSÅ SÅ JOINER VI FAVORITES IND PÅ PRODUCTS
 async function getFavoritesFromDB() {
   return await prisma.product.findMany({
     where: {
@@ -11,15 +10,16 @@ async function getFavoritesFromDB() {
       },
     },
     include: {
-      labels: true,
-      categories: true,
-      inventory: true,
-      // images: true,
-      prices: true,
-      favorites: true,
-    },
-  });
-}
+          labels: true,
+          categories: true,
+          inventory: true,
+          // productimage: true,
+          prices: true,
+          favorites: true,
+      },
+    });
+  };
+
 
 async function getFavoriteByIdFromDB(productId) {
   return await prisma.product.findUnique({
@@ -33,7 +33,7 @@ async function getFavoriteByIdFromDB(productId) {
       labels: true,
       categories: true,
       inventory: true,
-      //images: true,
+      //productimage: true,
       prices: true,
       favorites: true,
     },
