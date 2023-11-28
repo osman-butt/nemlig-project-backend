@@ -1,8 +1,31 @@
 import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB } from "./productsModel.js";
 
 async function getProducts(req, res) {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
   const products = await getProductsFromDB();
-  res.json(products);
+
+  const paginatedProducts = products.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(products.length / limit);
+
+  const paginationInfo = {
+    data: paginatedProducts,
+    meta: {
+    pagination: {
+      current_page: page,
+      last_page: totalPages,
+      per_page: limit,
+      total: products.length,
+  }
+  }
+  }
+
+  res.json(paginationInfo);
 }
 
 async function getProductById(req, res) {
