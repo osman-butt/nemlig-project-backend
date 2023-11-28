@@ -3,11 +3,12 @@ import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProduc
 async function getProducts(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
+  const category = req.query.category;
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const products = await getProductsFromDB();
+  const products = await getProductsFromDB(category);
 
   const paginatedProducts = products.slice(startIndex, endIndex);
 

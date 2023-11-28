@@ -2,7 +2,25 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function getProductsFromDB() {
+async function getProductsFromDB(category) {
+  if (category){
+    return await prisma.product.findMany({
+      where: {
+        categories: {
+          some: {
+            category_name: category
+          },
+        },
+      },
+      include: {
+        //productimages: true,
+        labels: true,
+        categories: true,
+        inventory: true,
+        prices: true,
+      },
+    });
+  } else {
   return await prisma.product.findMany({
     include: {
       //productimages: true,
@@ -12,7 +30,7 @@ async function getProductsFromDB() {
       prices: true,
     },
   });
-}
+}}
 
 async function getProductByIdFromDB(productId) {
   return await prisma.product.findUnique({
