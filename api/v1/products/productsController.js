@@ -1,4 +1,4 @@
-import {getProductsFromDB, getProductByIdFromDB, postProductsInDB, deleteProductFromDB} from './productsModel.js';
+import {getProductsFromDB, getProductByIdFromDB, postProductsInDB, postPriceInDB, deleteProductFromDB} from './productsModel.js';
 
 async function getProducts(req, res){
     const products = await getProductsFromDB();
@@ -14,8 +14,9 @@ async function getProductById(req, res){
 async function postProducts(req, res){
     const productData = req.body;
     const newProduct = await postProductsInDB(productData);
+    const newPrice = await postPriceInDB(productData, newProduct.product_id);
     console.log(`Posted product: ${JSON.stringify(newProduct)}`)
-    res.json(newProduct);
+    res.json({ newProduct, newPrice });
 }
 
 async function deleteProduct(req, res){
