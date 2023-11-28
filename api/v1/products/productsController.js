@@ -47,6 +47,7 @@ async function updateProduct(req, res) {
   const productId = parseInt(req.params.id);
   const productData = req.body;
   const updatedProduct = await updateProductInDB(productId, productData);
+  console.log(`Updated product with id ${productId}`);
   res.json(updatedProduct);
 }
 

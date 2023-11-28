@@ -78,7 +78,7 @@ async function postProductsInDB(productData) {
 
 // DENNE ER MÅSKE LIDT PROBLEMATISK HVIS VI HAR MANGE PRISER PÅ ET PRODUKT, DA DEN VIL OPDATERE ALLE PRISER PÅ ET PRODUKT, EFTERSOM DEN GÅR UD FRA PRODUKT ID
 async function updateProductInDB(productId, productData) {
-  await prisma.product.update({
+ await prisma.product.update({
     where: { product_id: productId },
     data: {
       product_name: productData.product_name,
@@ -109,6 +109,7 @@ async function updateProductInDB(productId, productData) {
       ending_at: new Date(productData.ending_at).toISOString(),
     },
   });
+
 }
 
 // DENNE VIL KIGGE PÅ ET PRICES ARRAY SOM SKAL FØLGE MED I PRODUCTDATA OG LOOPE IGENNEM DETTE OG SÅ OPDATERE BASERET PÅ PRICE_ID
