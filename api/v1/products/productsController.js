@@ -12,6 +12,7 @@ async function getProducts(req, res) {
 
   const paginatedProducts = products.slice(startIndex, endIndex);
 
+  // HAR VALGT AT BRUGE MATH.CEIL SÅ VI SIKRER OS AT FÅ ALT DATA MED.
   const totalPages = Math.ceil(products.length / limit);
 
   const paginationInfo = {
