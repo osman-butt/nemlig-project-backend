@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { productsRouter } from "./api/v1/products/products.js";
+import { cartRouter } from "./api/v1/cart/cart.js";
 
 // Globals
 const port = process.env.PORT || 3000;
@@ -16,7 +17,7 @@ app.use(cors());
 app.get(`/api/v1/`, (req, res) => {
   res.json({ message: "Nemlig.com API V1" });
 });
-
+app.use("/cart", cartRouter)
 app.use("/products", productsRouter);
 
 app.listen(port, (req, res) => {
