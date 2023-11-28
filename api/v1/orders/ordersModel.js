@@ -16,6 +16,7 @@ async function createOrderInDB(orderData) {
   return await prisma.order.create({
     data: {
       // WHICH DATA TO INSERT?
+      
     },
   });
 }
