@@ -3,6 +3,7 @@ import cors from "cors";
 import { productsRouter } from "./api/v1/products/products.js";
 import { ordersRouter } from "./api/v1/orders/orders.js";
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 // Globals
