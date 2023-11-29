@@ -14,7 +14,7 @@ async function getProductsFromDB(category) {
         },
       },
       include: {
-        //productimages: true,
+        images: true,
         labels: true,
         categories: true,
         inventory: true,
@@ -24,7 +24,7 @@ async function getProductsFromDB(category) {
   } else {
     return await prisma.product.findMany({
       include: {
-        //productimages: true,
+        images: true,
         labels: true,
         categories: true,
         inventory: true,
@@ -38,7 +38,7 @@ async function getProductByIdFromDB(productId) {
   return await prisma.product.findUnique({
     where: { product_id: productId },
     include: {
-      // productimages: true,
+      images: true,
       labels: true,
       categories: true,
       inventory: true,
@@ -199,7 +199,7 @@ async function searchProductsFromDB(search, category) {
         },
   },
   include: {
-    //productimages: true,
+    images: true,
     labels: true,
     categories: true,
     inventory: true,
@@ -209,7 +209,7 @@ async function searchProductsFromDB(search, category) {
   } else {
   products = await prisma.product.findMany({
     include: {
-      //productimages: true,
+      images: true,
       labels: true,
       categories: true,
       inventory: true,
