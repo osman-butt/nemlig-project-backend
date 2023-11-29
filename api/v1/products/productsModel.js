@@ -235,8 +235,8 @@ async function searchProductsFromDB(search, category) {
 
   console.log(`Total results after search: ${result.length}`);
 
-
-  return result; // return the entire result, not just the items
+ // return result.map(({item}) => item) // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST 
+  return result; // THIS RETURNS EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
 }
 
 export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB };

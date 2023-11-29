@@ -61,7 +61,11 @@ async function searchProducts(req, res) {
   const search = req.query.search;
   const category = req.query.category;
   const results = await searchProductsFromDB(search, category);
-  res.json(results);
+  // DENNE KAN UDELADES - DETTE ER BARE SÅ VI FÅR SAMME STRUKTUR SOM VED GET REQUEST MEN UDEN META ARRAY
+  const products = {
+    data: results,
+  }
+  res.json(products);
 }
 
 export default { getProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts };
