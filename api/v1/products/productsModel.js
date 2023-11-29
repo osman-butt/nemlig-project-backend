@@ -53,6 +53,11 @@ async function postProductsInDB(productData) {
       product_name: productData.product_name,
       product_underline: productData.product_underline,
       product_description: productData.product_description,
+      images: {
+        create: {
+          image_url: productData.image,
+        }
+      },
       labels: {
         // DETTE ANTAGER AT LABELS HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
         connect: productData.labels.map((label) => ({ label_id: label })),
@@ -86,6 +91,11 @@ async function updateProductInDB(productId, productData) {
       product_name: productData.product_name,
       product_underline: productData.product_underline,
       product_description: productData.product_description,
+      images: {
+        update: {
+          image_url: productData.image,
+      },
+    },
       labels: {
         connect: productData.labels.map((label_id) => ({ label_id })),
       },
@@ -179,6 +189,7 @@ async function deleteProductFromDB(productId) {
   // DELETE RELATIONS ON JUNCTION TABLES - USING RAW SQL, AS WE CANT ADD CASCADING DELETES ON MANY-TO-MANY IMPLICIT RELATION TABLES
   await prisma.$queryRaw`DELETE FROM _CategoryToProduct WHERE B = ${productId};`;
   await prisma.$queryRaw`DELETE FROM _LabelToProduct WHERE B = ${productId};`;
+  await prisma.$queryRaw`DELETE FROM Productimage WHERE product_id = ${productId};`
   await prisma.$queryRaw`DELETE FROM Inventory WHERE product_id = ${productId};`;
   await prisma.$queryRaw`DELETE FROM Price WHERE product_id = ${productId};`;
 
