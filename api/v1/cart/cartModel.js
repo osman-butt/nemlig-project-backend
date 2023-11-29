@@ -15,7 +15,9 @@ async function createCartInDb(cartData) {
   return await prisma.cart.create({
     data: {
       customer_id: cartData.customer_id,
-      product_id: cartData.product_id,
+      products: {
+        connect: cartData.products.map((product) => ({ id: product.id })),
+      },
       quantity: cartData.quantity,
     },
   });
