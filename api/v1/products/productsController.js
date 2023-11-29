@@ -59,8 +59,8 @@ async function deleteProduct(req, res) {
 
 async function searchProducts(req, res) {
   const search = req.query.search;
-  const products = await searchProductsFromDB(search);
-  res.json(products);
+  const results = await searchProductsFromDB(search);
+  res.json(results);
 }
 
 export default { getProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts };

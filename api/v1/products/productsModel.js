@@ -1,14 +1,15 @@
 import { PrismaClient } from "@prisma/client";
+import Fuse from "fuse.js";
 
 const prisma = new PrismaClient();
 
 async function getProductsFromDB(category) {
-  if (category){
+  if (category) {
     return await prisma.product.findMany({
       where: {
         categories: {
           some: {
-            category_name: category
+            category_name: category,
           },
         },
       },
@@ -21,16 +22,17 @@ async function getProductsFromDB(category) {
       },
     });
   } else {
-  return await prisma.product.findMany({
-    include: {
-      //productimages: true,
-      labels: true,
-      categories: true,
-      inventory: true,
-      prices: true,
-    },
-  });
-}}
+    return await prisma.product.findMany({
+      include: {
+        //productimages: true,
+        labels: true,
+        categories: true,
+        inventory: true,
+        prices: true,
+      },
+    });
+  }
+}
 
 async function getProductByIdFromDB(productId) {
   return await prisma.product.findUnique({
@@ -78,7 +80,7 @@ async function postProductsInDB(productData) {
 
 // DENNE ER MÅSKE LIDT PROBLEMATISK HVIS VI HAR MANGE PRISER PÅ ET PRODUKT, DA DEN VIL OPDATERE ALLE PRISER PÅ ET PRODUKT, EFTERSOM DEN GÅR UD FRA PRODUKT ID
 async function updateProductInDB(productId, productData) {
- await prisma.product.update({
+  await prisma.product.update({
     where: { product_id: productId },
     data: {
       product_name: productData.product_name,
@@ -109,7 +111,6 @@ async function updateProductInDB(productId, productData) {
       ending_at: new Date(productData.ending_at).toISOString(),
     },
   });
-
 }
 
 // DENNE VIL KIGGE PÅ ET PRICES ARRAY SOM SKAL FØLGE MED I PRODUCTDATA OG LOOPE IGENNEM DETTE OG SÅ OPDATERE BASERET PÅ PRICE_ID
@@ -186,21 +187,34 @@ async function deleteProductFromDB(productId) {
 }
 
 // SEARCH FUNCTIONALITY
-async function searchProductsFromDB(search){
-  return await prisma.product.findMany({
-    where: {
-      product_name: {
-        contains: search,
-      }
-    },
-    include: {
-      //productimages: true,
-      labels: true,
-      categories: true,
-      inventory: true,
-      prices: true,
-    },
-  })
+async function searchProductsFromDB(search) {
+  const products = await prisma.product.findMany({
+    // include: {
+    //   //productimages: true,
+    //   labels: true,
+    //   categories: true,
+    //   inventory: true,
+    //   prices: true,
+    // },
+  });
+
+  console.log(`Total results before search: ${products.length}`);
+
+  const options = {
+    includeScore: true,
+    includeMatches: true,
+    threshold: 0.4,
+    //limit: 5,
+    keys: ["product_name"],
+  };
+
+  const fuse = new Fuse(products, options);
+
+  const result = fuse.search(search);
+
+  console.log(`Total results after search: ${result.length}`);
+
+  return result; // return the entire result, not just the items
 }
 
 export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB };
