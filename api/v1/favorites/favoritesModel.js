@@ -10,10 +10,10 @@ async function getFavoritesFromDB() {
       },
     },
     include: {
+          images: true,
           labels: true,
           categories: true,
           inventory: true,
-          images: true,
           prices: true,
           favorites: true,
       },
@@ -30,10 +30,10 @@ async function getFavoriteByIdFromDB(productId) {
       },
     },
     include: {
+      images: true,
       labels: true,
       categories: true,
       inventory: true,
-      images: true,
       prices: true,
       favorites: true,
     },
@@ -69,10 +69,10 @@ async function searchFavoritesFromDB(search){
       }
       },
     include: {
+      images: true,
       labels: true,
       categories: true,
       inventory: true,
-      images: true,
       prices: true,
       favorites: true,
     },
