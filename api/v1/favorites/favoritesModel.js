@@ -58,5 +58,25 @@ async function deleteFavoriteFromDB(productId, customerId) {
   });
 }
 
+async function searchFavoritesFromDB(search){
+  return await prisma.product.findMany({
+    where: {
+      product_name: {
+        contains: search,
+      },
+      favorites: {
+        some: {},
+      }
+      },
+    include: {
+      labels: true,
+      categories: true,
+      inventory: true,
+      //productimage: true,
+      prices: true,
+      favorites: true,
+    },
+  });
+}
 
-export { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB };
+export { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
