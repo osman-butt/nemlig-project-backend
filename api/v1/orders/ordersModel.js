@@ -4,12 +4,12 @@ const prisma = new PrismaClient();
 
 async function getOrdersFromDB() {
   return await prisma.order.findMany({
-    // WHICH RELATIONS TO INCLUDE IN THE RESPONSE?
     include: {
-      order_items: true,
-      // include: {
-      // products: true,
-      // }
+      order_items: {
+        include: {
+          products: true,
+        }
+      },
     },
   });
 }
