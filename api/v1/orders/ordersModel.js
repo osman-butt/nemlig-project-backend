@@ -15,12 +15,15 @@ async function getOrdersFromDB() {
 }
 
 // CREATE A NEW ORDER IN THE DATABASE
-async function createOrderInDB(customer_id, adress_id) {
+async function createOrderInDB(orderData) {
   return await prisma.order.create({
     data: {
-      // WHICH DATA TO INSERT?
-      customer_id: customer_id,
-      adress_id: adress_id,
+      customer_id: orderData.customer_id,
+      address_id: orderData.address_id,
+      order_date: new Date(orderData.order_date).toISOString(),
+      order_items: {
+        create: orderData.order_items
+      }
     },
   });
 }
