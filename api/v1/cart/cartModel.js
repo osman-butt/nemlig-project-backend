@@ -3,17 +3,22 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function getCartFromDb() {
-  return await prisma.product.findMany({
-    where: {
-      cart: {
-        some: {},
-      },
-    },
+  return await prisma.cart.findMany({
     include: {
-      prices: true,
-      cart: true,
+      products: true,
+      customers: true,
     },
   });
 }
 
-export { getCartFromDb };
+async function createCartInDb(cartData) {
+  return await prisma.cart.create({
+    data: {
+      customer_id: cartData.customer_id,
+      product_id: cartData.product_id,
+      quantity: cartData.quantity,
+    },
+  });
+}
+
+export { getCartFromDb, createCartInDb };
