@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { productsRouter } from "./api/v1/products/products.js";
+import { favoritesRouter } from "./api/v1/favorites/favorites.js";
 
 // Globals
 const port = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.get(`/api/v1/`, (req, res) => {
 });
 
 app.use("/products", productsRouter);
+app.use("/favorites", favoritesRouter);
 
 app.listen(port, (req, res) => {
   console.log(`The server is running on "http://localhost:${port}/api/v1"`);
