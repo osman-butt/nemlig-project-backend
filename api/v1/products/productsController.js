@@ -59,7 +59,8 @@ async function deleteProduct(req, res) {
 
 async function searchProducts(req, res) {
   const search = req.query.search;
-  const results = await searchProductsFromDB(search);
+  const category = req.query.category;
+  const results = await searchProductsFromDB(search, category);
   res.json(results);
 }
 

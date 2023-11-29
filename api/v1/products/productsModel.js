@@ -187,22 +187,43 @@ async function deleteProductFromDB(productId) {
 }
 
 // SEARCH FUNCTIONALITY
-async function searchProductsFromDB(search) {
-  const products = await prisma.product.findMany({
-    // include: {
-    //   //productimages: true,
-    //   labels: true,
-    //   categories: true,
-    //   inventory: true,
-    //   prices: true,
-    // },
+async function searchProductsFromDB(search, category) {
+  let products;
+  if (category) {
+    products = await prisma.product.findMany({
+      where: {
+        categories: {
+          some: {
+            category_name: category,
+          },
+        },
+  },
+  include: {
+    //productimages: true,
+    labels: true,
+    categories: true,
+    inventory: true,
+    prices: true,
+  },
   });
+  } else {
+  products = await prisma.product.findMany({
+    include: {
+      //productimages: true,
+      labels: true,
+      categories: true,
+      inventory: true,
+      prices: true,
+    },
+  });
+}
 
   console.log(`Total results before search: ${products.length}`);
 
+
   const options = {
-    includeScore: true,
-    includeMatches: true,
+    // includeScore: true,
+    // includeMatches: true,
     threshold: 0.4,
     //limit: 5,
     keys: ["product_name"],
@@ -213,6 +234,7 @@ async function searchProductsFromDB(search) {
   const result = fuse.search(search);
 
   console.log(`Total results after search: ${result.length}`);
+
 
   return result; // return the entire result, not just the items
 }
