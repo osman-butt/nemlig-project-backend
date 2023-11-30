@@ -4,11 +4,13 @@ async function getProducts(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
   const category = req.query.category;
+  const sort = req.query.sort;
+  const label = req.query.label;
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const products = await getProductsFromDB(category);
+  const products = await getProductsFromDB(category, sort, label);
 
   const paginatedProducts = products.slice(startIndex, endIndex);
 

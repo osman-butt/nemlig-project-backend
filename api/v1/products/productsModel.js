@@ -3,35 +3,44 @@ import Fuse from "fuse.js";
 
 const prisma = new PrismaClient();
 
-async function getProductsFromDB(category) {
-  if (category) {
-    return await prisma.product.findMany({
-      where: {
-        categories: {
-          some: {
-            category_name: category,
-          },
-        },
-      },
-      include: {
-        images: true,
-        labels: true,
-        categories: true,
-        inventory: true,
-        prices: true,
-      },
-    });
-  } else {
-    return await prisma.product.findMany({
-      include: {
-        images: true,
-        labels: true,
-        categories: true,
-        inventory: true,
-        prices: true,
-      },
-    });
+async function getProductsFromDB(category, sort, label, sortPrice) {
+  let orderBy = {};
+  if (sort) {
+    orderBy.product_name = 'asc';
   }
+
+  if (sortPrice) {
+    orderBy.price = sortPrice === "high-low" ? "desc" : "asc";
+  }
+
+  let where = {};
+  if (category) {
+    where.categories = {
+      some: {
+        category_name: category,
+      },
+    };
+  }
+
+  if (label) {
+    where.labels = {
+      some: {
+        label_name: label,
+      },
+    };
+  }
+
+  return await prisma.product.findMany({
+    where,
+    orderBy,
+    include: {
+      images: true,
+      labels: true,
+      categories: true,
+      inventory: true,
+      prices: true,
+    },
+  });
 }
 
 async function getProductByIdFromDB(productId) {
