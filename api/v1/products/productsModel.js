@@ -1,20 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
+import {sortProducts} from "./productsUtils.js";
 
 const prisma = new PrismaClient();
 
-async function getProductsFromDB(category, sort, label, sortPrice) {
+async function getProductsFromDB(category, sort, label) {
   let orderBy = {};
   let where = {};
   if (sort) {
     if (sort === "asc") {
       orderBy.product_name = sort;
-    } else if (sort === "high-low" || sort === "low-high") {
-    sortPrice = sort;
+    }
   }
-}
-
-
   if (category) {
     where.categories = {
       some: {
@@ -22,7 +19,6 @@ async function getProductsFromDB(category, sort, label, sortPrice) {
       },
     };
   }
-
   if (label) {
     where.labels = {
       some: {
@@ -30,8 +26,7 @@ async function getProductsFromDB(category, sort, label, sortPrice) {
       },
     };
   }
-
-  const products = await prisma.product.findMany({
+  let products = await prisma.product.findMany({
     where,
     orderBy,
     include: {
@@ -43,22 +38,10 @@ async function getProductsFromDB(category, sort, label, sortPrice) {
     },
   });
 
-  // CAN'T USE ORDERBY ON PRISMA INCLUDES, SO WE HAVE TO SORT MANUALLY
-  if (sortPrice) {
-    products.sort((a, b) => {
-      // CHECK IF PRODUCTS HAVE A PRICE
-      if (a.prices.length > 0 && b.prices.length > 0) {
-        if (sortPrice === 'high-low') {
-          return b.prices[0].price - a.prices[0].price;
-        } else {
-          return a.prices[0].price - b.prices[0].price;
-        }
-      } else {
-        // IF PRICE NOT PRESENT, DON'T CHANGE THE SORT ORDER
-        return 0;
-      }
-    });
+  if (sort === "high-low" || sort === "low-high") {
+    products = sortProducts(products, sort);
   }
+
   return products;
 }
 
@@ -227,7 +210,6 @@ async function deleteProductFromDB(productId) {
 
 // SEARCH FUNCTIONALITY
 async function searchProductsFromDB(search, category, sort, label, sortPrice) {
-  let orderBy = {};
   let where = {};
   let products;
   if (category) {
@@ -268,7 +250,6 @@ async function searchProductsFromDB(search, category, sort, label, sortPrice) {
   }
 
   console.log(`Total results before search: ${products.length}`);
-
   const options = {
     // includeScore: true,
     // includeMatches: true,
@@ -277,14 +258,12 @@ async function searchProductsFromDB(search, category, sort, label, sortPrice) {
   };
 
   const fuse = new Fuse(products, options);
-
   let result = fuse.search(search);
 
   console.log(`Total results after search: ${result.length}`);
 
   result = result.map(({ item }) => item); // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST
   //JUST RETURN result IF WE WANT EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED - BUT THEN WE CAN'T SORT BY PRICE. BUT THIS IS ONLY RELEVANT IF WE WANT TO SHOW HOW IT ORDERS THE RESULTS BASED ON THE SCORE
-
   // SORT BY NAME IS NEEDED AFTER FUSE SEARCH, AS FUSE SEARCH ORDERS BY SCORE AND WOULD OTHERWISE OVERRIDE THE SORT BY NAME
   if (sort){
     result.sort((a,b) => a.product_name.localeCompare(b.product_name));
