@@ -246,8 +246,6 @@ async function searchProductsFromDB(search, category, sort, label) {
 
   console.log(`Total results before search: ${products.length}`);
   const options = {
-    // includeScore: true,
-    // includeMatches: true,
     threshold: 0.4,
     keys: ["product_name"],
   };
@@ -257,9 +255,8 @@ async function searchProductsFromDB(search, category, sort, label) {
 
   console.log(`Total results after search: ${result.length}`);
 
-  result = result.map(({ item }) => item); // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST
-  //JUST RETURN result IF WE WANT EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED - BUT THEN WE CAN'T SORT BY PRICE. BUT THIS IS ONLY RELEVANT IF WE WANT TO SHOW HOW IT ORDERS THE RESULTS BASED ON THE SCORE
-  // SORT BY NAME IS NEEDED AFTER FUSE SEARCH, AS FUSE SEARCH ORDERS BY SCORE AND WOULD OTHERWISE OVERRIDE THE SORT BY NAME
+  result = result.map(({ item }) => item); 
+  
   if (sort){
     result = sortProducts(result, sort);
   }
