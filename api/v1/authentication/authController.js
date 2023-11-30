@@ -34,9 +34,10 @@ async function registerUser(req, res) {
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
-  // Authentication
+  // Check if body contains email and password
   if ((email == undefined) | (email == undefined))
     return res.status(403).send({ message: "Email or password is missing" });
+  // Check if user exists in db
   const userArray = await authModel.getUsersSearch(email.toLowerCase());
   const user = userArray[0];
   if (user == null) {
@@ -44,18 +45,12 @@ async function loginUser(req, res) {
   }
   try {
     if (await bcrypt.compare(password, user.user_password)) {
-      // const accessToken = generateAccessToken(user);
       const accessToken = generateAccessToken(user);
-      // const refreshToken = generateRefreshToken(user);
-      // refreshTokens.push(refreshToken);
-      // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
       res.cookie("jwtToken", accessToken, {
         httpOnly: true,
-        secure: true, // Set to true in production for HTTPS
-        // other cookie options as needed (e.g., domain, path, expires)
+        secure: true, // Set to true for HTTPS
       });
-      res.status(200).send(); //{ refreshToken: refreshToken });
-      // res.json({ accessToken: accessToken });
+      res.status(200).send();
     } else {
       res.status(403).send({ message: "Wrong email or password" });
     }
