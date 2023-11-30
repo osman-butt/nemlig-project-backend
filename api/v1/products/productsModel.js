@@ -6,11 +6,8 @@ const prisma = new PrismaClient();
 async function getProductsFromDB(category, sort, label, sortPrice) {
   let orderBy = {};
   if (sort) {
+    if (sort)
     orderBy.product_name = 'asc';
-  }
-
-  if (sortPrice) {
-    orderBy.price = sortPrice === "high-low" ? "desc" : "asc";
   }
 
   let where = {};
@@ -30,7 +27,7 @@ async function getProductsFromDB(category, sort, label, sortPrice) {
     };
   }
 
-  return await prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where,
     orderBy,
     include: {
@@ -41,6 +38,24 @@ async function getProductsFromDB(category, sort, label, sortPrice) {
       prices: true,
     },
   });
+
+  // CAN'T USE ORDERBY ON PRISMA INCLUDES, SO WE HAVE TO SORT MANUALLY
+  if (sortPrice) {
+    products.sort((a, b) => {
+      // CHECK IF PRODUCTS HAVE A PRICE
+      if (a.prices.length > 0 && b.prices.length > 0) {
+        if (sortPrice === 'high-low') {
+          return b.prices[0].price - a.prices[0].price;
+        } else {
+          return a.prices[0].price - b.prices[0].price;
+        }
+      } else {
+        // IF PRICE NOT PRESENT, DON'T CHANGE THE SORT ORDER
+        return 0;
+      }
+    });
+  }
+  return products;
 }
 
 async function getProductByIdFromDB(productId) {
