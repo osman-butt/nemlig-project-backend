@@ -89,7 +89,7 @@ async function postProductsInDB(productData) {
   });
 }
 
-// DENNE ER MÅSKE LIDT PROBLEMATISK HVIS VI HAR MANGE PRISER PÅ ET PRODUKT, DA DEN VIL OPDATERE ALLE PRISER PÅ ET PRODUKT, EFTERSOM DEN GÅR UD FRA PRODUKT ID
+// DENNE ER MÅSKE LIDT PROBLEMATISK HVIS VI HAR MANGE PRISER PÅ ET PRODUKT, DA DEN VIL OPDATERE ALLE PRISER PÅ ET PRODUKT (SAMME GÆLDER FOR IMGS), EFTERSOM DEN GÅR UD FRA PRODUKT ID
 async function updateProductInDB(productId, productData) {
   await prisma.product.update({
     where: { product_id: productId },
@@ -98,8 +98,9 @@ async function updateProductInDB(productId, productData) {
       product_underline: productData.product_underline,
       product_description: productData.product_description,
       images: {
-        update: {
-          image_url: productData.image,
+        updateMany: {
+          where: { product_id: productId},
+          data: { image_url: productData.image },
         },
       },
       labels: {
@@ -129,7 +130,7 @@ async function updateProductInDB(productId, productData) {
   });
 }
 
-// DENNE VIL KIGGE PÅ ET PRICES ARRAY SOM SKAL FØLGE MED I PRODUCTDATA OG LOOPE IGENNEM DETTE OG SÅ OPDATERE BASERET PÅ PRICE_ID
+// DENNE VIL KIGGE PÅ ET PRICES ARRAY SOM SKAL FØLGE MED I PRODUCTDATA OG LOOPE IGENNEM DETTE OG SÅ OPDATERE BASERET PÅ PRICE_ID. DET SAMME GÆLDER FOR IMAGES
 // PRODUCT DATAEN VILLE SÅ SKULLE SE NOGENLUNDE SÅDAN HER UD:
 
 // {
@@ -198,6 +199,7 @@ async function deleteProductFromDB(productId) {
   await prisma.$queryRaw`DELETE FROM Productimage WHERE product_id = ${productId};`;
   await prisma.$queryRaw`DELETE FROM Inventory WHERE product_id = ${productId};`;
   await prisma.$queryRaw`DELETE FROM Price WHERE product_id = ${productId};`;
+  await prisma.$queryRaw`DELETE FROM Order_item WHERE product_id = ${productId};`;
 
   // DELETE PRODUCT
   await prisma.product.delete({ where: { product_id: productId } });
