@@ -1,4 +1,4 @@
-import { getCartFromDb, createCartInDb } from "./cartModel.js";
+import { getCartFromDb, createCartInDb, deleteCartFromDb } from "./cartModel.js";
 
 async function getCart(req, res) {
   const cart = await getCartFromDb();
@@ -12,5 +12,16 @@ async function createCart(req, res) {
 
   res.json(newCart);
 }
+
+
+async function deleteCart(req, res) {
+  const cartEntryId = req.params.id;
+
+  const deletedCart = await deleteCartFromDb(cartEntryId);
+  console.log(`Deleted cart: ${deletedCart}`);
+
+  res.json({ message: 'Cart deleted successfully', cart: deletedCart });
+}
+
 
 export default { getCart, createCart };

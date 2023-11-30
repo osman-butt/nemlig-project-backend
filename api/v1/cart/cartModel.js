@@ -23,4 +23,13 @@ async function createCartInDb(cartData) {
   });
 }
 
-export { getCartFromDb, createCartInDb };
+async function deleteCartFromDb(cartEntryId) {
+  return prisma.cart.delete({
+    where: {
+      cart_id: cartEntryId,
+    },
+  });
+}
+
+
+export { getCartFromDb, createCartInDb, deleteCartFromDb };
