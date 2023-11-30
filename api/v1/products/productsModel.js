@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
-import {sortProducts} from "./productsUtils.js";
+import {sortProducts} from "../utils/sortUtils.js";
 
 const prisma = new PrismaClient();
 
@@ -256,7 +256,7 @@ async function searchProductsFromDB(search, category, sort, label) {
   console.log(`Total results after search: ${result.length}`);
 
   result = result.map(({ item }) => item); 
-  
+
   if (sort){
     result = sortProducts(result, sort);
   }

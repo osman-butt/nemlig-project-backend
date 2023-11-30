@@ -1,7 +1,9 @@
 import { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB } from "./favoritesModel.js";
 
 async function getFavorites(req, res) {
-  const favorites = await getFavoritesFromDB();
+  const sort = req.query.sort;
+  const label = req.query.label;
+  const favorites = await getFavoritesFromDB(sort, label);
   res.json(favorites);
 }
 
@@ -36,8 +38,9 @@ async function deleteFavorite(req, res) {
 
 async function searchFavorites(req, res) {
   const search = req.query.search;
-  const category = req.query.category;
-  const favorites = await searchFavoritesFromDB(search, category);
+  const sort = req.query.sort;
+  const label = req.query.label;
+  const favorites = await searchFavoritesFromDB(search, sort, label);
   res.json(favorites);
 }
 

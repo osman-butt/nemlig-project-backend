@@ -1,10 +1,20 @@
 import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
+import { sortProducts } from "../utils/sortUtils.js";
 
 const prisma = new PrismaClient();
 
-async function getFavoritesFromDB() {
-  return await prisma.product.findMany({
+async function getFavoritesFromDB(sort, label) {
+  let where = {};
+  if (label) {
+    where.labels = {
+      some: {
+        label_name: label,
+      },
+    };
+  }
+  let products = await prisma.product.findMany({
+    where,
     where: {
       favorites: {
         some: {},
@@ -19,6 +29,11 @@ async function getFavoritesFromDB() {
       favorites: true,
     },
   });
+
+  if (sort) {
+    products = sortProducts(products, sort);
+  }
+  return products;
 }
 
 async function getFavoriteByIdFromDB(productId) {
@@ -58,9 +73,18 @@ async function deleteFavoriteFromDB(productId, customerId) {
   });
 }
 
-async function searchFavoritesFromDB(search) {
+async function searchFavoritesFromDB(search, sort, label) {
+  let where = {};
+  if (label) {
+    where.labels = {
+      some: {
+        label_name: label,
+      },
+    };
+  }
   const favorites = await prisma.product.findMany({
     where: {
+      ...where,
       favorites: {
         some: {},
       },
@@ -83,13 +107,17 @@ async function searchFavoritesFromDB(search) {
   };
 
   const fuse = new Fuse(favorites, options);
-
-  const result = fuse.search(search);
+  let result = fuse.search(search);
 
   console.log(`Total results after search ${result.length}`);
 
-  return result.map((item) => item.item);
+  result = result.map((item) => item.item);
   // return result; // IF WE WANT TO RETURN IN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
+
+  if (sort) {
+    result = sortProducts(result, sort);
+  }
+  return result;
 }
 
 export { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
