@@ -7,8 +7,13 @@ async function getProductsFromDB(category, sort, label, sortPrice) {
   let orderBy = {};
   let where = {};
   if (sort) {
-    orderBy.product_name = 'asc';
+    if (sort === "asc") {
+      orderBy.product_name = sort;
+    } else if (sort === "high-low" || sort === "low-high") {
+    sortPrice = sort;
   }
+}
+
 
   if (category) {
     where.categories = {
