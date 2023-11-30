@@ -50,8 +50,8 @@ async function updateProduct(req, res) {
   const productId = parseInt(req.params.id);
   const productData = req.body;
   const updatedProduct = await updateProductInDB(productId, productData);
-  console.log(`Updated product with id ${productId}`);
-  res.json(updatedProduct);
+  console.log(`Updated product with ${updatedProduct}`);
+  res.json({ msg: `Product with id ${productId} updated`});
 }
 
 async function deleteProduct(req, res) {

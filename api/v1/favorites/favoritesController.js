@@ -28,12 +28,9 @@ async function postFavorite(req, res) {
 async function deleteFavorite(req, res) {
   const productId = req.body.product_id;
   const customerId = req.body.customer_id;
-  try {
-    await deleteFavoriteFromDB(productId, customerId);
-    console.log(`Deleted favorite with product ID: ${productId}`);
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-  }
+  await deleteFavoriteFromDB(productId, customerId);
+  console.log(`Deleted favorite with product ID: ${productId}`);
+  res.json({ msg: `Product with id ${productId} deleted` });
 }
 
 async function searchFavorites(req, res) {
