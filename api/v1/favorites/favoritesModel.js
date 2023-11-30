@@ -58,46 +58,22 @@ async function deleteFavoriteFromDB(productId, customerId) {
   });
 }
 
-async function searchFavoritesFromDB(search, category) {
-  let favorites;
-  if (category) {
-    favorites = await prisma.product.findMany({
-      where: {
-        categories: {
-          some: {
-            category_name: category,
-          },
-        },
-        favorites: {
-          some: {},
-        },
+async function searchFavoritesFromDB(search) {
+  const favorites = await prisma.product.findMany({
+    where: {
+      favorites: {
+        some: {},
       },
-      include: {
-        images: true,
-        labels: true,
-        categories: true,
-        inventory: true,
-        prices: true,
-        favorites: true,
-      },
-    });
-  } else {
-    favorites = await prisma.product.findMany({
-      where: {
-        favorites: {
-          some: {},
-        },
-      },
-      include: {
-        images: true,
-        labels: true,
-        categories: true,
-        inventory: true,
-        prices: true,
-        favorites: true,
-      },
-    });
-  }
+    },
+    include: {
+      images: true,
+      labels: true,
+      categories: true,
+      inventory: true,
+      prices: true,
+      favorites: true,
+    },
+  });
 
   console.log(`Total results before search ${favorites.length}`);
 
