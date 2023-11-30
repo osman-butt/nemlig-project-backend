@@ -5,12 +5,11 @@ const prisma = new PrismaClient();
 
 async function getProductsFromDB(category, sort, label, sortPrice) {
   let orderBy = {};
+  let where = {};
   if (sort) {
-    if (sort)
     orderBy.product_name = 'asc';
   }
 
-  let where = {};
   if (category) {
     where.categories = {
       some: {
@@ -222,26 +221,36 @@ async function deleteProductFromDB(productId) {
 }
 
 // SEARCH FUNCTIONALITY
-async function searchProductsFromDB(search, category) {
+async function searchProductsFromDB(search, category, sort, label, sortPrice) {
+  let orderBy = {};
+  let where = {};
   let products;
   if (category) {
-    products = await prisma.product.findMany({
-      where: {
-        categories: {
-          some: {
-            category_name: category,
-          },
+    where.categories = {
+      some: {
+        category_name: category,
+      },
+    };
+  }
+    if (label) {
+      where.labels = {
+        some: {
+          label_name: label,
         },
-      },
-      include: {
-        images: true,
-        labels: true,
-        categories: true,
-        inventory: true,
-        prices: true,
-      },
-    });
-  } else {
+      };
+    }
+    if (category || label) {
+      products = await prisma.product.findMany({
+        where,
+        include: {
+          images: true,
+          labels: true,
+          categories: true,
+          inventory: true,
+          prices: true,
+        },
+      });
+    } else {
     products = await prisma.product.findMany({
       include: {
         images: true,
@@ -264,12 +273,35 @@ async function searchProductsFromDB(search, category) {
 
   const fuse = new Fuse(products, options);
 
-  const result = fuse.search(search);
+  let result = fuse.search(search);
 
   console.log(`Total results after search: ${result.length}`);
 
-  return result.map(({ item }) => item); // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST
-  //return result; // THIS RETURNS EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
+  result = result.map(({ item }) => item); // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST
+  //JUST RETURN result IF WE WANT EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED - BUT THEN WE CAN'T SORT BY PRICE. BUT THIS IS ONLY RELEVANT IF WE WANT TO SHOW HOW IT ORDERS THE RESULTS BASED ON THE SCORE
+
+  // SORT BY NAME IS NEEDED AFTER FUSE SEARCH, AS FUSE SEARCH ORDERS BY SCORE AND WOULD OTHERWISE OVERRIDE THE SORT BY NAME
+  if (sort){
+    result.sort((a,b) => a.product_name.localeCompare(b.product_name));
+  }
+
+  if (sortPrice){
+    result.sort((a, b) => {
+      // CHECK IF PRODUCTS HAVE A PRICE
+      if (a.prices.length > 0 && b.prices.length > 0) {
+        if (sortPrice === 'high-low') {
+          return b.prices[0].price - a.prices[0].price;
+        } else {
+          return a.prices[0].price - b.prices[0].price;
+        }
+      } else {
+        // IF PRICE NOT PRESENT, DON'T CHANGE THE SORT ORDER
+        return 0;
+      }
+    });
+  }
+  return result;
 }
+
 
 export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB };
