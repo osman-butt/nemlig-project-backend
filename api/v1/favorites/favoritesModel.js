@@ -14,8 +14,8 @@ async function getFavoritesFromDB(sort, label) {
     };
   }
   let products = await prisma.product.findMany({
-    where,
     where: {
+      ...where,
       favorites: {
         some: {},
       },
