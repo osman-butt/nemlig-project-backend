@@ -56,7 +56,7 @@ async function postProductsInDB(productData) {
       images: {
         create: {
           image_url: productData.image,
-        }
+        },
       },
       labels: {
         // DETTE ANTAGER AT LABELS HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
@@ -94,8 +94,8 @@ async function updateProductInDB(productId, productData) {
       images: {
         update: {
           image_url: productData.image,
+        },
       },
-    },
       labels: {
         connect: productData.labels.map((label_id) => ({ label_id })),
       },
@@ -189,7 +189,7 @@ async function deleteProductFromDB(productId) {
   // DELETE RELATIONS ON JUNCTION TABLES - USING RAW SQL, AS WE CANT ADD CASCADING DELETES ON MANY-TO-MANY IMPLICIT RELATION TABLES
   await prisma.$queryRaw`DELETE FROM _CategoryToProduct WHERE B = ${productId};`;
   await prisma.$queryRaw`DELETE FROM _LabelToProduct WHERE B = ${productId};`;
-  await prisma.$queryRaw`DELETE FROM Productimage WHERE product_id = ${productId};`
+  await prisma.$queryRaw`DELETE FROM Productimage WHERE product_id = ${productId};`;
   await prisma.$queryRaw`DELETE FROM Inventory WHERE product_id = ${productId};`;
   await prisma.$queryRaw`DELETE FROM Price WHERE product_id = ${productId};`;
 
@@ -208,35 +208,33 @@ async function searchProductsFromDB(search, category) {
             category_name: category,
           },
         },
-  },
-  include: {
-    images: true,
-    labels: true,
-    categories: true,
-    inventory: true,
-    prices: true,
-  },
-  });
+      },
+      include: {
+        images: true,
+        labels: true,
+        categories: true,
+        inventory: true,
+        prices: true,
+      },
+    });
   } else {
-  products = await prisma.product.findMany({
-    include: {
-      images: true,
-      labels: true,
-      categories: true,
-      inventory: true,
-      prices: true,
-    },
-  });
-}
+    products = await prisma.product.findMany({
+      include: {
+        images: true,
+        labels: true,
+        categories: true,
+        inventory: true,
+        prices: true,
+      },
+    });
+  }
 
   console.log(`Total results before search: ${products.length}`);
-
 
   const options = {
     // includeScore: true,
     // includeMatches: true,
     threshold: 0.4,
-    //limit: 5,
     keys: ["product_name"],
   };
 
@@ -246,8 +244,8 @@ async function searchProductsFromDB(search, category) {
 
   console.log(`Total results after search: ${result.length}`);
 
- // return result.map(({item}) => item) // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST 
-  return result; // THIS RETURNS EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
+  return result.map(({ item }) => item); // IF WE WANT THE SAME STRUCTURE AS OUR NORMAL GET REQUEST
+  //return result; // THIS RETURNS EACH PRODUCT IN AN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
 }
 
 export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB };
