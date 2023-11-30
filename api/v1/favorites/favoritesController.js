@@ -11,32 +11,33 @@ async function getFavoriteById(req, res) {
   res.json(favorite);
 }
 
-async function postFavorite(req, res){
+async function postFavorite(req, res) {
   const productId = req.body.product_id;
   const customerId = req.body.customer_id;
   try {
     const favorite = await postFavoriteInDB(productId, customerId);
-    console.log(`New favorite: ${JSON.stringify(favorite)}`)
+    console.log(`New favorite: ${JSON.stringify(favorite)}`);
     res.status(201).json(favorite);
-  } catch (error){
-    console.error(`Error: ${error.message}`)
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
   }
 }
 
-async function deleteFavorite(req, res){
+async function deleteFavorite(req, res) {
   const productId = req.body.product_id;
   const customerId = req.body.customer_id;
   try {
     await deleteFavoriteFromDB(productId, customerId);
-    console.log(`Deleted favorite with product ID: ${productId}`)
-  } catch (error){
-    console.error(`Error: ${error.message}`)
+    console.log(`Deleted favorite with product ID: ${productId}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
   }
 }
 
-async function searchFavorites(req, res){
+async function searchFavorites(req, res) {
   const search = req.query.search;
-  const favorites = await searchFavoritesFromDB(search);
+  const category = req.query.category;
+  const favorites = await searchFavoritesFromDB(search, category);
   res.json(favorites);
 }
 
