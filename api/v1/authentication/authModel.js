@@ -6,11 +6,6 @@ async function getUsers() {
   return await prisma.user.findMany({
     include: {
       roles: true,
-      //   customer: {
-      //     include: {
-      //       addresses: true,
-      //     },
-      //   },
     },
   });
 }
