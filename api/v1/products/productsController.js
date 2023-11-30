@@ -65,8 +65,7 @@ async function searchProducts(req, res) {
   const category = req.query.category;
   const sort = req.query.sort;
   const label = req.query.label;
-  const sortPrice = req.query.sortPrice;
-  const results = await searchProductsFromDB(search, category, sort, label, sortPrice);
+  const results = await searchProductsFromDB(search, category, sort, label);
   // DENNE KAN UDELADES - DETTE ER BARE SÅ VI FÅR SAMME STRUKTUR SOM VED GET REQUEST MEN UDEN META ARRAY
   const products = {
     data: results,
