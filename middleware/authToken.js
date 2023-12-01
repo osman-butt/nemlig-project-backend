@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 
 function authenticateToken(req, res, next) {
-  // const authHeader = req.headers["authorization"];
-  const authHeader = req.headers["cookie"];
-  // const token = authHeader && authHeader.split(" ")[1];
-  const token = authHeader && authHeader.split("=")[1];
-  if (token == null) return res.status(401).send();
+  // Check header for Bearer JWT token
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401);
+  const token = authHeader.split(" ")[1];
   // Verify token
   jwt.verify(
     token,
@@ -13,7 +12,8 @@ function authenticateToken(req, res, next) {
     { algorithms: ["RS256", "HS256"] },
     (err, user) => {
       if (err) return res.status(403).send({ message: "User is unauthorized" });
-      req.user = user;
+      req.user = user.user_email;
+      req.roles = user.user_roles;
       next();
     }
   );
