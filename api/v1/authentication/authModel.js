@@ -76,4 +76,41 @@ async function setUserCustomer(
   }
 }
 
-export default { getUsers, setUserCustomer, getUsersSearch };
+async function setUserToken(token_id, user_id) {
+  await prisma.user_token.create({
+    data: {
+      token_id: token_id,
+      user: {
+        connect: { user_id: user_id },
+      },
+    },
+  });
+}
+
+async function getUserToken(token_id) {
+  return await prisma.user_token.findUnique({
+    where: {
+      token_id: token_id,
+    },
+    include: {
+      user: true,
+    },
+  });
+}
+
+async function deleteUserToken(token_id) {
+  await prisma.user_token.delete({
+    where: {
+      token_id: token_id,
+    },
+  });
+}
+
+export default {
+  getUsers,
+  setUserCustomer,
+  getUsersSearch,
+  setUserToken,
+  getUserToken,
+  deleteUserToken,
+};
