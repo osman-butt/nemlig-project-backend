@@ -7,7 +7,7 @@ async function getCartFromDb() {
     include: {
       cart_items: {
         include: {
-          product: true,
+          products: true,
         },
       },
       customers: true,
@@ -20,7 +20,7 @@ async function createCartInDb(cartData) {
     data: {
       customer_id: cartData.customer_id,
       products: {
-        connect: cartData.products.map((product) => ({ id: product.id })),
+        connect: cartData.products.map(product => ({ id: product.id })),
       },
       quantity: cartData.quantity,
     },
