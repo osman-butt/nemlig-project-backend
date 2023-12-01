@@ -12,8 +12,8 @@ function authenticateToken(req, res, next) {
     { algorithms: ["RS256", "HS256"] },
     (err, user) => {
       if (err) return res.status(403).send({ message: "User is unauthorized" });
-      req.user = user.user_email;
-      req.roles = user.user_roles;
+      req.user_email = user.user_email;
+      req.user_roles = user.user_roles;
       next();
     }
   );

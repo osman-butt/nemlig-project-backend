@@ -1,8 +1,8 @@
 function authorizeAdminUser(req, res, next) {
-  if (req.user.roles.some(role => role.user_role === "admin")) {
+  if (req.user_roles.some(role => role === "admin")) {
     next();
   } else {
-    res.status(403).send({ message: "User is unauthorized" });
+    res.status(403).send({ message: "User is unauthorized MIDDLE" });
   }
 }
 
