@@ -8,57 +8,79 @@ datasource db {
 }
 
 model Product {
-  product_id          Int                   @id @default(autoincrement())
-  product_name        String                @db.VarChar(256)
-  product_underline   String                @db.VarChar(256)
-  product_description String?               @db.VarChar(256)
+  product_id          Int            @id @default(autoincrement())
+  product_name        String         @db.VarChar(256)
+  product_underline   String         @db.VarChar(256)
+  product_description String?        @db.VarChar(256)
   favorites           Favorite[]
   inventory           Inventory?
   order_items         Order_item[]
   prices              Price[]
   categories          Category[]
   labels              Label[]
-  cart                Cart[]
+  cart_items          Cart_item[]
   images              Productimage[]
 }
 
 model Productimage {
-  image_id    Int       @id @default(autoincrement())
-  image_url   String    @db.VarChar(256)
-  product_id  Int
-  product     Product  @relation(fields: [product_id], references: [product_id])
+  image_id   Int     @id @default(autoincrement())
+  image_url  String  @db.VarChar(256)
+  product_id Int
+  product    Product @relation(fields: [product_id], references: [product_id])
 }
 
 model Address {
-  address_id  Int       @id @default(autoincrement())
-  street      String    @db.VarChar(256)
-  city        String    @db.VarChar(256)
-  zip_code    Int
-  country     String    @db.VarChar(256)
-  customers   Customer[]
-  orders      Order[]
+  address_id Int        @id @default(autoincrement())
+  street     String     @db.VarChar(256)
+  city       String     @db.VarChar(256)
+  zip_code   Int
+  country    String     @db.VarChar(256)
+  customers  Customer[]
+  orders     Order[]
 }
 
 model Category {
-  category_id          Int                   @id @default(autoincrement())
-  category_name        String                @db.VarChar(256)
-  category_description String?               @db.VarChar(256)
+  category_id          Int       @id @default(autoincrement())
+  category_name        String    @db.VarChar(256)
+  category_description String?   @db.VarChar(256)
   products             Product[]
 }
 
 model Customer {
-  customer_id       Int             @id @default(autoincrement())
-  customer_name     String          @db.VarChar(256)
-  customer_email    String          @db.VarChar(256)
-  registration_date DateTime        @db.Date
+  customer_id       Int        @id @default(autoincrement())
+  customer_name     String     @db.VarChar(256)
+  registration_date DateTime   @db.Date
   addresses         Address[]
   favorites         Favorite[]
   orders            Order[]
   cart              Cart[]
+  user              User? @relation(fields: [user_id], references: [user_id])
+  user_id           Int?  @unique          
+}
+
+model User_role {
+  user_role_id  Int             @id @default(autoincrement())
+  user_role     String          @db.VarChar(256)
+  users         User[]
+}
+
+model User {
+  user_id       Int             @id @default(autoincrement())
+  user_email    String          @db.VarChar(256)
+  user_password String          @db.VarChar(256)
+  roles         User_role[]     // A user can have multiple roles (e.g., ["admin", "user"])
+  customer      Customer?
+  tokens        User_token[]
+}
+
+model User_token {
+  token_id       String             @id @db.VarChar(256)
+  user_id        Int
+  user           User @relation(fields: [user_id], references: [user_id])
 }
 
 model Favorite {
-  favorite_id Int        @id @default(autoincrement())
+  favorite_id Int       @id @default(autoincrement())
   product_id  Int?
   customer_id Int?
   products    Product?  @relation(fields: [product_id], references: [product_id])
@@ -68,22 +90,22 @@ model Favorite {
   @@index([product_id], map: "product_id")
 }
 
-model Inventory{
-  inventory_id    Int       @id @default(autoincrement())
+model Inventory {
+  inventory_id    Int      @id @default(autoincrement())
   inventory_stock Int
-  product_id      Int?      @unique(map: "product_id")
+  product_id      Int?     @unique(map: "product_id")
   products        Product? @relation(fields: [product_id], references: [product_id])
 }
 
 model Label {
-  label_id        Int               @id @default(autoincrement())
-  label_name      String            @db.VarChar(256)
-  label_image     String?           @db.VarChar(256)
-  products        Product[]
+  label_id    Int       @id @default(autoincrement())
+  label_name  String    @db.VarChar(256)
+  label_image String?   @db.VarChar(256)
+  products    Product[]
 }
 
 model Order_item {
-  item_id                Int      @id @default(autoincrement())
+  item_id                Int     @id @default(autoincrement())
   order_id               Int
   product_id             Int
   quantity               Int
@@ -96,9 +118,9 @@ model Order_item {
 }
 
 model Order {
-  order_id    Int           @id @default(autoincrement())
+  order_id    Int          @id @default(autoincrement())
   customer_id Int
-  order_date  DateTime      @db.Date
+  order_date  DateTime     @db.Date
   address_id  Int
   order_items Order_item[]
   customers   Customer     @relation(fields: [customer_id], references: [customer_id])
@@ -115,20 +137,26 @@ model Price {
   is_campaign Boolean
   ending_at   DateTime? @db.Date
   product_id  Int 
-  products    Product @relation(fields: [product_id], references: [product_id])
+  products    Product   @relation(fields: [product_id], references: [product_id])
 
   @@index([product_id], map: "product_id")
 }
 
 model Cart {
-  cart_id     Int        @id @default(autoincrement())
-  customer_id Int?
-  product_id  Int?
-  quantity    Int?
-  customers   Customer? @relation(fields: [customer_id], references: [customer_id])
-  products    Product[]
+  cart_id                 Int       @id @default(autoincrement())
+  customer_id             Int?
+  customers               Customer? @relation(fields: [customer_id], references: [customer_id])
+  cart_items              Cart_item[]
 
   @@index([customer_id], map: "customer_id")
-  @@index([product_id], map: "product_id")
 }
 
+model Cart_item {
+  cart_item_id           Int     @id @default(autoincrement())
+  quantity               Int
+  unit_price_at_purchase Float?
+  product_id             Int
+  cart_id                Int
+  cart                   Cart   @relation(fields: [cart_id], references: [cart_id])
+  products               Product @relation(fields: [product_id], references: [product_id])
+}
