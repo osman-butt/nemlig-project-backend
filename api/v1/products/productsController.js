@@ -4,11 +4,14 @@ async function getProducts(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
   const category = req.query.category;
+  const sort = req.query.sort;
+  const label = req.query.label;
+ 
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const products = await getProductsFromDB(category);
+  const products = await getProductsFromDB(category, sort, label);
 
   const paginatedProducts = products.slice(startIndex, endIndex);
 
@@ -47,8 +50,8 @@ async function updateProduct(req, res) {
   const productId = parseInt(req.params.id);
   const productData = req.body;
   const updatedProduct = await updateProductInDB(productId, productData);
-  console.log(`Updated product with id ${productId}`);
-  res.json(updatedProduct);
+  console.log(`Updated product with ${updatedProduct}`);
+  res.json({ msg: `Product with id ${productId} updated`});
 }
 
 async function deleteProduct(req, res) {
@@ -59,7 +62,14 @@ async function deleteProduct(req, res) {
 
 async function searchProducts(req, res) {
   const search = req.query.search;
-  const products = await searchProductsFromDB(search);
+  const category = req.query.category;
+  const sort = req.query.sort;
+  const label = req.query.label;
+  const results = await searchProductsFromDB(search, category, sort, label);
+  // DENNE KAN UDELADES - DETTE ER BARE SÅ VI FÅR SAMME STRUKTUR SOM VED GET REQUEST MEN UDEN META ARRAY
+  const products = {
+    data: results,
+  }
   res.json(products);
 }
 
