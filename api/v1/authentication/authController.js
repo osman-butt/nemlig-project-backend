@@ -37,7 +37,7 @@ async function registerUser(req, res) {
 async function loginUser(req, res) {
   const { email, password } = req.body;
   // Check if body contains email and password
-  if ((email == undefined) | (email == undefined))
+  if ((email == undefined) | (password == undefined))
     return res.status(403).send({ message: "Email or password is missing" });
 
   // Check if user exists in db
