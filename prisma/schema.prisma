@@ -70,6 +70,13 @@ model User {
   user_password String          @db.VarChar(256)
   roles         User_role[]     // A user can have multiple roles (e.g., ["admin", "user"])
   customer      Customer?
+  tokens        User_token[]
+}
+
+model User_token {
+  token_id       String             @id @db.VarChar(256)
+  user_id        Int
+  user           User @relation(fields: [user_id], references: [user_id])
 }
 
 model Favorite {
