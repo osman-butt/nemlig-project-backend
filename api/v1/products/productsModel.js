@@ -60,8 +60,10 @@ async function postProductsInDB(productData) {
       product_underline: productData.product_underline,
       product_description: productData.product_description,
       images: {
-        create: {
-          image_url: productData.image,
+        createMany: {
+          data: productData.images.map(image => ({
+            image_url: image.image_url,
+          })),
         },
       },
       labels: {
@@ -111,6 +113,15 @@ async function updateProductInDB(productId, productData) {
       },
     },
   });
+
+  for (let image of productData.images) {
+    await prisma.productimage.update({
+      where: { image_id: image.image_id },
+      data: {
+        image_url: image.image_url,
+      },
+    })
+  }
 
   for (let price of productData.prices) {
     await prisma.price.update({
