@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
-import { sortProducts } from "../utils/sortUtils.js";
+import { sortProducts } from "../sortUtils/sortUtils.js";
 
 const prisma = new PrismaClient();
 
