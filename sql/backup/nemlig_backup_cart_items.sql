@@ -218,6 +218,7 @@ CREATE TABLE `cart_item` (
   `quantity` int NOT NULL,
   `product_id` int NOT NULL,
   `cart_id` int NOT NULL,
+  `unit_price_at_purchase` double DEFAULT NULL,
   PRIMARY KEY (`cart_item_id`),
   KEY `Cart_item_cart_id_fkey` (`cart_id`),
   KEY `Cart_item_product_id_fkey` (`product_id`),
@@ -232,7 +233,7 @@ CREATE TABLE `cart_item` (
 
 LOCK TABLES `cart_item` WRITE;
 /*!40000 ALTER TABLE `cart_item` DISABLE KEYS */;
-INSERT INTO `cart_item` VALUES (1,2,10237,1);
+INSERT INTO `cart_item` VALUES (1,2,10237,1,NULL);
 /*!40000 ALTER TABLE `cart_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -594,4 +595,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-01 11:56:17
+-- Dump completed on 2023-12-01 12:11:13

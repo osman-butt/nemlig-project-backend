@@ -66,7 +66,6 @@ CREATE TABLE `User_token` (
 CREATE TABLE `Cart_item` (
     `cart_item_id` INTEGER NOT NULL AUTO_INCREMENT,
     `quantity` INTEGER NOT NULL,
-    `unit_price_at_purchase` DOUBLE NULL,
     `product_id` INTEGER NOT NULL,
     `cart_id` INTEGER NOT NULL,
 
