@@ -4,7 +4,14 @@ async function getFavorites(req, res) {
   const sort = req.query.sort;
   const label = req.query.label;
   const favorites = await getFavoritesFromDB(sort, label);
-  res.json(favorites);
+
+  const response = {
+    data: favorites,
+    meta: {
+      total: favorites.length,
+    },
+  };
+  res.json(response);
 }
 
 async function getFavoriteById(req, res) {
@@ -37,8 +44,11 @@ async function searchFavorites(req, res) {
   const search = req.query.search;
   const sort = req.query.sort;
   const label = req.query.label;
-  const favorites = await searchFavoritesFromDB(search, sort, label);
-  res.json(favorites);
+  const results = await searchFavoritesFromDB(search, sort, label);
+  const response = {
+    data: results,
+  }
+  res.json(response);
 }
 
 export default { getFavorites, getFavoriteById, postFavorite, deleteFavorite, searchFavorites };
