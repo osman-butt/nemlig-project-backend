@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import authModel from "./authModel.js";
-import { generateAccessToken } from "./authUtils.js";
+import jwt from "jsonwebtoken";
+import { generateAccessToken, generateRefreshToken } from "./authUtils.js";
+import { v4 as uuidv4 } from "uuid";
 
 async function registerUser(req, res) {
   // Extract body
@@ -37,6 +39,7 @@ async function loginUser(req, res) {
   // Check if body contains email and password
   if ((email == undefined) | (email == undefined))
     return res.status(403).send({ message: "Email or password is missing" });
+
   // Check if user exists in db
   const userArray = await authModel.getUsersSearch(email.toLowerCase());
   const user = userArray[0];
@@ -44,13 +47,29 @@ async function loginUser(req, res) {
     return res.status(400).send({ message: "Wrong email or password" });
   }
   try {
+    // Check if password is correct
     if (await bcrypt.compare(password, user.user_password)) {
-      const accessToken = generateAccessToken(user);
-      res.cookie("jwtToken", accessToken, {
+      // The JWT only stores enough info for the client app
+      // to identify the user and it's permissions
+      const userJWTAccess = {
+        user_email: user.user_email,
+        user_roles: user.roles.map(role => role.user_role).flat(),
+      };
+      const userJWTRefresh = {
+        user_email: user.user_email,
+        user_roles: user.roles.map(role => role.user_role).flat(),
+        uid: uuidv4(), // for looking up in db
+      };
+      const accessToken = generateAccessToken(userJWTAccess);
+      const refreshToken = generateRefreshToken(userJWTRefresh);
+      await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
+      res.cookie("jwt", refreshToken, {
         httpOnly: true,
         secure: true, // Set to true for HTTPS
+        sameSite: "None",
+        maxAge: 30 * 60 * 1000, // valid for 30min
       });
-      res.status(200).send();
+      res.status(200).send({ accessToken: accessToken });
     } else {
       res.status(403).send({ message: "Wrong email or password" });
     }
@@ -60,8 +79,74 @@ async function loginUser(req, res) {
 }
 
 async function logoutUser(req, res) {
-  res.clearCookie("jwtToken", { httpOnly: true, secure: true });
+  // GET COOKIE
+  const cookies = req.headers["cookie"];
+  const refreshToken = cookies && cookies.split("=")[1];
+  if (refreshToken == null) return res.sendStatus(204); //No content
+  // Remove cookie from header
+  res.clearCookie("jwt", { httpOnly: true, secure: true });
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, decoded) => {
+      if (err) return res.sendStatus(403); // Forbidden
+      console.log(decoded);
+      // Find user with that refreshToken
+      const user = await authModel.getUserToken(decoded.uid);
+      if (!user) return res.sendStatus(403); //Forbidden
+      // DELETE Refresh token from db
+      await authModel.deleteUserToken(decoded.uid);
+    }
+  );
   res.sendStatus(204);
 }
 
-export default { registerUser, loginUser, logoutUser };
+async function refreshToken(req, res) {
+  // GET COOKIE
+  const cookies = req.headers["cookie"];
+  // CHECK IF IT HAS jwt else res.sendStatus(401) //unauthorized
+  const refreshToken = cookies && cookies.split("=")[1];
+  if (refreshToken == null) return res.status(401).send();
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+
+  try {
+    // Verify token
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      async (err, decoded) => {
+        if (err) return res.sendStatus(403); // Forbidden
+        console.log(decoded);
+        // Find user with that refreshToken
+        const user = await authModel.getUserToken(decoded.uid);
+        if (!user) return res.sendStatus(403); //Forbidden
+
+        // DELETE Refresh token from db
+        await authModel.deleteUserToken(decoded.uid);
+        const userJWTAccess = {
+          user_email: decoded.user_email,
+          user_roles: decoded.user_roles,
+        };
+        const userJWTRefresh = {
+          user_email: user.user_email,
+          user_roles: decoded.user_roles,
+          uid: uuidv4(), // for looking up in db
+        };
+        const accessToken = generateAccessToken(userJWTAccess);
+        const refreshToken = generateRefreshToken(userJWTRefresh);
+        await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
+        res.cookie("jwt", refreshToken, {
+          httpOnly: true,
+          secure: true, // Set to true for HTTPS
+          sameSite: "None",
+          maxAge: 30 * 60 * 1000, // valid for 30min
+        });
+        res.send({ accessToken: accessToken });
+      }
+    );
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+export default { registerUser, loginUser, logoutUser, refreshToken };
