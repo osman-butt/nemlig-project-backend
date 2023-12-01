@@ -15,13 +15,11 @@ async function createCart(req, res) {
 
 
 async function deleteCart(req, res) {
-  const cartEntryId = req.params.id;
-
-  const deletedCart = await deleteCartFromDb(cartEntryId);
-  console.log(`Deleted cart: ${deletedCart}`);
-
-  res.json({ message: 'Cart deleted successfully', cart: deletedCart });
+  const cart_id = parseInt(req.params.id);
+  await deleteCartFromDb(cart_id);
+  res.json({ message: `Cart with id ${cart_id} was deleted` });
+ 
 }
 
 
-export default { getCart, createCart };
+export default { getCart, createCart, deleteCart };

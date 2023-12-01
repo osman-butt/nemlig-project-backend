@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 async function getCartFromDb() {
   return await prisma.cart.findMany({
     include: {
-      products: true,
+      cart_items: {
+        include: {
+          product: true,
+        },
+      },
       customers: true,
     },
   });
@@ -23,13 +27,9 @@ async function createCartInDb(cartData) {
   });
 }
 
-async function deleteCartFromDb(cartEntryId) {
-  return prisma.cart.delete({
-    where: {
-      cart_id: cartEntryId,
-    },
-  });
+async function deleteCartFromDb(cart_id) {
+  await prisma.$queryRaw`DELETE FROM _carttoproduct WHERE A = ${cart_id}`;
+  await prisma.cart.delete({ where: { cart_id: cart_id } });
 }
-
 
 export { getCartFromDb, createCartInDb, deleteCartFromDb };

@@ -131,3 +131,4 @@ model Cart {
   @@index([customer_id], map: "customer_id")
   @@index([product_id], map: "product_id")
 }
+
