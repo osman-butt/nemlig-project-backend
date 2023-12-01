@@ -78,11 +78,13 @@ async function postProductsInDB(productData) {
         },
       },
       prices: {
-        create: {
-          price: productData.price,
-          starting_at: new Date(productData.starting_at).toISOString(),
-          is_campaign: productData.is_campaign,
-          ending_at: new Date(productData.ending_at).toISOString(),
+        createMany: {
+          data: productData.prices.map(price => ({
+            price: price.price,
+            starting_at: new Date(price.starting_at).toISOString(),
+            is_campaign: price.is_campaign,
+            ending_at: new Date(price.ending_at).toISOString(),
+          })),
         },
       },
     },
