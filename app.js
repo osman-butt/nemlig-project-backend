@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { productsRouter } from "./api/v1/products/products.js";
 import { favoritesRouter } from "./api/v1/favorites/favorites.js";
+import { authRouter } from "./api/v1/authentication/auth.js";
 import { ordersRouter } from "./api/v1/orders/orders.js";
 import dotenv from "dotenv";
 
@@ -25,6 +26,7 @@ app.get(`/api/v1/`, (req, res) => {
 app.use("/products", productsRouter);
 app.use("/favorites", favoritesRouter);
 app.use("/api/v1/orders", ordersRouter);
+app.use("/api/v1", authRouter);
 
 app.listen(port, (req, res) => {
   console.log(`The server is running on "http://localhost:${port}/api/v1"`);
