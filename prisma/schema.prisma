@@ -154,7 +154,6 @@ model Cart {
 model Cart_item {
   cart_item_id           Int     @id @default(autoincrement())
   quantity               Int
-  unit_price_at_purchase Float?
   product_id             Int
   cart_id                Int
   cart                   Cart   @relation(fields: [cart_id], references: [cart_id])
