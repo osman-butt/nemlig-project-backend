@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
 import { productsRouter } from "./api/v1/products/products.js";
+import { favoritesRouter } from "./api/v1/favorites/favorites.js";
 import { ordersRouter } from "./api/v1/orders/orders.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get(`/api/v1/`, (req, res) => {
 });
 
 app.use("/products", productsRouter);
+app.use("/favorites", favoritesRouter);
 app.use("/api/v1/orders", ordersRouter);
 
 app.listen(port, (req, res) => {
