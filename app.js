@@ -5,6 +5,8 @@ import { favoritesRouter } from "./api/v1/favorites/favorites.js";
 import { authRouter } from "./api/v1/authentication/auth.js";
 import { ordersRouter } from "./api/v1/orders/orders.js";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+import swaggerOptions from "./docs/swaggerOptions.js";
 
 dotenv.config();
 
@@ -23,7 +25,8 @@ app.get(`/api/v1/`, (req, res) => {
   res.json({ message: "Nemlig.com API V1" });
 });
 
-app.use("/products", productsRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
+app.use("/api/v1/products", productsRouter);
 app.use("/favorites", favoritesRouter);
 app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1", authRouter);
