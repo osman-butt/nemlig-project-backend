@@ -261,21 +261,44 @@
  * @swagger
  * /products:
  *   get:
- *     summary: Get all products
+ *     tags:
+ *       - Products
+ *     summary: Get all products, with optional filtering, searching and sorting
+ *     parameters:
+ *       - in: query
+ *         name: label
+ *         schema:
+ *           type: string
+ *           enum: [økologi, msc]
+ *         required: false
+ *         description: Label to filter products by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [asc, high-low, low-high]
+ *         required: false
+ *         description: Field to sort products by
  *     responses:
  *       200:
- *         description: A list of products.
+ *         description: A list of products that match the search query, filter, and sort order
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
  */
- /**
+/**
  * @swagger
  * /products/{id}:
  *   get:
+ *     tags:
+ *       - Products
  *     summary: Get a product by ID
  *     parameters:
  *       - in: path
@@ -300,6 +323,8 @@
  * @swagger
  * /products:
  *   post:
+ *     tags:
+ *       - Products
  *     summary: Create a new product
  *     requestBody:
  *       required: true
@@ -319,6 +344,8 @@
  * @swagger
  * /products/{id}:
  *   put:
+ *     tags:
+ *       - Products
  *     summary: Update a product
  *     parameters:
  *       - in: path
@@ -347,6 +374,8 @@
  * @swagger
  * /products/{id}:
  *   delete:
+ *     tags:
+ *       - Products
  *     summary: Delete a product
  *     parameters:
  *       - in: path
@@ -360,6 +389,48 @@
  *         description: The product was successfully deleted
  *       404:
  *         description: The product was not found
+ *       500:
+ *         description: Internal server error
+ */
+/**
+ * @swagger
+ * /products/search:
+ *   get:
+ *     tags:
+ *       - Products
+ *     summary: Search products
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Search term to find products
+ *       - in: query
+ *         name: label
+ *         schema:
+ *           type: string
+ *           enum: [økologi, msc]
+ *         required: false
+ *         description: Label to filter products by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [asc, high-low, low-high]
+ *         required: false
+ *         description: Field to sort products by
+ *     responses:
+ *       200:
+ *         description: A list of products that match the search query, filter, and sort order
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Bad request
  *       500:
  *         description: Internal server error
  */
