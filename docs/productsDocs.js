@@ -1,17 +1,5 @@
 /**
  * @swagger
- * /products:
- *   get:
- *     summary: Get all products
- *     responses:
- *       200:
- *         description: A list of products.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
  * components:
  *   schemas:
  *     Product:
@@ -131,7 +119,6 @@
  *                example: 10
  */
 /**
-/**
  * @swagger
  * components:
  *   schemas:
@@ -195,25 +182,6 @@
  *                 type: string
  *                 format: date
  *                 description: The end date of the price
- */
-/**
- * @swagger
- * /products:
- *   post:
- *     summary: Create a new product
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ProductCreate'
- *     responses:
- *       201:
- *         description: The product was successfully created
- *       400:
- *         description: Missing or invalid request body
- *       500:
- *         description: Internal server error
  */
 /**
  * @swagger
@@ -289,7 +257,64 @@
  *                 description: The end date of the price
  *                 example: "2022-12-31"
  */
-
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Get all products
+ *     responses:
+ *       200:
+ *         description: A list of products.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
+ /**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get a product by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The product ID
+ *     responses:
+ *       200:
+ *         description: Get single product by ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Internal server error
+ */
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Create a new product
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductCreate'
+ *     responses:
+ *       201:
+ *         description: The product was successfully created
+ *       400:
+ *         description: Missing or invalid request body
+ *       500:
+ *         description: Internal server error
+ */
 /**
  * @swagger
  * /products/{id}:

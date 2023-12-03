@@ -4,9 +4,9 @@ const options = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "Ecommerce API",
+            title: "Exam Ecommerce API",
             version: "1.0.0",
-            description: "A simple Express Ecommerce API",
+            description: "An Express Ecommerce API",
         },
         servers: [
             {
