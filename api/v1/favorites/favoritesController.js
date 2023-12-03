@@ -33,11 +33,10 @@ async function postFavorite(req, res) {
 }
 
 async function deleteFavorite(req, res) {
-  const productId = req.body.product_id;
-  const customerId = req.body.customer_id;
-  await deleteFavoriteFromDB(productId, customerId);
-  console.log(`Deleted favorite with product ID: ${productId}`);
-  res.json({ msg: `Product with id ${productId} deleted` });
+  const favoriteId = parseInt(req.params.id);
+  await deleteFavoriteFromDB(favoriteId);
+  console.log(`Deleted favorite with ID: ${favoriteId}`);
+  res.json({ msg: `Product removed from favorites` });
 }
 
 async function searchFavorites(req, res) {

@@ -64,11 +64,10 @@ async function postFavoriteInDB(productId, customerId) {
   });
 }
 
-async function deleteFavoriteFromDB(productId, customerId) {
+async function deleteFavoriteFromDB(favoriteId) {
   return await prisma.favorite.deleteMany({
     where: {
-      product_id: productId,
-      customer_id: customerId,
+      favorite_id: favoriteId,
     },
   });
 }
