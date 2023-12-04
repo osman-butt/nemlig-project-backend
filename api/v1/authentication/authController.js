@@ -10,6 +10,28 @@ async function registerUser(req, res) {
   const { customer_name, addresses } = customer;
   const { street, city, zip_code, country } = addresses;
 
+  if (customer_name.length < 2) {
+    return res.status(400).json({ message: "Mangler navn" });
+  }
+
+  if (street.length < 2) {
+    return res.status(400).json({ message: "Ugyldig addresse" });
+  }
+
+  if ((zip_code < 1301) | (zip_code > 9990)) {
+    return res.status(400).json({ message: "Ugyldigt postnummer" });
+  }
+
+  if (city.length < 2) {
+    return res.status(400).json({ message: "Ugyldig by" });
+  }
+
+  if (user_password.length < 6) {
+    return res
+      .status(400)
+      .json({ message: "Password for kort (min 6 karakterer)" });
+  }
+
   // Hash password for db
   const hashedPass = await bcrypt.hash(user_password, 10);
   try {
