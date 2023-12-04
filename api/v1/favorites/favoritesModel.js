@@ -4,8 +4,15 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 
 const prisma = new PrismaClient();
 
-async function getFavoritesFromDB(sort, label) {
+async function getFavoritesFromDB(category, sort, label) {
   let where = {};
+  if (category){
+    where.categories = {
+      some: {
+        category_name: category,
+      },
+    };
+  }
   if (label) {
     where.labels = {
       some: {
@@ -64,17 +71,23 @@ async function postFavoriteInDB(productId, customerId) {
   });
 }
 
-async function deleteFavoriteFromDB(productId, customerId) {
+async function deleteFavoriteFromDB(favoriteId) {
   return await prisma.favorite.deleteMany({
     where: {
-      product_id: productId,
-      customer_id: customerId,
+      favorite_id: favoriteId,
     },
   });
 }
 
-async function searchFavoritesFromDB(search, sort, label) {
+async function searchFavoritesFromDB(search, category, sort, label) {
   let where = {};
+  if (category) {
+    where.categories = {
+      some: {
+        category_name: category,
+      },
+    };
+  }
   if (label) {
     where.labels = {
       some: {

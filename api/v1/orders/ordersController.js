@@ -13,7 +13,7 @@ async function createOrder(req, res) {
   try {
     const orderData = req.body;
     const newOrder = await createOrderInDB(orderData);
-    res.status(201).json({ message: 'Order created', order: newOrder });
+    res.json(newOrder );
   } catch (error) {
     res.status(500).json({ error: 'Could not create order', message: error.message });
   }
