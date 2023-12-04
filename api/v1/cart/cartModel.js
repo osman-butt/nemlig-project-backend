@@ -19,17 +19,28 @@ async function createCartInDb(cartData) {
   return await prisma.cart.create({
     data: {
       customer_id: cartData.customer_id,
-      products: {
-        connect: cartData.products.map(product => ({ id: product.id })),
+      cart_items: {
+        create: cartData.cart_items,
       },
-      quantity: cartData.quantity,
     },
   });
 }
 
+async function updateCartInDb(cartData, cart_id) {
+  for (let item of cartData.cart_items) {
+    await prisma.cart_item.update({
+      where: { cart_item_id: item.cart_item_id },
+      data: {
+        product_id: item.product_id,
+        quantity: item.quantity,
+      },
+    });
+  }
+}
+
 async function deleteCartFromDb(cart_id) {
-  await prisma.$queryRaw`DELETE FROM _carttoproduct WHERE A = ${cart_id}`;
+  await prisma.$queryRaw`DELETE FROM cart_item WHERE cart_id = ${cart_id}`;
   await prisma.cart.delete({ where: { cart_id: cart_id } });
 }
 
-export { getCartFromDb, createCartInDb, deleteCartFromDb };
+export { getCartFromDb, createCartInDb, deleteCartFromDb, updateCartInDb };

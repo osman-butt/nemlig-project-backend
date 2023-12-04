@@ -7,6 +7,8 @@ cartRouter.get("/", cartController.getCart);
 
 cartRouter.post("/", cartController.createCart);
 
+cartRouter.put("/:id", cartController.updateCart);
+
 cartRouter.delete("/:id", cartController.deleteCart);
 
 export { cartRouter };
