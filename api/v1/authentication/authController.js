@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt";
 import authModel from "./authModel.js";
 import jwt from "jsonwebtoken";
-import { generateAccessToken, generateRefreshToken } from "./authUtils.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  isEmailValid,
+} from "./authUtils.js";
 import { v4 as uuidv4 } from "uuid";
 
 async function registerUser(req, res) {
@@ -26,6 +30,12 @@ async function registerUser(req, res) {
     return res.status(400).json({ message: "Ugyldig by" });
   }
 
+  if (!isEmailValid(user_email)) {
+    return res
+      .status(400)
+      .json({ message: "Ugyldig mail: skal indeholde '@' og '.'" });
+  }
+
   if (user_password.length < 6) {
     return res
       .status(400)
@@ -38,7 +48,7 @@ async function registerUser(req, res) {
     // Check if user exists
     const usersMatch = await authModel.getUsersSearch(user_email.toLowerCase());
     if (usersMatch.length > 0)
-      return res.status(409).json({ message: "User already exists." });
+      return res.status(409).json({ message: "E-mailen er allerede i brug" });
 
     // Save user in db
     await authModel.setUserCustomer(
@@ -60,13 +70,18 @@ async function loginUser(req, res) {
   const { email, password } = req.body;
   // Check if body contains email and password
   if ((email == undefined) | (password == undefined))
-    return res.status(403).send({ message: "Email or password is missing" });
+    return res.status(403).send({ message: "Email eller password mangler" });
 
+  if (!isEmailValid(email)) {
+    return res
+      .status(400)
+      .json({ message: "Ugyldig mail: skal indeholde '@' og '.'" });
+  }
   // Check if user exists in db
   const userArray = await authModel.getUsersSearch(email.toLowerCase());
   const user = userArray[0];
   if (user == null) {
-    return res.status(400).send({ message: "Wrong email or password" });
+    return res.status(400).send({ message: "Forkert email eller password" });
   }
   try {
     // Check if password is correct
@@ -94,7 +109,7 @@ async function loginUser(req, res) {
       });
       res.status(200).send({ accessToken: accessToken });
     } else {
-      res.status(403).send({ message: "Wrong email or password" });
+      res.status(403).send({ message: "Forkert email eller password" });
     }
   } catch (error) {
     res.status(500).send(error);
