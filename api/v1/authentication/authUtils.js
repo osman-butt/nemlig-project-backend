@@ -12,4 +12,11 @@ function generateRefreshToken(user) {
   });
 }
 
-export { generateAccessToken, generateRefreshToken };
+const isEmailValid = email => {
+  // Regular expression for basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  return emailRegex.test(email);
+};
+
+export { generateAccessToken, generateRefreshToken, isEmailValid };
