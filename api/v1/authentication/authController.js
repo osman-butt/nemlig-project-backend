@@ -65,8 +65,9 @@ async function loginUser(req, res) {
       await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
-        secure: true, // Set to true for HTTPS
-        sameSite: "None",
+        secure: false, // Set to false for HTTP in development
+        withCredentials: true,
+        sameSite: "Lax", // Use Lax instead of None in development
         maxAge: 30 * 60 * 1000, // valid for 30min
       });
       res.status(200).send({ accessToken: accessToken });
@@ -80,8 +81,8 @@ async function loginUser(req, res) {
 
 async function logoutUser(req, res) {
   // GET COOKIE
-  const cookies = req.headers["cookie"];
-  const refreshToken = cookies && cookies.split("=")[1];
+  const cookies = req.cookies;
+  const refreshToken = cookies && cookies?.jwt;
   if (refreshToken == null) return res.sendStatus(204); //No content
   // Remove cookie from header
   res.clearCookie("jwt", { httpOnly: true, secure: true });
@@ -103,9 +104,9 @@ async function logoutUser(req, res) {
 
 async function refreshToken(req, res) {
   // GET COOKIE
-  const cookies = req.headers["cookie"];
+  const cookies = req.cookies;
   // CHECK IF IT HAS jwt else res.sendStatus(401) //unauthorized
-  const refreshToken = cookies && cookies.split("=")[1];
+  const refreshToken = cookies && cookies?.jwt;
   if (refreshToken == null) return res.status(401).send();
   res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
