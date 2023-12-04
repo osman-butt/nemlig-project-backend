@@ -27,14 +27,22 @@ async function createCartInDb(cartData) {
 }
 
 async function updateCartInDb(cartData, cart_id) {
+  const cartItems = await prisma.cart_item.findMany({
+    where: { cart_id: cart_id },
+  });
+
   for (let item of cartData.cart_items) {
-    await prisma.cart_item.update({
-      where: { cart_item_id: item.cart_item_id },
-      data: {
-        product_id: item.product_id,
-        quantity: item.quantity,
-      },
-    });
+    const cartItem = cartItems.find(
+      (cartItem) => cartItem.cart_item_id === item.cart_item_id
+    );
+    if (cartItem) {
+      await prisma.cart_item.update({
+        where: { cart_item_id: item.cart_item_id },
+        data: {
+          quantity: item.quantity,
+        },
+      });
+    }
   }
 }
 
