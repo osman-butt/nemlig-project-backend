@@ -6,15 +6,20 @@ const prisma = new PrismaClient();
 
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
 async function getCustomerIdfromUserId(userId){
+  // Fetch the user from the DB and include the related customer ID.
   const user = await prisma.user.findUnique({
     where: { user_id: userId },
     include: { customer: true },
   });
+  // Return the customer ID of the user.
   return user.customer.customer_id;
 }
 
 async function getFavoritesFromDB(customerId, category, sort, label) {
+  // customerId = await getCustomerIdfromUserId(userId); // UserID should also be passed in the request body instead of customerId, since we convert it here
+  // Define the where clause for the Prisma query
   let where = { customer_id: customerId};
+  // If a category is passed in the request query, add it to the where clause
   if (category){
     where.products = {
       ...where.products,
@@ -25,6 +30,7 @@ async function getFavoritesFromDB(customerId, category, sort, label) {
     },
     };
   }
+  // If a label is passed in the request query, add it to the where clause
   if (label) {
     where.products = {
       ...where.products,
@@ -35,7 +41,7 @@ async function getFavoritesFromDB(customerId, category, sort, label) {
       },
     };  
   }
-
+  // Fetch the favorites from the DB and include the related product data.
   const favorites = await prisma.favorite.findMany({
     where,
     include: {
@@ -52,14 +58,14 @@ async function getFavoritesFromDB(customerId, category, sort, label) {
       }
     });
 
-    // NEED TO FLATTEN THE ARRAY FOR THE SORTING FUNCTION TO WORK PROPERLY
+    // Flatten the favorites array for the sorting function to work
     let flatFavorites = favorites.map((favorite => ({
       favorite_id: favorite.favorite_id,
       customer_id: favorite.customer_id,
       ...favorite.products,
     })));
 
-
+  // If a sort parameter is passed in the request query, sort the favorites
   if (sort) {
     flatFavorites = sortProducts(flatFavorites, sort);
   }
@@ -84,7 +90,9 @@ async function deleteFavoriteFromDB(favoriteId) {
 }
 
 async function searchFavoritesFromDB(customerId, search, category, sort, label) {
+  // Define the where clause for the Prisma query
   let where = { customer_id: customerId};
+  // If a category is passed in the request query, add it to the where clause
   if (category) {
     where.products = {
       ...where.products, //use spread operator to keep the other properties of the where object
@@ -95,6 +103,7 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
       },
     };
   }
+  // If a label is passed in the request query, add it to the where clause
   if (label) {
     where.products = {
       ...where.products, //use spread operator to keep the other properties of the where object
@@ -105,7 +114,7 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
         },
     };
   }
-    
+  // Fetch the favorites from the DB and include the related product data.  
   const favorites = await prisma.favorite.findMany({
     where,
     include: {
@@ -124,13 +133,13 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
   
   console.log(`Total results before search ${favorites.length}`);
   
-  // NEED TO FLATTEN THE ARRAY FOR FUSE TO WORK PROPERLY AND BE ABLE TO SEARCH THE NESTED CATEGORY/LABEL FILTER
+  // Flatten the favorites array for the Fuse search to work properly (Fuse can't search nested objects)
   const flatFavorites = favorites.map((favorite => ({
     favorite_id: favorite.favorite_id,
     customer_id: favorite.customer_id,
     ...favorite.products,
   })))
-
+  // Fuse search options
   const options = {
     threshold: 0.4,
     keys: ["product_name"],
@@ -140,10 +149,11 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
   let result = fuse.search(search);
 
   console.log(`Total results after search ${result.length}`);
-
+  // Map the result to only return the product object
   result = result.map((item) => item.item);
   // return result; // IF WE WANT TO RETURN IN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
-
+  
+  // If a sort parameter is passed in the request query, sort the favorites
   if (sort) {
     result = sortProducts(result, sort);
   }
