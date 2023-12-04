@@ -145,7 +145,6 @@ async function refreshToken(req, res) {
   // CHECK IF IT HAS jwt else res.sendStatus(401) //unauthorized
   const refreshToken = cookies && cookies?.jwt;
   if (refreshToken == null) return res.status(401).send();
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
   try {
     // Verify token
@@ -173,10 +172,16 @@ async function refreshToken(req, res) {
         const accessToken = generateAccessToken(userJWTAccess);
         const refreshToken = generateRefreshToken(userJWTRefresh);
         await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
+        res.clearCookie("jwt", {
+          httpOnly: true,
+          sameSite: "None",
+          secure: true,
+        });
         res.cookie("jwt", refreshToken, {
           httpOnly: true,
-          secure: true, // Set to true for HTTPS
-          sameSite: "None",
+          secure: false, // Set to false for HTTP in development
+          withCredentials: true,
+          sameSite: "Lax", // Use Lax instead of None in development
           maxAge: 30 * 60 * 1000, // valid for 30min
         });
         res.send({ accessToken: accessToken });
