@@ -5,7 +5,7 @@ import { favoritesRouter } from "./api/v1/favorites/favorites.js";
 import { authRouter } from "./api/v1/authentication/auth.js";
 import { ordersRouter } from "./api/v1/orders/orders.js";
 import dotenv from "dotenv";
-
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 // Globals
@@ -16,7 +16,15 @@ const app = express();
 
 // Middleware
 app.use(express.json()); // parse incomming JSON
-app.use(cors());
+
+// Allow Requests from frontend
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 // Entry point
 app.get(`/api/v1/`, (req, res) => {
