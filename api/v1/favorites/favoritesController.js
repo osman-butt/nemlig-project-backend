@@ -4,7 +4,8 @@ async function getFavorites(req, res) {
   try {
   const sort = req.query.sort;
   const label = req.query.label;
-  const favorites = await getFavoritesFromDB(sort, label);
+  const category = req.query.category;
+  const favorites = await getFavoritesFromDB(sort, label, category);
 
   const response = {
     data: favorites,
@@ -61,7 +62,8 @@ async function searchFavorites(req, res) {
   const search = req.query.search;
   const sort = req.query.sort;
   const label = req.query.label;
-  const results = await searchFavoritesFromDB(search, sort, label);
+  const category = req.query.category;
+  const results = await searchFavoritesFromDB(search, sort, label, category);
   const response = {
     data: results,
   }
