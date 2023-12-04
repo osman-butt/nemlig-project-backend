@@ -4,62 +4,66 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 
 const prisma = new PrismaClient();
 
-async function getFavoritesFromDB(category, sort, label) {
-  let where = {};
+// Get customer ID from user ID (assuming the user ID is passed in the request body)
+async function getCustomerIdfromUserId(userId){
+  const user = await prisma.user.findUnique({
+    where: { user_id: userId },
+    include: { customer: true },
+  });
+  return user.customer.customer_id;
+}
+
+async function getFavoritesFromDB(customerId, category, sort, label) {
+  let where = { customer_id: customerId};
   if (category){
-    where.categories = {
+    where.products = {
+      ...where.products,
+      categories: {
       some: {
         category_name: category,
       },
+    },
     };
   }
   if (label) {
-    where.labels = {
+    where.products = {
+      ...where.products,
+      labels: {
       some: {
         label_name: label,
+        },
       },
-    };
+    };  
   }
-  let products = await prisma.product.findMany({
-    where: {
-      ...where,
-      favorites: {
-        some: {},
-      },
-    },
+
+  const favorites = await prisma.favorite.findMany({
+    where,
     include: {
-      images: true,
-      labels: true,
-      categories: true,
-      inventory: true,
-      prices: true,
-      favorites: true,
-    },
-  });
+      products: {
+        include: {
+          images: true,
+          labels: true,
+          categories: true,
+          inventory: true,
+          prices: true,
+        },
+      }
+       
+      }
+    });
+
+    // NEED TO FLATTEN THE ARRAY FOR THE SORTING FUNCTION TO WORK PROPERLY
+    let flatFavorites = favorites.map((favorite => ({
+      favorite_id: favorite.favorite_id,
+      customer_id: favorite.customer_id,
+      ...favorite.products,
+    })));
+
 
   if (sort) {
-    products = sortProducts(products, sort);
+    flatFavorites = sortProducts(flatFavorites, sort);
   }
-  return products;
-}
-
-async function getFavoriteByIdFromDB(productId) {
-  return await prisma.product.findUnique({
-    where: {
-      product_id: productId,
-      favorites: {
-        some: {},
-      },
-    },
-    include: {
-      images: true,
-      labels: true,
-      categories: true,
-      inventory: true,
-      prices: true,
-      favorites: true,
-    },
-  });
+  return flatFavorites;
 }
 
 async function postFavoriteInDB(productId, customerId) {
@@ -79,47 +83,60 @@ async function deleteFavoriteFromDB(favoriteId) {
   });
 }
 
-async function searchFavoritesFromDB(search, category, sort, label) {
-  let where = {};
+async function searchFavoritesFromDB(customerId, search, category, sort, label) {
+  let where = { customer_id: customerId};
   if (category) {
-    where.categories = {
-      some: {
-        category_name: category,
+    where.products = {
+      ...where.products, //use spread operator to keep the other properties of the where object
+        categories: {
+          some: {
+            category_name: category,
+          },
       },
     };
   }
   if (label) {
-    where.labels = {
-      some: {
-        label_name: label,
-      },
+    where.products = {
+      ...where.products, //use spread operator to keep the other properties of the where object
+        labels: {
+          some: {
+            label_name: label,
+          },
+        },
     };
   }
-  const favorites = await prisma.product.findMany({
-    where: {
-      ...where,
-      favorites: {
-        some: {},
-      },
-    },
+    
+  const favorites = await prisma.favorite.findMany({
+    where,
     include: {
-      images: true,
-      labels: true,
-      categories: true,
-      inventory: true,
-      prices: true,
-      favorites: true,
+      products: {
+        include: {
+          images: true,
+          labels: true,
+          categories: true,
+          inventory: true,
+          prices: true,
+        },
+      }
     },
   });
 
+  
   console.log(`Total results before search ${favorites.length}`);
+  
+  // NEED TO FLATTEN THE ARRAY FOR FUSE TO WORK PROPERLY AND BE ABLE TO SEARCH THE NESTED CATEGORY/LABEL FILTER
+  const flatFavorites = favorites.map((favorite => ({
+    favorite_id: favorite.favorite_id,
+    customer_id: favorite.customer_id,
+    ...favorite.products,
+  })))
 
   const options = {
     threshold: 0.4,
     keys: ["product_name"],
   };
 
-  const fuse = new Fuse(favorites, options);
+  const fuse = new Fuse(flatFavorites, options);
   let result = fuse.search(search);
 
   console.log(`Total results after search ${result.length}`);
@@ -133,4 +150,4 @@ async function searchFavoritesFromDB(search, category, sort, label) {
   return result;
 }
 
-export { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
+export { getFavoritesFromDB, getCustomerIdfromUserId, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };

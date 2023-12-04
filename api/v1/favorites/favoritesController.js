@@ -1,11 +1,12 @@
-import { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB } from "./favoritesModel.js";
+import { getFavoritesFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB } from "./favoritesModel.js";
 
 async function getFavorites(req, res) {
   try {
+  const customerId = req.body.customer_id;
   const sort = req.query.sort;
   const label = req.query.label;
   const category = req.query.category;
-  const favorites = await getFavoritesFromDB(category, sort, label);
+  const favorites = await getFavoritesFromDB(customerId, category, sort, label);
 
   const response = {
     data: favorites,
@@ -17,17 +18,6 @@ async function getFavorites(req, res) {
 } catch (error) {
   console.log(error);
   res.status(500).json({ msg: "Failed to get favorites" });
-}
-}
-
-async function getFavoriteById(req, res) {
-  try {
-  const productId = parseInt(req.params.id);
-  const favorite = await getFavoriteByIdFromDB(productId);
-  res.json(favorite);
-} catch (error) {
-  console.log(error);
-  res.status(500).json({ msg: "Failed to get favorite by ID" });
 }
 }
 
@@ -59,11 +49,12 @@ catch (error) {
 
 async function searchFavorites(req, res) {
   try {
+  const customerId = req.body.customer_id;
   const search = req.query.search;
   const sort = req.query.sort;
   const label = req.query.label;
   const category = req.query.category;
-  const results = await searchFavoritesFromDB(search, category, sort, label);
+  const results = await searchFavoritesFromDB(customerId, search, category, sort, label);
   const response = {
     data: results,
   }
