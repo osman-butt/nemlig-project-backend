@@ -5,7 +5,7 @@ async function getOrders(req, res) {
     const orders = await getOrdersFromDB();
     res.json(orders);
   } catch (error) {
-    res.status(500).json({ error: 'Could not fetch orders', message: error.message });
+    res.status(500).json({ message: 'Could not fetch orders' });
   }
 }
 
@@ -15,7 +15,7 @@ async function createOrder(req, res) {
     const newOrder = await createOrderInDB(orderData);
     res.json(newOrder );
   } catch (error) {
-    res.status(500).json({ error: 'Could not create order', message: error.message });
+    res.status(500).json({ message: 'Could not create order'});
   }
 }
 
