@@ -5,8 +5,10 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 const prisma = new PrismaClient();
 
 async function getProductsFromDB(category, sort, label) {
+  // Define the where and orderBy clause for the Prisma query
   let orderBy = {};
   let where = {};
+  // If a category is passed in the request query, add it to the where clause
   if (category) {
     where.categories = {
       some: {
@@ -14,6 +16,7 @@ async function getProductsFromDB(category, sort, label) {
       },
     };
   }
+  // If a label is passed in the request query, add it to the where clause
   if (label) {
     where.labels = {
       some: {
@@ -21,6 +24,7 @@ async function getProductsFromDB(category, sort, label) {
       },
     };
   }
+  // Fetch products from the DB
   let products = await prisma.product.findMany({
     where,
     orderBy,
@@ -32,7 +36,7 @@ async function getProductsFromDB(category, sort, label) {
       prices: true,
     },
   });
-
+  // Sort the products if a sort query is passed
   if (sort) {
     products = sortProducts(products, sort);
   }
@@ -59,6 +63,7 @@ async function postProductsInDB(productData) {
       product_name: productData.product_name,
       product_underline: productData.product_underline,
       product_description: productData.product_description,
+      // Create related images
       images: {
         createMany: {
           data: productData.images.map(image => ({
@@ -67,18 +72,20 @@ async function postProductsInDB(productData) {
         },
       },
       labels: {
-        // DETTE ANTAGER AT LABELS HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
+        // Connect existing labels to the product
         connect: productData.labels.map((label) => ({ label_id: label })),
       },
       categories: {
-        // DETTE ANTAGER AT KATEGORIER HAR ET MANGE-TIL-MANGE FORHOLD TIL PRODUKTER
+        // Connect existing categories to the product
         connect: productData.categories.map((category) => ({ category_id: category })),
       },
+      // Create related inventory
       inventory: {
         create: {
           inventory_stock: productData.inventory_stock,
         },
       },
+      // Create related prices
       prices: {
         createMany: {
           data: productData.prices.map((price) => ({
@@ -100,12 +107,15 @@ async function updateProductInDB(productId, productData) {
       product_name: productData.product_name,
       product_underline: productData.product_underline,
       product_description: productData.product_description,
+      // Connect existing labels to the product
       labels: {
         connect: productData.labels.map((label_id) => ({ label_id })),
       },
+      // Connect existing categories to the product
       categories: {
         connect: productData.categories.map((category_id) => ({ category_id })),
       },
+      // Update related inventory
       inventory: {
         update: {
           inventory_stock: productData.inventory_stock,
@@ -113,7 +123,7 @@ async function updateProductInDB(productId, productData) {
       },
     },
   });
-
+  // Loop through the images and update them based on provided image_id
   for (let image of productData.images) {
     await prisma.productimage.update({
       where: { image_id: image.image_id },
@@ -122,7 +132,7 @@ async function updateProductInDB(productId, productData) {
       },
     })
   }
-
+  // Loop through the prices and update them based on provided price_id
   for (let price of productData.prices) {
     await prisma.price.update({
       where: { price_id: price.price_id },
@@ -151,8 +161,10 @@ async function deleteProductFromDB(productId) {
 
 // SEARCH FUNCTIONALITY
 async function searchProductsFromDB(search, category, sort, label) {
+  // Define the where clause for the Prisma query
   let where = {};
   let products;
+  // If a category is passed in the request query, add it to the where clause
   if (category) {
     where.categories = {
       some: {
@@ -160,6 +172,7 @@ async function searchProductsFromDB(search, category, sort, label) {
       },
     };
   }
+  // If a label is passed in the request query, add it to the where clause
   if (label) {
     where.labels = {
       some: {
@@ -167,6 +180,7 @@ async function searchProductsFromDB(search, category, sort, label) {
       },
     };
   }
+  // Fetch the products from the DB based on the where clause
   if (category || label) {
     products = await prisma.product.findMany({
       where,
@@ -191,6 +205,7 @@ async function searchProductsFromDB(search, category, sort, label) {
   }
 
   console.log(`Total results before search: ${products.length}`);
+  // Define the options for the Fuse.js search
   const options = {
     threshold: 0.4,
     keys: ["product_name"],
@@ -200,9 +215,9 @@ async function searchProductsFromDB(search, category, sort, label) {
   let result = fuse.search(search);
 
   console.log(`Total results after search: ${result.length}`);
-
+  // Map the Fuse search result to only return the product object
   result = result.map(({ item }) => item);
-
+  // Sort the result if a sort query is passed
   if (sort) {
     result = sortProducts(result, sort);
   }
