@@ -81,12 +81,25 @@ async function getFavoritesFromDB(userEmail, category, sort, label) {
 }
 
 async function postFavoriteInDB(productId, customerId) {
-  return await prisma.favorite.create({
-    data: {
+  // Check if the favorite already exists in the DB
+  const existingFavorite = await prisma.favorite.findFirst({
+    where: {
       product_id: productId,
       customer_id: customerId,
     },
   });
+  
+  if (existingFavorite) {
+    // If the favorite already exists in the user's favorites, return error 
+    return { error: "Product already in favorites" };
+  } else {
+  return await prisma.favorite.create({
+    data: {
+      product_id: productId,
+      customer_id: customerId,
+      },
+    });
+  }
 }
 
 async function deleteFavoriteFromDB(favoriteId) {
