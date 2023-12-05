@@ -132,7 +132,6 @@ async function logoutUser(req, res) {
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
       if (err) return res.sendStatus(403); // Forbidden
-      console.log(decoded);
       // Find user with that refreshToken
       const user = await authModel.getUserToken(decoded.uid);
       if (!user) return res.sendStatus(403); //Forbidden
@@ -158,7 +157,6 @@ async function refreshToken(req, res) {
       process.env.REFRESH_TOKEN_SECRET,
       async (err, decoded) => {
         if (err) return res.sendStatus(403); // Forbidden
-        console.log(decoded);
         // Find user with that refreshToken
         const user = await authModel.getUserToken(decoded.uid);
         if (!user) return res.sendStatus(403); //Forbidden
