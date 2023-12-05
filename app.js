@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./docs/swaggerOptions.js";
 import cookieParser from "cookie-parser";
+import {authenticateToken} from "./middleware/authToken.js";
 dotenv.config();
 
 // Globals
@@ -35,7 +36,7 @@ app.get(`/api/v1/`, (req, res) => {
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
 app.use("/api/v1/products", productsRouter);
-app.use("/api/v1/favorites", favoritesRouter);
+app.use("/api/v1/favorites", authenticateToken, favoritesRouter);
 app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1", authRouter);
 

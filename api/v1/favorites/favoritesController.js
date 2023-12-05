@@ -65,4 +65,4 @@ async function searchFavorites(req, res) {
 }
 }
 
-export default { getFavorites, getFavoriteById, postFavorite, deleteFavorite, searchFavorites };
+export default { getFavorites, postFavorite, deleteFavorite, searchFavorites };
