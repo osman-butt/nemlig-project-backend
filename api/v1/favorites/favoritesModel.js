@@ -5,7 +5,7 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 const prisma = new PrismaClient();
 
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
-async function getCustomerIdfromUserId(userEmail){
+async function getCustomerIdFromUserEmail(userEmail){
 try {
   console.log(`getCustomerIdfromUserId called with UserEmail: ${userEmail}`)
   // Fetch the user from the DB and include the related customer ID.
@@ -13,7 +13,7 @@ try {
     where: { user_email: userEmail },
     include: { customer: true },
   });
-  console.log(`User found: ${JSON.stringify(user)}`);
+  console.log(`Customer id: ${JSON.stringify(user.customer.customer_id)}`);
   // Return the customer ID of the user.
   return user.customer.customer_id;
 } catch (error) {
@@ -24,7 +24,7 @@ try {
 
 
 async function getFavoritesFromDB(userEmail, category, sort, label) {
-  const customerId = await getCustomerIdfromUserId(userEmail); // UserID should also be passed in the request body instead of customerId, since we convert it here
+  const customerId = await getCustomerIdFromUserEmail(userEmail); // UserID should also be passed in the request body instead of customerId, since we convert it here
   // Define the where clause for the Prisma query
   let where = { customer_id: customerId};
   // If a category is passed in the request query, add it to the where clause
@@ -80,7 +80,8 @@ async function getFavoritesFromDB(userEmail, category, sort, label) {
   return flatFavorites;
 }
 
-async function postFavoriteInDB(productId, customerId) {
+async function postFavoriteInDB(productId, userEmail) {
+  const customerId = await getCustomerIdFromUserEmail(userEmail); 
   // Check if the favorite already exists in the DB
   const existingFavorite = await prisma.favorite.findFirst({
     where: {
@@ -181,4 +182,4 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
   return result;
 }
 
-export { getFavoritesFromDB, getCustomerIdfromUserId, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
+export { getFavoritesFromDB, getCustomerIdFromUserEmail as getCustomerIdfromUserId, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
