@@ -40,6 +40,38 @@ async function getProducts(req, res) {
 }
 }
 
+async function getAuthenticatedProducts(req, res) {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const category = req.query.category;
+  const sort = req.query.sort;
+  const label = req.query.label;
+  const userEmail = req.user_email;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const products = await getProductsFromDB(category, sort, label, userEmail);
+
+  const paginatedProducts = products.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(products.length / limit);
+
+  const paginationInfo = {
+    data: paginatedProducts,
+    meta: {
+    pagination: {
+      current_page: page,
+      last_page: totalPages,
+      per_page: limit,
+      total: products.length,
+  }
+  }
+  }
+  res.json(paginationInfo);
+}
+
+
 async function getProductById(req, res) {
   try {
   const productId = parseInt(req.params.id);
@@ -105,4 +137,4 @@ async function searchProducts(req, res) {
 }
 }
 
-export default { getProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts };
+export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts };
