@@ -253,15 +253,17 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
     });
   }
 
-  if (customerId){
-    for (let product of products){
-      // For each product, fetch the favorite where the product_id matches the product_id of the current product and the customer_id matches the customer_id of the current user
-      const userFavorite = await prisma.favorite.findFirst({
-        where: {
-          product_id: product.product_id,
-          customer_id: customerId,
-        },
-      });
+  if (customerId) {
+    // Fetch all favorites for the current user
+    const userFavorites = await prisma.favorite.findMany({
+      where: {
+        customer_id: customerId,
+      },
+    });
+  
+    for (let product of products) {
+      // Check if a favorite exists in the fetched favorites
+      const userFavorite = userFavorites.find(favorite => favorite.product_id === product.product_id);
       // If a favorite is found, add its favorite_id to the product, if not return undefined
       product.favorite_id = userFavorite ? userFavorite.favorite_id : undefined;
     }
