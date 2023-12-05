@@ -6,6 +6,8 @@ const productsRouter = express.Router();
 
 // GET FOR AUTHENTICATED USERS
 productsRouter.get("/authenticated", authenticateToken, productsController.getAuthenticatedProducts);
+// SEARCH FOR AUTHENTICATED USERS
+productsRouter.get("/authenticated/search", authenticateToken, productsController.searchAuthenticatedProducts);
 
 // GET
 productsRouter.get("/", productsController.getProducts);

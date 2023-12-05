@@ -1,38 +1,16 @@
 import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB } from "./productsModel.js";
+import { paginate } from "../sortUtils/paginationUtil.js";
 
 async function getProducts(req, res) {
   try {
-  const page = parseInt(req.query.page) || 1;
-  const limit = 10;
   const category = req.query.category;
   const sort = req.query.sort;
   const label = req.query.label;
   const userEmail = req.user_email;
- console.log(`req.user_email: ${req.user_email}`);
 
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-
-  console.log(`User Email: ${userEmail}}`);
   const products = await getProductsFromDB(category, sort, label, userEmail);
 
-  const paginatedProducts = products.slice(startIndex, endIndex);
-
-  // HAR VALGT AT BRUGE MATH.CEIL SÅ VI SIKRER OS AT FÅ ALT DATA MED.
-  const totalPages = Math.ceil(products.length / limit);
-
-  const paginationInfo = {
-    data: paginatedProducts,
-    meta: {
-    pagination: {
-      current_page: page,
-      last_page: totalPages,
-      per_page: limit,
-      total: products.length,
-  }
-  }
-  }
-
+  const paginationInfo = paginate(products, req)
   res.json(paginationInfo);
 } catch (error) {
   console.log(error);
@@ -41,33 +19,14 @@ async function getProducts(req, res) {
 }
 
 async function getAuthenticatedProducts(req, res) {
-  const page = parseInt(req.query.page) || 1;
-  const limit = 10;
   const category = req.query.category;
   const sort = req.query.sort;
   const label = req.query.label;
   const userEmail = req.user_email;
 
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-
   const products = await getProductsFromDB(category, sort, label, userEmail);
 
-  const paginatedProducts = products.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(products.length / limit);
-
-  const paginationInfo = {
-    data: paginatedProducts,
-    meta: {
-    pagination: {
-      current_page: page,
-      last_page: totalPages,
-      per_page: limit,
-      total: products.length,
-  }
-  }
-  }
+  const paginationInfo = paginate(products, req)
   res.json(paginationInfo);
 }
 
@@ -125,7 +84,8 @@ async function searchProducts(req, res) {
   const category = req.query.category;
   const sort = req.query.sort;
   const label = req.query.label;
-  const results = await searchProductsFromDB(search, category, sort, label);
+  const userEmail = req.user_email;
+  const results = await searchProductsFromDB(search, category, sort, label, userEmail);
   // DENNE KAN UDELADES - DETTE ER BARE SÅ VI FÅR SAMME STRUKTUR SOM VED GET REQUEST MEN UDEN META ARRAY
   const products = {
     data: results,
@@ -137,4 +97,22 @@ async function searchProducts(req, res) {
 }
 }
 
-export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts };
+async function searchAuthenticatedProducts(req, res){
+  try {
+    const search = req.query.search;
+    const category = req.query.category;
+    const sort = req.query.sort;
+    const label = req.query.label;
+    const userEmail = req.user_email;
+    const results = await searchProductsFromDB(search, category, sort, label, userEmail);
+    const products = {
+      data: results,
+    }
+    res.json(products);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get products" });
+  }
+}
+
+export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts };

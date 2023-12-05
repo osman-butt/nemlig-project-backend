@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
 async function getCustomerIdFromUserEmail(userEmail){
   try {
-    console.log(`getCustomerIdfromUserId called with UserEmail: ${userEmail}`)
     // Fetch the user from the DB and include the related customer ID.
     const user = await prisma.user.findFirst({
       where: { user_email: userEmail },
@@ -31,7 +30,6 @@ async function getProductsFromDB(category, sort, label, userEmail) {
   // Get the customer_id from the user_email only if userEmail is defined
   if (userEmail){
   customerId = await getCustomerIdFromUserEmail(userEmail); 
-  console.log(`customerId: ${customerId}`);
 }
 
   // If a category is passed in the request query, add it to the where clause
@@ -202,10 +200,17 @@ async function deleteProductFromDB(productId) {
 }
 
 // SEARCH FUNCTIONALITY
-async function searchProductsFromDB(search, category, sort, label) {
+async function searchProductsFromDB(search, category, sort, label, userEmail) {
   // Define the where clause for the Prisma query
   let where = {};
   let products;
+  let customerId;
+
+  // Get the customer_id from the user_email only if userEmail is defined
+  if (userEmail){
+  customerId = await getCustomerIdFromUserEmail(userEmail);
+  }
+
   // If a category is passed in the request query, add it to the where clause
   if (category) {
     where.categories = {
@@ -244,6 +249,20 @@ async function searchProductsFromDB(search, category, sort, label) {
         prices: true,
       },
     });
+  }
+
+  if (customerId){
+    for (let product of products){
+      // For each product, fetch the favorite where the product_id matches the product_id of the current product and the customer_id matches the customer_id of the current user
+      const userFavorite = await prisma.favorite.findFirst({
+        where: {
+          product_id: product.product_id,
+          customer_id: customerId,
+        },
+      });
+      // If a favorite is found, add its favorite_id to the product, if not return undefined
+      product.favorite_id = userFavorite ? userFavorite.favorite_id : undefined;
+    }
   }
 
   console.log(`Total results before search: ${products.length}`);
