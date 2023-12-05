@@ -46,9 +46,13 @@ async function updateCartInDb(cartData, cart_id) {
   }
 }
 
-async function deleteCartFromDb(cart_id) {
-  await prisma.$queryRaw`DELETE FROM cart_item WHERE cart_id = ${cart_id}`;
-  await prisma.cart.delete({ where: { cart_id: cart_id } });
+async function deleteCartFromDb(cart_id, product_id) {
+  await prisma.cart_item.delete({
+    where: {
+      cart_id: cart_id,
+      product_id: product_id,
+    },
+  });
 }
 
 export { getCartFromDb, createCartInDb, deleteCartFromDb, updateCartInDb };
