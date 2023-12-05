@@ -26,9 +26,11 @@ async function updateCart(req, res) {
 }
 
 async function deleteCart(req, res) {
-  const cart_id = parseInt(req.params.id);
-  await deleteCartFromDb(cart_id);
-  res.json({ message: `Cart with id ${cart_id} was deleted` });
+  const { cart_id, product_id } = req.params;
+  await deleteCartFromDb(cart_id, product_id);
+  res.json({
+    message: `Deletion successful for cart_id: ${cart_id}, product_id: ${product_id}`,
+  });
 }
 
 export default { getCart, createCart, deleteCart, updateCart };

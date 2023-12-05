@@ -47,12 +47,20 @@ async function updateCartInDb(cartData, cart_id) {
 }
 
 async function deleteCartFromDb(cart_id, product_id) {
-  await prisma.cart_item.delete({
+  const cartItem = await prisma.cart_item.findFirst({
     where: {
-      cart_id: cart_id,
-      product_id: product_id,
+      cart_id: parseInt(cart_id),
+      product_id: parseInt(product_id),
     },
   });
+
+  if (cartItem) {
+    await prisma.cart_item.delete({
+      where: {
+        cart_item_id: cartItem.cart_item_id,
+      },
+    });
+  }
 }
 
 export { getCartFromDb, createCartInDb, deleteCartFromDb, updateCartInDb };
