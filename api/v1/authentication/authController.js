@@ -107,7 +107,11 @@ async function loginUser(req, res) {
         sameSite: "Lax", // Use Lax instead of None in development
         maxAge: 30 * 60 * 1000, // valid for 30min
       });
-      res.status(200).send({ accessToken: accessToken });
+      res.status(200).send({
+        accessToken: accessToken,
+        user_email: user.user_email,
+        user_roles: user.roles.map(role => role.user_role).flat(),
+      });
     } else {
       res.status(403).send({ message: "Forkert email eller password" });
     }
@@ -134,9 +138,9 @@ async function logoutUser(req, res) {
       if (!user) return res.sendStatus(403); //Forbidden
       // DELETE Refresh token from db
       await authModel.deleteUserToken(decoded.uid);
+      res.sendStatus(204);
     }
   );
-  res.sendStatus(204);
 }
 
 async function refreshToken(req, res) {
@@ -166,7 +170,7 @@ async function refreshToken(req, res) {
           user_roles: decoded.user_roles,
         };
         const userJWTRefresh = {
-          user_email: user.user_email,
+          user_email: decoded.user_email,
           user_roles: decoded.user_roles,
           uid: uuidv4(), // for looking up in db
         };
@@ -179,7 +183,11 @@ async function refreshToken(req, res) {
           sameSite: "None",
           maxAge: 30 * 60 * 1000, // valid for 30min
         });
-        res.send({ accessToken: accessToken });
+        res.send({
+          accessToken: accessToken,
+          user_email: decoded.user_email,
+          user_roles: decoded.user_roles,
+        });
       }
     );
   } catch (error) {
