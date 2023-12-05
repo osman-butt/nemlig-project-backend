@@ -6,17 +6,26 @@ const prisma = new PrismaClient();
 
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
 async function getCustomerIdfromUserId(userEmail){
+try {
+  console.log(`getCustomerIdfromUserId called with UserEmail: ${userEmail}`)
   // Fetch the user from the DB and include the related customer ID.
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findFirst({
     where: { user_email: userEmail },
     include: { customer: true },
   });
+  console.log(`User found: ${JSON.stringify(user)}`);
+
   // Return the customer ID of the user.
   return user.customer.customer_id;
+} catch (error) {
+  console.log(error);
+  res.status(500).json({ msg: "Failed to get customer ID" }); 
+}
 }
 
-async function getFavoritesFromDB(customerId, category, sort, label) {
-  // customerId = await getCustomerIdfromUserId(userId); // UserID should also be passed in the request body instead of customerId, since we convert it here
+
+async function getFavoritesFromDB(userEmail, category, sort, label) {
+  const customerId = await getCustomerIdfromUserId(userEmail); // UserID should also be passed in the request body instead of customerId, since we convert it here
   // Define the where clause for the Prisma query
   let where = { customer_id: customerId};
   // If a category is passed in the request query, add it to the where clause

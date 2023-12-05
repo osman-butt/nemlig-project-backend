@@ -2,11 +2,11 @@ import { getFavoritesFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavor
 
 async function getFavorites(req, res) {
   try {
-  const customerId = req.body.customer_id;
+  const userEmail = req.user_email;
   const sort = req.query.sort;
   const label = req.query.label;
   const category = req.query.category;
-  const favorites = await getFavoritesFromDB(customerId, category, sort, label);
+  const favorites = await getFavoritesFromDB(userEmail, category, sort, label);
 
   const response = {
     data: favorites,
@@ -49,12 +49,12 @@ catch (error) {
 
 async function searchFavorites(req, res) {
   try {
-  const customerId = req.body.customer_id;
+  const userEmail = req.body.user_email;
   const search = req.query.search;
   const sort = req.query.sort;
   const label = req.query.label;
   const category = req.query.category;
-  const results = await searchFavoritesFromDB(customerId, search, category, sort, label);
+  const results = await searchFavoritesFromDB(userEmail, search, category, sort, label);
   const response = {
     data: results,
   }
