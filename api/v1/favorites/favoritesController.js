@@ -16,7 +16,7 @@ async function getFavorites(req, res) {
   res.json(response);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get favorites" });
+  res.status(500).json({ message: "Failed to get favorites" });
 }
 }
 
@@ -27,7 +27,7 @@ async function getFavoriteById(req, res) {
   res.json(favorite);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get favorite by ID" });
+  res.status(500).json({ message: "Failed to get favorite by ID" });
 }
 }
 
@@ -40,7 +40,7 @@ async function postFavorite(req, res) {
     res.json(favorite);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "failed to post favorite"});
+    res.status(500).json({ message: "failed to post favorite"});
   }
 }
 
@@ -53,7 +53,7 @@ async function deleteFavorite(req, res) {
 }
 catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to delete favorite" });
+  res.status(500).json({ message: "Failed to delete favorite" });
 }
 }
 
@@ -70,7 +70,7 @@ async function searchFavorites(req, res) {
   res.json(response);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to search favorites" });
+  res.status(500).json({ message: "Failed to search favorites" });
 }
 }
 
