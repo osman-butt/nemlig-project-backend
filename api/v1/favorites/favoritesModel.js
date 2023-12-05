@@ -5,10 +5,10 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 const prisma = new PrismaClient();
 
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
-async function getCustomerIdfromUserId(userId){
+async function getCustomerIdfromUserId(userEmail){
   // Fetch the user from the DB and include the related customer ID.
   const user = await prisma.user.findUnique({
-    where: { user_id: userId },
+    where: { user_email: userEmail },
     include: { customer: true },
   });
   // Return the customer ID of the user.
