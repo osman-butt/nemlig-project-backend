@@ -14,12 +14,11 @@ try {
     include: { customer: true },
   });
   console.log(`User found: ${JSON.stringify(user)}`);
-
   // Return the customer ID of the user.
   return user.customer.customer_id;
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get customer ID" }); 
+  res.status(500).json({ message: "Failed to get customer ID" }); 
 }
 }
 
