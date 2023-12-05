@@ -7,12 +7,14 @@ async function getProducts(req, res) {
   const category = req.query.category;
   const sort = req.query.sort;
   const label = req.query.label;
- 
+  const userEmail = req.user_email;
+ console.log(`req.user_email: ${req.user_email}`);
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const products = await getProductsFromDB(category, sort, label);
+  console.log(`User Email: ${userEmail}}`);
+  const products = await getProductsFromDB(category, sort, label, userEmail);
 
   const paginatedProducts = products.slice(startIndex, endIndex);
 

@@ -4,10 +4,36 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 
 const prisma = new PrismaClient();
 
-async function getProductsFromDB(category, sort, label) {
+// Get customer ID from user ID (assuming the user ID is passed in the request body)
+async function getCustomerIdFromUserEmail(userEmail){
+  try {
+    console.log(`getCustomerIdfromUserId called with UserEmail: ${userEmail}`)
+    // Fetch the user from the DB and include the related customer ID.
+    const user = await prisma.user.findFirst({
+      where: { user_email: userEmail },
+      include: { customer: true },
+    });
+    console.log(`Customer id: ${JSON.stringify(user.customer.customer_id)}`);
+    // Return the customer ID of the user.
+    return user.customer.customer_id;
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get customer ID" }); 
+  }
+  }
+
+async function getProductsFromDB(category, sort, label, userEmail) {
   // Define the where and orderBy clause for the Prisma query
   let orderBy = {};
   let where = {};
+  let customerId;
+
+  // Get the customer_id from the user_email only if userEmail is defined
+  if (userEmail){
+  customerId = await getCustomerIdFromUserEmail(userEmail); 
+}
+console.log(`customerId: ${customerId}`);
+
   // If a category is passed in the request query, add it to the where clause
   if (category) {
     where.categories = {
@@ -34,12 +60,28 @@ async function getProductsFromDB(category, sort, label) {
       categories: true,
       inventory: true,
       prices: true,
+      ...(customerId ? {
+        favorites: true,
+      } : {}) // Only include favorites if customerId is defined
     },
   });
+
+  if (customerId) {
+    // Map the products array to only include the favorite_id for the authenticated user
+    products = products.map(product => {
+      const userFavorite = product.favorites.find(favorite => favorite.customer_id === customerId);
+      return {
+        ...product,
+        favorite_id: userFavorite ? userFavorite.favorite_id : undefined,
+      };
+    });
+  }
+
   // Sort the products if a sort query is passed
   if (sort) {
     products = sortProducts(products, sort);
   }
+  
 
   return products;
 }
@@ -224,4 +266,4 @@ async function searchProductsFromDB(search, category, sort, label) {
   return result;
 }
 
-export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB };
+export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail };

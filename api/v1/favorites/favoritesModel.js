@@ -182,4 +182,4 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
   return result;
 }
 
-export { getFavoritesFromDB, getCustomerIdFromUserEmail as getCustomerIdfromUserId, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
+export { getFavoritesFromDB, getCustomerIdFromUserEmail, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB };
