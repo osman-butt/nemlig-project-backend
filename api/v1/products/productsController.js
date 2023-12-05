@@ -19,6 +19,7 @@ async function getProducts(req, res) {
 }
 
 async function getAuthenticatedProducts(req, res) {
+  try {
   const category = req.query.category;
   const sort = req.query.sort;
   const label = req.query.label;
@@ -28,7 +29,12 @@ async function getAuthenticatedProducts(req, res) {
 
   const paginationInfo = paginate(products, req)
   res.json(paginationInfo);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get products" });
+  }
 }
+
 
 
 async function getProductById(req, res) {
