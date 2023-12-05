@@ -86,11 +86,9 @@ async function searchProducts(req, res) {
   const label = req.query.label;
   const userEmail = req.user_email;
   const results = await searchProductsFromDB(search, category, sort, label, userEmail);
-  // DENNE KAN UDELADES - DETTE ER BARE SÅ VI FÅR SAMME STRUKTUR SOM VED GET REQUEST MEN UDEN META ARRAY
-  const products = {
-    data: results,
-  }
-  res.json(products);
+
+  const paginatedResults = paginate(results, req)
+  res.json(paginatedResults);
 } catch (error) {
   console.log(error);
   res.status(500).json({ msg: "Failed to get products" });
@@ -105,10 +103,9 @@ async function searchAuthenticatedProducts(req, res){
     const label = req.query.label;
     const userEmail = req.user_email;
     const results = await searchProductsFromDB(search, category, sort, label, userEmail);
-    const products = {
-      data: results,
-    }
-    res.json(products);
+
+    const paginatedResults = paginate(results, req)
+    res.json(paginatedResults);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Failed to get products" });

@@ -152,9 +152,6 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
     },
   });
 
-  
-  console.log(`Total results before search ${favorites.length}`);
-  
   // Flatten the favorites array for the Fuse search to work properly (Fuse can't search nested objects)
   const flatFavorites = favorites.map((favorite => ({
     favorite_id: favorite.favorite_id,
