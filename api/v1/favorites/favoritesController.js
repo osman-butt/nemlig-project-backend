@@ -1,11 +1,12 @@
-import { getFavoritesFromDB, getFavoriteByIdFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB } from "./favoritesModel.js";
+import { getFavoritesFromDB, postFavoriteInDB, deleteFavoriteFromDB, searchFavoritesFromDB } from "./favoritesModel.js";
 
 async function getFavorites(req, res) {
   try {
+  const userEmail = req.user_email;
   const sort = req.query.sort;
   const label = req.query.label;
   const category = req.query.category;
-  const favorites = await getFavoritesFromDB(category, sort, label);
+  const favorites = await getFavoritesFromDB(userEmail, category, sort, label);
 
   const response = {
     data: favorites,
@@ -16,31 +17,20 @@ async function getFavorites(req, res) {
   res.json(response);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get favorites" });
-}
-}
-
-async function getFavoriteById(req, res) {
-  try {
-  const productId = parseInt(req.params.id);
-  const favorite = await getFavoriteByIdFromDB(productId);
-  res.json(favorite);
-} catch (error) {
-  console.log(error);
-  res.status(500).json({ msg: "Failed to get favorite by ID" });
+  res.status(500).json({ message: "Failed to get favorites" });
 }
 }
 
 async function postFavorite(req, res) {
   try {
   const productId = req.body.product_id;
-  const customerId = req.body.customer_id;
-    const favorite = await postFavoriteInDB(productId, customerId);
+  const userEmail = req.user_email;
+    const favorite = await postFavoriteInDB(productId, userEmail);
     console.log(`New favorite: ${JSON.stringify(favorite)}`);
     res.json(favorite);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "failed to post favorite"});
+    res.status(500).json({ message: "failed to post favorite"});
   }
 }
 
@@ -53,25 +43,26 @@ async function deleteFavorite(req, res) {
 }
 catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to delete favorite" });
+  res.status(500).json({ message: "Failed to delete favorite" });
 }
 }
 
 async function searchFavorites(req, res) {
   try {
+  const userEmail = req.body.user_email;
   const search = req.query.search;
   const sort = req.query.sort;
   const label = req.query.label;
   const category = req.query.category;
-  const results = await searchFavoritesFromDB(search, category, sort, label);
+  const results = await searchFavoritesFromDB(userEmail, search, category, sort, label);
   const response = {
     data: results,
   }
   res.json(response);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to search favorites" });
+  res.status(500).json({ message: "Failed to search favorites" });
 }
 }
 
-export default { getFavorites, getFavoriteById, postFavorite, deleteFavorite, searchFavorites };
+export default { getFavorites, postFavorite, deleteFavorite, searchFavorites };
