@@ -46,15 +46,15 @@ async function getUsersByEmail(email) {
 //     },
 //   });
 // }
-async function createCartItemsInDb(cartData) {
+async function createCartItemsInDb(cart_id, cartItems) {
   return await prisma.cart.update({
     where: {
-      cart_id: 1,
+      cart_id: cart_id,
     },
     data: {
       cart_items: {
         createMany: {
-          data: cartData.cart_items,
+          data: cartItems,
         },
       },
     },

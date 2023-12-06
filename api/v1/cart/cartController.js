@@ -7,9 +7,11 @@ import {
   deleteAllCartItemsFromDb,
 } from "./cartModel.js";
 
+const EMAIL = "customer2@mail.dk";
+
 async function getCart(req, res) {
   // Get user
-  const user_email = "customer2@mail.dk"; // req.user_email;
+  const user_email = EMAIL; // req.user_email;
   const user = await getUsersByEmail(user_email);
   // Show cart if the user is a customer
   if (user?.customer) {
@@ -22,6 +24,26 @@ async function getCart(req, res) {
     }
   } else {
     res.json([]);
+  }
+}
+
+async function createCartItems(req, res) {
+  const cartItems = req.body;
+  // Get user
+  const user_email = EMAIL; // req.user_email;
+  const user = await getUsersByEmail(user_email);
+  if (user?.customer) {
+    try {
+      const cart = await getCartFromDb(user.customer.customer_id);
+      if (cart == null) {
+        return res.status(404).send({ message: "Cart does not exist." });
+      }
+      const updatedCart = await createCartItemsInDb(cart.cart_id, cartItems);
+      res.send(updatedCart);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: error });
+    }
   }
 }
 
@@ -67,7 +89,7 @@ async function deleteCart(req, res) {
 
 async function deleteAllCartItems(req, res) {
   // Get user
-  const user_email = "customer@mail.dk"; // req.user_email;
+  const user_email = EMAIL; // req.user_email;
   const user = await getUsersByEmail(user_email);
   // Get cart id
   if (user?.customer) {
@@ -84,4 +106,10 @@ async function deleteAllCartItems(req, res) {
   }
 }
 
-export default { getCart, deleteCart, updateCart, deleteAllCartItems };
+export default {
+  getCart,
+  createCartItems,
+  // deleteCart,
+  // updateCart,
+  deleteAllCartItems,
+};
