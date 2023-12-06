@@ -1,10 +1,8 @@
 import cartModel from "./cartModel.js";
 
-const EMAIL = "customer@mail.dk";
-
 async function getCart(req, res) {
   // Get user
-  const user_email = EMAIL; // req.user_email;
+  const user_email = req.user_email;
   const user = await cartModel.getUsersByEmail(user_email);
   // Show cart if the user is a customer
   if (user?.customer) {
@@ -23,7 +21,7 @@ async function getCart(req, res) {
 async function createCartItems(req, res) {
   const cartItems = req.body;
   // Get user
-  const user_email = EMAIL; // req.user_email;
+  const user_email = req.user_email;
   const user = await cartModel.getUsersByEmail(user_email);
   if (user?.customer) {
     try {
@@ -46,7 +44,7 @@ async function createCartItems(req, res) {
 async function updateCartItem(req, res) {
   const cartItem = req.body;
   // Get user
-  const user_email = EMAIL; // req.user_email;
+  const user_email = req.user_email;
   const user = await cartModel.getUsersByEmail(user_email);
   if (user?.customer) {
     const cart = await cartModel.getCartFromDb(user.customer.customer_id);
@@ -64,7 +62,11 @@ async function updateCartItem(req, res) {
           cart.cart_id,
           cartItem
         );
-        res.sendStatus(204);
+        const updatedCartFromDB = await cartModel.getCartFromDb(
+          user.customer.customer_id
+        );
+        res.json(updatedCartFromDB);
+        // res.sendStatus(204);
       } else {
         res.status(404).send({ message: "Product not in cart" });
       }
@@ -80,13 +82,19 @@ async function updateCartItem(req, res) {
           Number(cart_item_id),
           Number(cartItem.product_id)
         );
-        res.sendStatus(204);
+        const updatedCartFromDB = await cartModel.getCartFromDb(
+          user.customer.customer_id
+        );
+        res.json(updatedCartFromDB);
       } else {
         const updatedCart = await cartModel.updateCartItemQuantity(
           cart_item_id,
           newQuantity
         );
-        res.sendStatus(204);
+        const updatedCartFromDB = await cartModel.getCartFromDb(
+          user.customer.customer_id
+        );
+        res.json(updatedCartFromDB);
       }
     }
   }
@@ -94,7 +102,7 @@ async function updateCartItem(req, res) {
 
 async function deleteAllCartItems(req, res) {
   // Get user
-  const user_email = EMAIL; // req.user_email;
+  const user_email = req.user_email;
   const user = await cartModel.getUsersByEmail(user_email);
   // Get cart id
   if (user?.customer) {
