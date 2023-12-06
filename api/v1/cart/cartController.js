@@ -12,8 +12,13 @@ async function getCart(req, res) {
   const user = await getUsersByEmail(user_email);
   // Show cart if the user is a customer
   if (user?.customer) {
-    const cart = await getCartFromDb(user.customer.customer_id);
-    res.json(cart);
+    try {
+      const cart = await getCartFromDb(user.customer.customer_id);
+      res.json(cart);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: error });
+    }
   } else {
     res.json([]);
   }
