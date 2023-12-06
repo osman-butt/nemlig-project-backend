@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function getCartFromDb(customer_id) {
-  return await prisma.cart.findMany({
+  return await prisma.cart.findFirst({
     where: {
       customer_id: customer_id,
     },
@@ -46,7 +46,7 @@ async function getUsersByEmail(email) {
 //     },
 //   });
 // }
-async function createCartInDb(cartData) {
+async function createCartItemsInDb(cartData) {
   return await prisma.cart.update({
     where: {
       cart_id: 1,
@@ -102,9 +102,9 @@ async function deleteCartFromDb(cart_id, product_id) {
 }
 
 async function deleteAllCartItemsFromDb(cart_id) {
-  await prisma.cart_item.delete({
+  await prisma.cart.update({
     where: {
-      id: cart_id,
+      cart_id: cart_id,
     },
     data: {
       cart_items: {
@@ -119,8 +119,9 @@ async function deleteAllCartItemsFromDb(cart_id) {
 
 export {
   getCartFromDb,
-  createCartInDb,
+  createCartItemsInDb,
   deleteCartFromDb,
   updateCartInDb,
   getUsersByEmail,
+  deleteAllCartItemsFromDb,
 };
