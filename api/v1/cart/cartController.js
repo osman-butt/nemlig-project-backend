@@ -3,11 +3,19 @@ import {
   createCartInDb,
   deleteCartFromDb,
   updateCartInDb,
+  getUsersByEmail,
 } from "./cartModel.js";
 
 async function getCart(req, res) {
-  const cart = await getCartFromDb();
-  res.json(cart);
+  // Get user
+  const user_email = "customer2@mail.dk"; // req.user_email;
+  const user = await getUsersByEmail(user_email);
+  if (user?.customer) {
+    const cart = await getCartFromDb(user.customer.customer_id);
+    res.json(cart);
+  } else {
+    res.json([]);
+  }
 }
 
 async function createCart(req, res) {
