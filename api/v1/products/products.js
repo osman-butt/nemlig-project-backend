@@ -1,7 +1,13 @@
 import express from "express";
 import productsController from "./productsController.js";
+import { authenticateToken } from "../../../middleware/authToken.js";
 
 const productsRouter = express.Router();
+
+// GET FOR AUTHENTICATED USERS
+productsRouter.get("/authenticated", authenticateToken, productsController.getAuthenticatedProducts);
+// SEARCH FOR AUTHENTICATED USERS
+productsRouter.get("/authenticated/search", authenticateToken, productsController.searchAuthenticatedProducts);
 
 // GET
 productsRouter.get("/", productsController.getProducts);
