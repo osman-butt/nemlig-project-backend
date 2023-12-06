@@ -14,7 +14,7 @@ async function getProducts(req, res) {
   res.json(paginationInfo);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get products" });
+  res.status(500).json({ message: "Failed to get products" });
 }
 }
 
@@ -44,19 +44,47 @@ async function getProductById(req, res) {
   res.json(product);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get product by ID" });
+  res.status(500).json({ message: "Failed to get product by ID" });
 }
 }
 
 async function postProducts(req, res) {
   try {
   const productData = req.body;
+  // Validate input
+  if (!productData.product_name){
+    return res.status(400).json({ message: "Product name is required" });
+  }
+  if (!productData.underline){
+    return res.status(400).json({ message: "Product underline is required" });
+  }
+  if (!productData.description){
+    return res.status(400).json({ message: "Product description is required" });
+  }
+  if (!productData.image_url){
+    return res.status(400).json({ message: "Product image is required" });
+  }
+  if (!productData.inventory){
+    return res.status(400).json({ message: "Product inventory is required" });
+  }
+  if (!productData.price){
+    return res.status(400).json({ message: "Product price is required" });
+  }
+  if (!productData.starting_at){
+    return res.status(400).json({ message: "Starting date for price is required " });
+  }
+  if (!productData.is_campaign){
+    return res.status(400).json({ message: "Campaign is required" });
+  }
+  if (!productData.ending_at){
+    return res.status(400).json({ message: "Ending date for price is required" });
+  }
   const newProduct = await postProductsInDB(productData);
   console.log(`Posted product: ${JSON.stringify(newProduct)}`);
   res.json(newProduct);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to post product" });
+  res.status(500).json({ message: "Failed to post product" });
 }
 }
 
@@ -69,7 +97,7 @@ async function updateProduct(req, res) {
   res.json({ msg: `Product with id ${productId} updated`});
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to update product" });
+  res.status(500).json({ message: "Failed to update product" });
 }
 }
 
@@ -80,7 +108,7 @@ async function deleteProduct(req, res) {
   res.json({ msg: `Product with id ${productId} deleted` });
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to delete product" });
+  res.status(500).json({ message: "Failed to delete product" });
 }
 }
 
@@ -97,7 +125,7 @@ async function searchProducts(req, res) {
   res.json(paginatedResults);
 } catch (error) {
   console.log(error);
-  res.status(500).json({ msg: "Failed to get products" });
+  res.status(500).json({ message: "Failed to get products" });
 }
 }
 
