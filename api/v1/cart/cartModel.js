@@ -64,6 +64,15 @@ async function createCartItemsInDb(cart_id, cartItems) {
   });
 }
 
+async function updateCartItemQuantity(cart_item_id, quantity) {
+  return await prisma.cart_item.update({
+    where: { cart_item_id: cart_item_id },
+    data: {
+      quantity: quantity,
+    },
+  });
+}
+
 async function updateCartInDb(cartData, cart_id) {
   const cartItems = await prisma.cart_item.findMany({
     where: { cart_id: cart_id },
@@ -84,22 +93,22 @@ async function updateCartInDb(cartData, cart_id) {
   }
 }
 
-async function deleteCartFromDb(cart_id, product_id) {
-  const cartItem = await prisma.cart_item.findFirst({
+async function deleteCartFromDb(cart_item_id, product_id) {
+  return await prisma.cart_item.delete({
     where: {
-      cart_id: parseInt(cart_id),
-      product_id: parseInt(product_id),
+      cart_item_id: cart_item_id,
+      product_id: product_id,
     },
   });
-
-  if (cartItem) {
-    await prisma.cart_item.delete({
-      where: {
-        cart_item_id: cartItem.cart_item_id,
-      },
-    });
-  }
 }
+// if (cartItem) {
+//   await prisma.cart_item.delete({
+//     where: {
+//       cart_item_id: cartItem.cart_item_id,
+//     },
+//   });
+// }
+// }
 
 async function deleteAllCartItemsFromDb(cart_id) {
   await prisma.cart.update({
@@ -122,6 +131,7 @@ export {
   createCartItemsInDb,
   deleteCartFromDb,
   updateCartInDb,
+  updateCartItemQuantity,
   getUsersByEmail,
   deleteAllCartItemsFromDb,
 };
