@@ -288,4 +288,12 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
   return result;
 }
 
-export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail };
+async function getAllLabelsFromDB() {
+  return await prisma.label.findMany();
+}
+
+async function getAllCategoriesFromDB() {
+  return await prisma.category.findMany();
+}
+
+export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail, getAllLabelsFromDB, getAllCategoriesFromDB };

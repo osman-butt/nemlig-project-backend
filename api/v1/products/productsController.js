@@ -1,4 +1,4 @@
-import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB } from "./productsModel.js";
+import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getAllLabelsFromDB, getAllCategoriesFromDB } from "./productsModel.js";
 import { paginate } from "../sortUtils/paginationUtil.js";
 
 async function getProducts(req, res) {
@@ -146,4 +146,24 @@ async function searchAuthenticatedProducts(req, res){
   }
 }
 
-export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts };
+async function getLabels(req, res){
+  try {
+    const labels = await getAllLabelsFromDB();
+    res.json(labels);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get labels" });
+  }
+}
+
+async function getCategories(req, res){
+  try {
+    const categories = await getAllCategoriesFromDB();
+    res.json(categories);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get categories" });
+  }
+}
+
+export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories };
