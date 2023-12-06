@@ -3,15 +3,13 @@ import cartController from "./cartController.js";
 
 const cartRouter = express.Router();
 
+// Get customers cart
 cartRouter.get("/", cartController.getCart);
+// Add multiple items to cart
 cartRouter.post("/", cartController.createCartItems);
+// Add or deduct quantity from cart
 cartRouter.put("/", cartController.updateCartItem);
-
-// cartRouter.post("/", cartController.createCartItem);
-
-// cartRouter.put("/:id", cartController.updateCart);
-
-// cartRouter.delete("/:cart_id/:product_id", cartController.deleteCart);
+// Delete all items from cart
 cartRouter.delete("/items", cartController.deleteAllCartItems);
 
 export { cartRouter };
