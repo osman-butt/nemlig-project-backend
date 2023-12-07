@@ -188,6 +188,17 @@ async function updateProductInDB(productId, productData) {
     });
   }
   }
+    // Delete all images that are not in the updated images list
+    const updatedImageIds = productData.images.map((image) => image.image_id).filter(Boolean);
+    await prisma.productimage.deleteMany({
+    where: {
+    product_id: productId,
+    image_id: {
+    notIn: updatedImageIds,
+    },
+    },
+    });
+
   // Loop through the prices and update them based on provided price_id
   for (let price of productData.prices) {
     if (price.price_id) {
@@ -213,6 +224,17 @@ async function updateProductInDB(productId, productData) {
     });
   }
   }
+  // Create an array of price_ids from the updated prices list, filtering out any that are falsy
+  const updatedPriceIds = productData.prices.map((price) => price.price_id).filter(Boolean);
+  // Delete all prices that are associated with the product but are not included in the updated prices list
+  await prisma.price.deleteMany({
+    where: {
+      product_id: productId,
+      price_id: {
+        notIn: updatedPriceIds,
+      },
+    },
+  });
 }
 
 async function deleteProductFromDB(productId) {
