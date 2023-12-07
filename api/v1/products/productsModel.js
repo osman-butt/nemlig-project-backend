@@ -169,64 +169,48 @@ async function updateProductInDB(productId, productData) {
       },
     },
   });
-  // Loop through the images and update them based on provided image_id
+  // Create new images and add their image_id to updatedImageIds
+  const updatedImageIds = productData.images.map((image) => image.image_id).filter(Boolean);
   for (let image of productData.images) {
-    if (image.image_id){
-    await prisma.productimage.update({
-      where: { image_id: image.image_id },
-      data: {
-        image_url: image.image_url,
-      },
-    })
-    // If no image_id is provided, create a new image
-  } else {
-    await prisma.productimage.create({
-      data: {
-        image_url: image.image_url,
-        product_id: productId,
-      },
-    });
+    if (!image.image_id) {
+      const newImage = await prisma.productimage.create({
+        data: {
+          image_url: image.image_url,
+          product_id: productId,
+        },
+      });
+      updatedImageIds.push(newImage.image_id);
+    }
   }
-  }
-    // Delete all images that are not in the updated images list
-    const updatedImageIds = productData.images.map((image) => image.image_id).filter(Boolean);
-    await prisma.productimage.deleteMany({
-    where: {
-    product_id: productId,
-    image_id: {
-    notIn: updatedImageIds,
-    },
-    },
-    });
 
-  // Loop through the prices and update them based on provided price_id
-  for (let price of productData.prices) {
-    if (price.price_id) {
-    await prisma.price.update({
-      where: { price_id: price.price_id },
-      data: {
-        price: price.price,
-        starting_at: new Date(price.starting_at).toISOString(),
-        is_campaign: price.is_campaign,
-        ending_at: new Date(price.ending_at).toISOString(),
+  // Delete all images that are not included in the updated images list
+  await prisma.productimage.deleteMany({
+    where: {
+      product_id: productId,
+      image_id: {
+        notIn: updatedImageIds,
       },
-    });
-    // If no price_id is provided, create a new price
-  } else {
-    await prisma.price.create({
-      data: {
-        price: price.price,
-        starting_at: new Date(price.starting_at).toISOString(),
-        is_campaign: Boolean(price.is_campaign),
-        ending_at: new Date(price.ending_at).toISOString(),
-        product_id: productId,
-      },
-    });
-  }
-  }
-  // Create an array of price_ids from the updated prices list, filtering out any that are falsy
+    },
+  });
+
+  // Create new prices and add their price_id to updatedPriceIds
   const updatedPriceIds = productData.prices.map((price) => price.price_id).filter(Boolean);
-  // Delete all prices that are associated with the product but are not included in the updated prices list
+  for (let price of productData.prices) {
+    if (!price.price_id) {
+      const newPrice = await prisma.price.create({
+        data: {
+          price: price.price,
+          starting_at: new Date(price.starting_at).toISOString(),
+          is_campaign: Boolean(price.is_campaign),
+          ending_at: new Date(price.ending_at).toISOString(),
+          product_id: productId,
+        },
+      });
+      updatedPriceIds.push(newPrice.price_id);
+    }
+  }
+
+  // Delete all prices that are not included in the updated prices list
   await prisma.price.deleteMany({
     where: {
       product_id: productId,
