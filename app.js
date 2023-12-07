@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { productsRouter } from "./api/v1/products/products.js";
+import { cartRouter } from "./api/v1/cart/cart.js";
 import { favoritesRouter } from "./api/v1/favorites/favorites.js";
 import { authRouter } from "./api/v1/authentication/auth.js";
 import { ordersRouter } from "./api/v1/orders/orders.js";
@@ -8,7 +9,7 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./docs/swaggerOptions.js";
 import cookieParser from "cookie-parser";
-import {authenticateToken} from "./middleware/authToken.js";
+import { authenticateToken } from "./middleware/authToken.js";
 dotenv.config();
 
 // Globals
@@ -33,7 +34,7 @@ app.use(cookieParser());
 app.get(`/api/v1/`, (req, res) => {
   res.json({ message: "Nemlig.com API V1" });
 });
-
+app.use("/api/v1/cart", authenticateToken, cartRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
 app.use("/api/v1/products", productsRouter);
 app.use("/api/v1/favorites", authenticateToken, favoritesRouter);
