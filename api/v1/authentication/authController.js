@@ -148,7 +148,7 @@ async function refreshToken(req, res) {
   // CHECK IF IT HAS jwt else res.sendStatus(401) //unauthorized
   const refreshToken = cookies && cookies?.jwt;
   if (refreshToken == null) return res.status(401).send();
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+  // res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
   try {
     // Verify token
@@ -161,26 +161,37 @@ async function refreshToken(req, res) {
         const user = await authModel.getUserToken(decoded.uid);
         if (!user) return res.sendStatus(403); //Forbidden
 
-        // DELETE Refresh token from db
-        await authModel.deleteUserToken(decoded.uid);
         const userJWTAccess = {
           user_email: decoded.user_email,
           user_roles: decoded.user_roles,
         };
-        const userJWTRefresh = {
-          user_email: decoded.user_email,
-          user_roles: decoded.user_roles,
-          uid: uuidv4(), // for looking up in db
-        };
         const accessToken = generateAccessToken(userJWTAccess);
-        const refreshToken = generateRefreshToken(userJWTRefresh);
-        await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
-        res.cookie("jwt", refreshToken, {
-          httpOnly: true,
-          secure: true, // Set to true for HTTPS
-          sameSite: "None",
-          maxAge: 30 * 60 * 1000, // valid for 30min
-        });
+        // if the refresh token is less than 5 seconds old, resend it
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000) - 100;
+        console.log(decoded.iat);
+        console.log(currentTimeInSeconds);
+        if (decoded.iat < currentTimeInSeconds) {
+          res.clearCookie("jwt", {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true,
+          });
+          // DELETE Refresh token from db
+          await authModel.deleteUserToken(decoded.uid);
+          const userJWTRefresh = {
+            user_email: decoded.user_email,
+            user_roles: decoded.user_roles,
+            uid: uuidv4(), // for looking up in db
+          };
+          const refreshToken = generateRefreshToken(userJWTRefresh);
+          await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
+          res.cookie("jwt", refreshToken, {
+            httpOnly: true,
+            secure: true, // Set to true for HTTPS
+            sameSite: "None",
+            maxAge: 30 * 60 * 1000, // valid for 30min
+          });
+        }
         res.send({
           accessToken: accessToken,
           user_email: decoded.user_email,
