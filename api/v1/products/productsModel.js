@@ -171,15 +171,26 @@ async function updateProductInDB(productId, productData) {
   });
   // Loop through the images and update them based on provided image_id
   for (let image of productData.images) {
+    if (image.image_id){
     await prisma.productimage.update({
       where: { image_id: image.image_id },
       data: {
         image_url: image.image_url,
       },
     })
+    // If no image_id is provided, create a new image
+  } else {
+    await prisma.productimage.create({
+      data: {
+        image_url: image.image_url,
+        product_id: productId,
+      },
+    });
+  }
   }
   // Loop through the prices and update them based on provided price_id
   for (let price of productData.prices) {
+    if (price.price_id) {
     await prisma.price.update({
       where: { price_id: price.price_id },
       data: {
@@ -189,6 +200,18 @@ async function updateProductInDB(productId, productData) {
         ending_at: new Date(price.ending_at).toISOString(),
       },
     });
+    // If no price_id is provided, create a new price
+  } else {
+    await prisma.price.create({
+      data: {
+        price: price.price,
+        starting_at: new Date(price.starting_at).toISOString(),
+        is_campaign: Boolean(price.is_campaign),
+        ending_at: new Date(price.ending_at).toISOString(),
+        product_id: productId,
+      },
+    });
+  }
   }
 }
 
