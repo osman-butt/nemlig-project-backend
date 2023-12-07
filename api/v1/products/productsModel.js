@@ -149,12 +149,16 @@ async function updateProductInDB(productId, productData) {
       product_name: productData.product_name,
       product_underline: productData.product_underline,
       product_description: productData.product_description,
-      // Connect existing labels to the product
+      // Disconnect all existing labels from the product
       labels: {
+        set: [],
+        // Connect existing labels to the product
         connect: productData.labels.map((label_id) => ({ label_id })),
       },
-      // Connect existing categories to the product
+      // Disconnect all existing categories from the product
       categories: {
+        set: [],
+        // Connect existing categories to the product
         connect: productData.categories.map((category_id) => ({ category_id })),
       },
       // Update related inventory
