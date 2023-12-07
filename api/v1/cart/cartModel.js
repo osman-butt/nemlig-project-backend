@@ -10,7 +10,15 @@ async function getCartFromDb(customer_id) {
     include: {
       cart_items: {
         include: {
-          products: true,
+          products: {
+            include: {
+              images: true,
+              labels: true,
+              categories: true,
+              inventory: true,
+              prices: true,
+            },
+          },
         },
       },
       customers: true,

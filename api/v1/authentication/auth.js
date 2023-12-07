@@ -13,7 +13,7 @@ const loginLimiter = rateLimit({
   },
 });
 
-authRouter.post("/login", loginLimiter, authController.loginUser);
+authRouter.post("/login", authController.loginUser);
 authRouter.post("/register", authController.registerUser);
 authRouter.get("/logout", authController.logoutUser);
 authRouter.get("/refresh", authController.refreshToken);
