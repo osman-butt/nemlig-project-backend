@@ -19,7 +19,10 @@ async function getCart(req, res) {
 }
 
 async function createCartItems(req, res) {
-  const cartItems = req.body;
+  const cartItems = req.body.map(item => ({
+    product_id: item.product_id,
+    quantity: item.quantity,
+  }));
   // Get user
   const user_email = req.user_email;
   const user = await cartModel.getUsersByEmail(user_email);
@@ -29,11 +32,15 @@ async function createCartItems(req, res) {
       if (cart == null) {
         return res.status(404).send({ message: "Cart does not exist." });
       }
+      await cartModel.deleteAllCartItemsFromDb(cart.cart_id);
       const updatedCart = await cartModel.createCartItemsInDb(
         cart.cart_id,
         cartItems
       );
-      res.send(updatedCart);
+      const updatedCartDB = await cartModel.getCartFromDb(
+        user.customer.customer_id
+      );
+      res.send(updatedCartDB);
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: error });
