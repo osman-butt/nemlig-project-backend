@@ -14,7 +14,6 @@ async function getCustomer(req, res) {
     delete customer.customer_id;
     delete customer.registration_date;
     delete customer.user_id;
-    customer.addresses.forEach(address => delete address.address_id);
     res.json(customer);
   } catch (error) {
     console.log(error);
