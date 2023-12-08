@@ -1,6 +1,7 @@
 import express from "express";
 import productsController from "./productsController.js";
 import { authenticateToken } from "../../../middleware/authToken.js";
+import { authorizeAdminUser } from "../../../middleware/authorizeUser.js";
 
 const productsRouter = express.Router();
 
@@ -21,13 +22,13 @@ productsRouter.get("/search", productsController.searchProducts);
 productsRouter.get("/:id", productsController.getProductById);
 
 // POST
-productsRouter.post("/", productsController.postProducts);
+productsRouter.post("/",authenticateToken, authorizeAdminUser, productsController.postProducts);
 
 // PUT
-productsRouter.put("/:id", productsController.updateProduct);
+productsRouter.put("/:id", authenticateToken, authorizeAdminUser, productsController.updateProduct);
 
 // DELETE
-productsRouter.delete("/:id", productsController.deleteProduct);
+productsRouter.delete("/:id", authenticateToken, authorizeAdminUser, productsController.deleteProduct);
 
 
 
