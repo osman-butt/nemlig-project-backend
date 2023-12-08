@@ -11,7 +11,6 @@ async function getCustomer(req, res) {
       return res.status(403).send({ message: "Brugeren er ikke genkendt" });
     }
     const customer = user.customer;
-    delete customer.customer_id;
     delete customer.registration_date;
     delete customer.user_id;
     res.json(customer);
