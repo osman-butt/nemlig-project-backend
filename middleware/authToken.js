@@ -14,6 +14,7 @@ function authenticateToken(req, res, next) {
       if (err) return res.status(403).send({ message: "User is unauthorized" });
       req.user_email = user.user_email;
       req.user_roles = user.user_roles;
+      req.isMember = user.user_roles.includes("member");
       next();
     }
   );

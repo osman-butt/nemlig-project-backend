@@ -7,15 +7,13 @@ const prisma = new PrismaClient();
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
 async function getCustomerIdFromUserEmail(userEmail){
 try {
-  console.log(`getCustomerIdfromUserId called with UserEmail: ${userEmail}`)
   // Fetch the user from the DB and include the related customer ID.
   const user = await prisma.user.findFirst({
     where: { user_email: userEmail },
-    include: { customer: true },
+    include: { customer: true, roles: true },
   });
-  console.log(`Customer id: ${JSON.stringify(user.customer.customer_id)}`);
   // Return the customer ID of the user.
-  return user.customer.customer_id;
+  return { customerId: user.customer.customer_id, isMember: user.roles.map(role => role.user_role).includes('member') };
 } catch (error) {
   console.log(error);
   res.status(500).json({ message: "Failed to get customer ID" }); 
@@ -24,7 +22,7 @@ try {
 
 
 async function getFavoritesFromDB(userEmail, category, sort, label) {
-  const customerId = await getCustomerIdFromUserEmail(userEmail); // UserID should also be passed in the request body instead of customerId, since we convert it here
+  const {customerId, isMember} = await getCustomerIdFromUserEmail(userEmail); // UserID should also be passed in the request body instead of customerId, since we convert it here
   // Define the where clause for the Prisma query
   let where = { customer_id: customerId};
   // If a category is passed in the request query, add it to the where clause
@@ -70,7 +68,9 @@ async function getFavoritesFromDB(userEmail, category, sort, label) {
     let flatFavorites = favorites.map((favorite => ({
       favorite_id: favorite.favorite_id,
       customer_id: favorite.customer_id,
+      isMember: isMember,
       ...favorite.products,
+      prices: isMember ? favorite.products.prices.map(price => ({ ...price, price: price.price * 0.9 })) : favorite.products.prices,
     })));
 
   // If a sort parameter is passed in the request query, sort the favorites
@@ -81,7 +81,7 @@ async function getFavoritesFromDB(userEmail, category, sort, label) {
 }
 
 async function postFavoriteInDB(productId, userEmail) {
-  const customerId = await getCustomerIdFromUserEmail(userEmail); 
+  const {customerId} = await getCustomerIdFromUserEmail(userEmail); 
   // Check if the favorite already exists in the DB
   const existingFavorite = await prisma.favorite.findFirst({
     where: {

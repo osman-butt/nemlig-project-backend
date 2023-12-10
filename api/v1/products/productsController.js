@@ -8,7 +8,7 @@ async function getProducts(req, res) {
   const label = req.query.label;
   const userEmail = req.user_email;
 
-  const products = await getProductsFromDB(category, sort, label, userEmail);
+  const products = await getProductsFromDB(category, sort, label, userEmail, req);
 
   const paginationInfo = paginate(products, req)
   res.json(paginationInfo);
@@ -25,7 +25,7 @@ async function getAuthenticatedProducts(req, res) {
   const label = req.query.label;
   const userEmail = req.user_email;
 
-  const products = await getProductsFromDB(category, sort, label, userEmail);
+  const products = await getProductsFromDB(category, sort, label, userEmail, req);
 
   const paginationInfo = paginate(products, req)
   res.json(paginationInfo);

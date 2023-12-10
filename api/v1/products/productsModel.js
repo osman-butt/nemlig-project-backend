@@ -21,7 +21,7 @@ async function getCustomerIdFromUserEmail(userEmail){
   }
   }
 
-async function getProductsFromDB(category, sort, label, userEmail) {
+async function getProductsFromDB(category, sort, label, userEmail, req) {
   // Define the where and orderBy clause for the Prisma query
   let orderBy = {};
   let where = {};
@@ -60,6 +60,14 @@ async function getProductsFromDB(category, sort, label, userEmail) {
       prices: true,
     },
   });
+
+  if (req.isMember){
+  // Apply member discount to product price
+  products = products.map(product => {
+    product.prices[0].price = product.prices[0].price * 0.9; // Apply 10% discount
+    return product;
+  });
+  }
 
 if (customerId) {
   // Fetch all favorites for the current user
