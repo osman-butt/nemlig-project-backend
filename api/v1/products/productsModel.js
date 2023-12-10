@@ -210,7 +210,7 @@ async function deleteProductFromDB(productId) {
 }
 
 // SEARCH FUNCTIONALITY
-async function searchProductsFromDB(search, category, sort, label, userEmail) {
+async function searchProductsFromDB(search, category, sort, label, userEmail, req) {
   // Define the where clause for the Prisma query
   let where = {};
   let products;
@@ -268,6 +268,14 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
         customer_id: customerId,
       },
     });
+
+  if (req.isMember){
+  // Apply member discount to product price
+  products = products.map(product => {
+    product.prices[0].price = product.prices[0].price * 0.9; // Apply 10% discount
+    return product;
+    });
+    }
   
     for (let product of products) {
       // Check if a favorite exists in the fetched favorites

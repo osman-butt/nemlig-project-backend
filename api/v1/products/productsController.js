@@ -119,7 +119,7 @@ async function searchProducts(req, res) {
   const sort = req.query.sort;
   const label = req.query.label;
   const userEmail = req.user_email;
-  const results = await searchProductsFromDB(search, category, sort, label, userEmail);
+  const results = await searchProductsFromDB(search, category, sort, label, userEmail, req);
 
   const paginatedResults = paginate(results, req)
   res.json(paginatedResults);
@@ -136,7 +136,7 @@ async function searchAuthenticatedProducts(req, res){
     const sort = req.query.sort;
     const label = req.query.label;
     const userEmail = req.user_email;
-    const results = await searchProductsFromDB(search, category, sort, label, userEmail);
+    const results = await searchProductsFromDB(search, category, sort, label, userEmail, req);
 
     const paginatedResults = paginate(results, req)
     res.json(paginatedResults);
