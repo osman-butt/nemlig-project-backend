@@ -49,7 +49,7 @@ catch (error) {
 
 async function searchFavorites(req, res) {
   try {
-  const userEmail = req.body.user_email;
+  const userEmail = req.user_email;
   const search = req.query.search;
   const sort = req.query.sort;
   const label = req.query.label;
