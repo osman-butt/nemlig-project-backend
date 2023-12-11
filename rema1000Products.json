@@ -1,0 +1,1712 @@
+[
+  {
+    "product_id": 100043,
+    "name": "ANDEFOND",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 55.56
+      },
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-03-09T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 111.11
+      }
+    ]
+  },
+  {
+    "product_id": 100065,
+    "name": "TYTTEBÆRMARMELADE",
+    "prices": [
+      {
+        "price": 5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 14.71
+      },
+      {
+        "price": 12.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 38.09
+      }
+    ]
+  },
+  {
+    "product_id": 100457,
+    "name": "SYLTET RØDKÅL",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 27.03
+      },
+      {
+        "price": 12.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 35
+      }
+    ]
+  },
+  {
+    "product_id": 100534,
+    "name": "ASPARGESSNITTER",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 41.67
+      },
+      {
+        "price": 20.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 87.29
+      }
+    ]
+  },
+  {
+    "product_id": 106311,
+    "name": "RIBSGELÉ",
+    "prices": [
+      {
+        "price": 5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 14.71
+      },
+      {
+        "price": 10.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 32.21
+      }
+    ]
+  },
+  {
+    "product_id": 11046,
+    "name": "RIBENA",
+    "prices": [
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 23.53
+      },
+      {
+        "price": 36.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 42.94
+      }
+    ]
+  },
+  {
+    "product_id": 11071,
+    "name": "RIBENA",
+    "prices": [
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 23.53
+      },
+      {
+        "price": 36.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 42.94
+      }
+    ]
+  },
+  {
+    "product_id": 112555,
+    "name": "THOUSAND ISLAND",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": 22.95,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 23.53
+      },
+      {
+        "price": 22.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 54
+      }
+    ]
+  },
+  {
+    "product_id": 112556,
+    "name": "CREME FRAICHE DRESS.",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": 22.95,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 23.53
+      },
+      {
+        "price": 22.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 54
+      }
+    ]
+  },
+  {
+    "product_id": 140128,
+    "name": "BATHROOM",
+    "prices": [
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 26.67
+      },
+      {
+        "price": 31.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 42.6
+      }
+    ]
+  },
+  {
+    "product_id": 140131,
+    "name": "UNIVERSAL RENGØRING",
+    "prices": [
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 20
+      },
+      {
+        "price": 27.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 27.5
+      }
+    ]
+  },
+  {
+    "product_id": 140132,
+    "name": "UNIVERSAL RENGØRING",
+    "prices": [
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 20
+      },
+      {
+        "price": 29.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 29.95
+      }
+    ]
+  },
+  {
+    "product_id": 142550,
+    "name": "STORVASK PULVER",
+    "prices": [
+      {
+        "price": 30,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 23.53
+      },
+      {
+        "price": 45.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 36.04
+      }
+    ]
+  },
+  {
+    "product_id": 200268,
+    "name": "GRAM SLOT CLASSIC 4,8%",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1,
+        "compare_unit": "ltr",
+        "compare_unit_price": 20
+      },
+      {
+        "price": 13.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": 1,
+        "compare_unit": "ltr",
+        "compare_unit_price": 27
+      }
+    ]
+  },
+  {
+    "product_id": 200269,
+    "name": "GRAM SLOT PILSNER 4,8%",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1,
+        "compare_unit": "ltr",
+        "compare_unit_price": 20
+      },
+      {
+        "price": 13.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": 1,
+        "compare_unit": "ltr",
+        "compare_unit_price": 27
+      }
+    ]
+  },
+  {
+    "product_id": 200343,
+    "name": "JULEBRYG 5,7%",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": 33,
+        "max_quantity": 12,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 6,
+        "compare_unit": "ltr",
+        "compare_unit_price": 6.06
+      },
+      {
+        "price": 33,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": 6,
+        "compare_unit": "ltr",
+        "compare_unit_price": 16.67
+      }
+    ]
+  },
+  {
+    "product_id": 200344,
+    "name": "JULEBRYG 5,7%",
+    "prices": [
+      {
+        "price": 2,
+        "price_over_max_quantity": 5.5,
+        "max_quantity": 72,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1,
+        "compare_unit": "ltr",
+        "compare_unit_price": 6.06
+      },
+      {
+        "price": 5.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": 1,
+        "compare_unit": "ltr",
+        "compare_unit_price": 16.67
+      }
+    ]
+  },
+  {
+    "product_id": 20385,
+    "name": "SKYR VANILJE",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 26.67
+      },
+      {
+        "price": 18.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 41.67
+      }
+    ]
+  },
+  {
+    "product_id": 20386,
+    "name": "SKYR HINDBÆR",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 26.67
+      },
+      {
+        "price": 18.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 41.67
+      }
+    ]
+  },
+  {
+    "product_id": 20387,
+    "name": "SKYR NATUREL",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 26.67
+      },
+      {
+        "price": 16.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 37.22
+      }
+    ]
+  },
+  {
+    "product_id": 213302,
+    "name": "INDIAN TONIC",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213303,
+    "name": "BLÅ BÆRBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213304,
+    "name": "BLÅ BÆRBRUS",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213305,
+    "name": "ABRIKOSBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213310,
+    "name": "AMERICAN COLA",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213315,
+    "name": "HINDBÆRBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213325,
+    "name": "ANANASBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213345,
+    "name": "COLA NUL SUKKER",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213351,
+    "name": "INDIAN TONIC",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213352,
+    "name": "CITRONBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213353,
+    "name": "CITRONBRUS",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213355,
+    "name": "COLA",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213358,
+    "name": "COLA NUL SUKKER",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213360,
+    "name": "HINDBÆRBRUS",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213363,
+    "name": "SPORTSBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213364,
+    "name": "SPORTSBRUS 6 PAK",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213366,
+    "name": "ABRIKOSBRUS",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213368,
+    "name": "ANANASBRUS",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213378,
+    "name": "TOPFORM NUL SUKKER",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213382,
+    "name": "SQUASH ORANGE",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213383,
+    "name": "SQUASH ORANGE",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213385,
+    "name": "GRAPEBRUS",
+    "prices": [
+      {
+        "price": 2.5,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 3.65,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 1.5,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213387,
+    "name": "GRAPEBRUS",
+    "prices": [
+      {
+        "price": 15,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5
+      },
+      {
+        "price": 21.9,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-03T00:00:00+00:00",
+        "deposit": 9,
+        "compare_unit": "ltr",
+        "compare_unit_price": 7.3
+      }
+    ]
+  },
+  {
+    "product_id": 213942,
+    "name": "PEPSI MAX",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 19,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5.33
+      },
+      {
+        "price": 19,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2023-12-26T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12.67
+      }
+    ]
+  },
+  {
+    "product_id": 214405,
+    "name": "FAXE KONDI",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 19,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5.33
+      },
+      {
+        "price": 19,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2023-12-26T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12.67
+      }
+    ]
+  },
+  {
+    "product_id": 214413,
+    "name": "FAXE KONDI",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 19,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5.33
+      },
+      {
+        "price": 19,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2023-12-26T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12.67
+      }
+    ]
+  },
+  {
+    "product_id": 214415,
+    "name": "FAXE KONDI",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 19,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5.33
+      },
+      {
+        "price": 19,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2023-12-26T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12.67
+      }
+    ]
+  },
+  {
+    "product_id": 214473,
+    "name": "PEPSI MAX",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 19,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 5.33
+      },
+      {
+        "price": 19,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2023-12-26T00:00:00+00:00",
+        "deposit": 3,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12.67
+      }
+    ]
+  },
+  {
+    "product_id": 21474,
+    "name": "LETMÆLK 1,5%",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12
+      },
+      {
+        "price": 15.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-06T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 15.75
+      }
+    ]
+  },
+  {
+    "product_id": 21476,
+    "name": "MINIMÆLK 0,4%",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12
+      },
+      {
+        "price": 14.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2024-01-06T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 14.75
+      }
+    ]
+  },
+  {
+    "product_id": 21479,
+    "name": "SØDMÆLK 3,5%",
+    "prices": [
+      {
+        "price": 12,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 12
+      },
+      {
+        "price": 16.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 16.75
+      }
+    ]
+  },
+  {
+    "product_id": 21810,
+    "name": "PISKEFLØDE 36%",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": 14.25,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 40
+      },
+      {
+        "price": 14.25,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 57
+      }
+    ]
+  },
+  {
+    "product_id": 21894,
+    "name": "CREMEFINE 7%",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 15.95,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 32
+      },
+      {
+        "price": 15.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 63.8
+      }
+    ]
+  },
+  {
+    "product_id": 21895,
+    "name": "CREMEFINE 15%",
+    "prices": [
+      {
+        "price": 8,
+        "price_over_max_quantity": 15.95,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 32
+      },
+      {
+        "price": 15.95,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "ltr",
+        "compare_unit_price": 63.8
+      }
+    ]
+  },
+  {
+    "product_id": 21937,
+    "name": "FRAICHE 13%",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": 10.75,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 50
+      },
+      {
+        "price": 10.75,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 53.75
+      }
+    ]
+  },
+  {
+    "product_id": 250061,
+    "name": "ANDELÅR",
+    "prices": [
+      {
+        "price": 10,
+        "price_over_max_quantity": 20,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 55.56
+      },
+      {
+        "price": 20,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 111.11
+      }
+    ]
+  },
+  {
+    "product_id": 250062,
+    "name": "ANDEBRYST",
+    "prices": [
+      {
+        "price": 20,
+        "price_over_max_quantity": 30,
+        "max_quantity": 6,
+        "is_advertised": true,
+        "is_campaign": true,
+        "starting_at": "2023-12-10T00:00:00+00:00",
+        "ending_at": "2023-12-16T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 125
+      },
+      {
+        "price": 30,
+        "price_over_max_quantity": null,
+        "max_quantity": null,
+        "is_advertised": false,
+        "is_campaign": false,
+        "starting_at": "2023-12-17T00:00:00+00:00",
+        "ending_at": "2099-12-31T00:00:00+00:00",
+        "deposit": null,
+        "compare_unit": "kg",
+        "compare_unit_price": 187.5
+      }
+    ]
+  }
+]

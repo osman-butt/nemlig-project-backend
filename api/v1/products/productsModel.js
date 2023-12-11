@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
 import { sortProducts } from "../sortUtils/sortUtils.js";
+import fs from "fs";
 
 const prisma = new PrismaClient();
 
@@ -329,36 +330,64 @@ async function getAllCategoriesFromDB() {
   return await prisma.category.findMany();
 }
 
-async function updateProductPriceInDB(){
+// PRICEMATCHING
+async function createPriceMatchPriceInDB(){
+
+  // Read the scraped data
+  const data = fs.readFileSync('rema1000Products.json');
+  const remaProducts = JSON.parse(data);
+
   // Fetch all products from DB with associated prices
   const allProducts = await prisma.product.findMany({
     include: {
       prices: true,
     }
   })
+
   let updatedProducts = [];
 
-  // Loop over each product
-  for (let product of allProducts){
-    // Generate a random boolean to simulate whether the product is from Rema1000 or not
-    const isRema1000 = Math.random() < 0.1; // 10% chance of being true
+  // Convert allProducts to a Map for faster lookup
+  const productMap = new Map(allProducts.map(product => [product.product_id, product]));
 
-    if (isRema1000){
-      // If the product is from Rema1000, set our price to the lower of our current price and the simulated Rema1000 price
-      const rema1000Price = Math.floor(Math.random() * 90 + 10) + (Math.random() > 0.5 ? 0.5 : 0.0); // Random number between 0 and 100, with either .00 or .50
-      const oldPrice = product.prices[0].price;
-      // The new price is the lower of the old price and the Rema1000 price
-      const newPrice = Math.min(oldPrice, rema1000Price);
+  // Loop over the scraped products
+  for (let remaProduct of remaProducts){
 
-      await prisma.price.updateMany({
-        where: { product_id: product.product_id },
-        data: {price: newPrice, is_campaign: true}
-      })
+    // Fetch corresponding product from DB
+    const ourProduct = productMap.get(remaProduct.product_id);
+
+    if (!ourProduct) continue; // If the product does not exist in our DB, skip it
+
+    // Compare the prices
+    for (let remaPrice of remaProduct.prices){
+    const ourPrice = ourProduct.prices[0].price;
+    if (ourPrice > remaPrice.price) {
+      // Create a new price in our database
+      const newPrice = await prisma.price.create({
+      data: {
+      price: remaPrice.price,
+      product_id: ourProduct.product_id,
+      is_campaign: true,
+      starting_at: new Date(remaPrice.starting_at).toISOString(),
+      ending_at: new Date(remaPrice.ending_at).toISOString(),
+      }
+      });
+
       // Add the updated product to the updatedProducts array
-      updatedProducts.push({product_id: product.product_id, oldPrice: oldPrice, newPrice: newPrice});
+      updatedProducts.push({ product_id: ourProduct.product_id, oldPrice: ourPrice, newPrice: newPrice.price });
+    }
     }
   }
   return updatedProducts;
 }
 
-export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail, getAllLabelsFromDB, getAllCategoriesFromDB, updateProductPriceInDB };
+// GET PRODUCT IDS FOR PRICEMATCH
+async function getProductIdsFromDB(){
+  const products = await prisma.product.findMany({
+    select: {
+      product_id: true,
+    }
+  })
+
+  return products.map(product => product.product_id);
+}
+export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail, getAllLabelsFromDB, getAllCategoriesFromDB, createPriceMatchPriceInDB, getProductIdsFromDB };

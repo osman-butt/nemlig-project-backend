@@ -1,4 +1,4 @@
-import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getAllLabelsFromDB, getAllCategoriesFromDB, updateProductPriceInDB } from "./productsModel.js";
+import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getAllLabelsFromDB, getAllCategoriesFromDB, createPriceMatchPriceInDB } from "./productsModel.js";
 import { paginate } from "../sortUtils/paginationUtil.js";
 
 async function getProducts(req, res) {
@@ -166,14 +166,14 @@ async function getCategories(req, res){
   }
 }
 
-async function updateProductPrice(req, res){
+async function createPriceMatchPrice(req, res){
   try {
-    const updatedProducts = await updateProductPriceInDB();
-    res.json({ msg: `All product prices updated!`, updatedProducts: updatedProducts});
+    const updatedProducts = await createPriceMatchPriceInDB();
+    res.json({ msg: `Pricematch prices create!`, updatedProducts: updatedProducts});
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to update product prices!" });
+    res.status(500).json({ message: "Failed to create pricematch prices!" });
   }
 }
 
-export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories, updateProductPrice };
+export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories, createPriceMatchPrice };
