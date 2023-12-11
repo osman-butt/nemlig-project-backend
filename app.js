@@ -40,7 +40,7 @@ app.use("/api/v1/cart", authenticateToken, cartRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
 app.use("/api/v1/products", productsRouter);
 app.use("/api/v1/favorites", authenticateToken, favoritesRouter);
-app.use("/api/v1/orders", ordersRouter);
+app.use("/api/v1/orders", authenticateToken, ordersRouter);
 app.use("/api/v1", authRouter);
 
 app.listen(port, (req, res) => {
