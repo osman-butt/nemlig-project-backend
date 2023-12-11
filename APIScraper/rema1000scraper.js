@@ -1,6 +1,6 @@
 import axios from 'axios';
 import fs from 'fs';
-import { getProductIdsFromDB } from '../api/v1/pricematch/pricematchModel';
+import { getProductIdsFromDB } from '../api/v1/pricematch/pricematchModel.js';
 
 async function fetchRema1000Products(){
     let remaproducts = [];

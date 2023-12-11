@@ -171,9 +171,15 @@ async function updateProductInDB(productId, productData) {
     },
   });
   // Create new images and add their image_id to updatedImageIds
-  const updatedImageIds = productData.images.map((image) => image.image_id).filter(Boolean);
+  const updatedImageIds = [];
   for (let image of productData.images) {
-    if (!image.image_id) {
+    if (image.image_id) {
+      const updatedImage = await prisma.productimage.update({
+        where: { image_id: image.image_id },
+        data: { image_url: image.image_url },
+      });
+      updatedImageIds.push(updatedImage.image_id);
+    } else {
       const newImage = await prisma.productimage.create({
         data: {
           image_url: image.image_url,
@@ -195,9 +201,23 @@ async function updateProductInDB(productId, productData) {
   });
 
   // Create new prices and add their price_id to updatedPriceIds
-  const updatedPriceIds = productData.prices.map((price) => price.price_id).filter(Boolean);
+  const updatedPriceIds = [];
   for (let price of productData.prices) {
-    if (!price.price_id) {
+    if (price.price_id) {
+      // Update existing price
+      await prisma.price.update({
+        where: { price_id: price.price_id },
+        data: {
+          price: price.price,
+          starting_at: new Date(price.starting_at).toISOString(),
+          is_campaign: Boolean(price.is_campaign),
+          ending_at: new Date(price.ending_at).toISOString(),
+          product_id: productId,
+        },
+      });
+      updatedPriceIds.push(price.price_id);
+    } else {
+      // Create new price
       const newPrice = await prisma.price.create({
         data: {
           price: price.price,
