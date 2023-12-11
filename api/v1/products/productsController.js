@@ -1,4 +1,4 @@
-import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB } from "./productsModel.js";
+import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getAllLabelsFromDB, getAllCategoriesFromDB } from "./productsModel.js";
 import { paginate } from "../sortUtils/paginationUtil.js";
 
 async function getProducts(req, res) {
@@ -55,28 +55,28 @@ async function postProducts(req, res) {
   if (!productData.product_name){
     return res.status(400).json({ message: "Product name is required" });
   }
-  if (!productData.underline){
+  if (!productData.product_underline){
     return res.status(400).json({ message: "Product underline is required" });
   }
-  if (!productData.description){
+  if (!productData.product_description){
     return res.status(400).json({ message: "Product description is required" });
   }
-  if (!productData.image_url){
+  if (!productData.images[0].image_url){
     return res.status(400).json({ message: "Product image is required" });
   }
-  if (!productData.inventory){
+  if (!productData.inventory_stock){
     return res.status(400).json({ message: "Product inventory is required" });
   }
-  if (!productData.price){
+  if (productData.prices[0].price === undefined){
     return res.status(400).json({ message: "Product price is required" });
   }
-  if (!productData.starting_at){
+  if (!productData.prices[0].starting_at){
     return res.status(400).json({ message: "Starting date for price is required " });
   }
-  if (!productData.is_campaign){
+  if (productData.prices[0].is_campaign === undefined){
     return res.status(400).json({ message: "Campaign is required" });
   }
-  if (!productData.ending_at){
+  if (!productData.prices[0].ending_at){
     return res.status(400).json({ message: "Ending date for price is required" });
   }
   const newProduct = await postProductsInDB(productData);
@@ -146,4 +146,24 @@ async function searchAuthenticatedProducts(req, res){
   }
 }
 
-export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts };
+async function getLabels(req, res){
+  try {
+    const labels = await getAllLabelsFromDB();
+    res.json(labels);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get labels" });
+  }
+}
+
+async function getCategories(req, res){
+  try {
+    const categories = await getAllCategoriesFromDB();
+    res.json(categories);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get categories" });
+  }
+}
+
+export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories };
