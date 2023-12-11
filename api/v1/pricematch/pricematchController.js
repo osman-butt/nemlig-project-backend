@@ -1,4 +1,4 @@
-import { createPriceMatchPriceInDB } from "./pricematchModel";
+import { createPriceMatchPriceInDB } from "./pricematchModel.js";
 
 async function createPriceMatchPrice(req, res){
     try {
@@ -10,4 +10,4 @@ async function createPriceMatchPrice(req, res){
     }
   }
   
-  export default createPriceMatchPrice;
+  export default {createPriceMatchPrice};

@@ -39,7 +39,8 @@ async function createPriceMatchPriceInDB(){
         data: {
         price: remaPrice.price,
         product_id: ourProduct.product_id,
-        is_campaign: true,
+        is_campaign: false,
+        is_pricematch: true,
         starting_at: new Date(remaPrice.starting_at).toISOString(),
         ending_at: new Date(remaPrice.ending_at).toISOString(),
         }

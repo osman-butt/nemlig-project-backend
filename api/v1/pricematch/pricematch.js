@@ -4,6 +4,6 @@ import pricematchController from "./pricematchController.js";
 const pricematchRouter = express.Router();
 
 // POST
-pricematchRouter.post("/", pricematchController.postPriceMatch);
+pricematchRouter.post("/", pricematchController.createPriceMatchPrice);
 
-export { pricematchRouter}
+export { pricematchRouter }
