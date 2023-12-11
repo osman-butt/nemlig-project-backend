@@ -111,7 +111,9 @@ async function deleteFavoriteFromDB(favoriteId) {
   });
 }
 
-async function searchFavoritesFromDB(customerId, search, category, sort, label) {
+async function searchFavoritesFromDB(userEmail, search, category, sort, label) {
+
+  const customerId = await getCustomerIdFromUserEmail(userEmail);
   // Define the where clause for the Prisma query
   let where = { customer_id: customerId};
   // If a category is passed in the request query, add it to the where clause
@@ -167,7 +169,7 @@ async function searchFavoritesFromDB(customerId, search, category, sort, label) 
   const fuse = new Fuse(flatFavorites, options);
   let result = fuse.search(search);
 
-  console.log(`Total results after search ${result.length}`);
+ 
   // Map the result to only return the product object
   result = result.map((item) => item.item);
   // return result; // IF WE WANT TO RETURN IN ITEM OBJECT WHERE SCORE AND MATCHES CAN BE INCLUDED
