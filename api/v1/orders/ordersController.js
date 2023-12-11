@@ -14,6 +14,15 @@ async function getOrders(req, res) {
 }
 
 async function createOrderItems(req, res) {
+  // Get Payment info
+  const payment = req.body;
+  if (
+    payment?.cardNo.length < 16 ||
+    payment?.expiry.length < 4 ||
+    payment?.cvc.length < 3
+  ) {
+    return res.status(404).send({ message: "Betalings oplysninger mangler." });
+  }
   // Get user
   const user_email = req.user_email;
   if (user_email == null || user_email == undefined) {
