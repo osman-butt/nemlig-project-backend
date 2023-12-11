@@ -6,7 +6,7 @@ const ordersRouter = express.Router();
 // GET
 ordersRouter.get("/", ordersController.getOrders);
 
-// POST
-ordersRouter.post("/", ordersController.createOrder);
+// POST Order
+ordersRouter.post("/", ordersController.createOrderItems);
 
 export { ordersRouter };
