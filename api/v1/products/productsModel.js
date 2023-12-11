@@ -173,19 +173,25 @@ async function updateProductInDB(productId, productData) {
   // Create new images and add their image_id to updatedImageIds
   const updatedImageIds = [];
   for (let image of productData.images) {
+    // If the image already has an ID, it's an existing image
     if (image.image_id) {
+      // Update the existing image's URL in the database 
       const updatedImage = await prisma.productimage.update({
         where: { image_id: image.image_id },
         data: { image_url: image.image_url },
       });
+      // Add the images ID to the ilst of updated image IDs
       updatedImageIds.push(updatedImage.image_id);
     } else {
+      // If the image doesn't have an ID, its a new image
+      // and then create a new img in the DB
       const newImage = await prisma.productimage.create({
         data: {
           image_url: image.image_url,
           product_id: productId,
         },
       });
+      // Add the new image's Id to the list of updated image IDs
       updatedImageIds.push(newImage.image_id);
     }
   }
@@ -203,8 +209,9 @@ async function updateProductInDB(productId, productData) {
   // Create new prices and add their price_id to updatedPriceIds
   const updatedPriceIds = [];
   for (let price of productData.prices) {
+    // If the price already has an ID, its an existing price
     if (price.price_id) {
-      // Update existing price
+      // Update existing price in the DB
       await prisma.price.update({
         where: { price_id: price.price_id },
         data: {
@@ -215,9 +222,11 @@ async function updateProductInDB(productId, productData) {
           product_id: productId,
         },
       });
+      // Add the price's ID to the list of updated prices IDs
       updatedPriceIds.push(price.price_id);
     } else {
-      // Create new price
+      // If the price doesnt have an ID, it is a new price
+      // and then create a new price in the DB
       const newPrice = await prisma.price.create({
         data: {
           price: price.price,
@@ -227,6 +236,7 @@ async function updateProductInDB(productId, productData) {
           product_id: productId,
         },
       });
+      // Add the new price's ID to the list of updated prices IDs
       updatedPriceIds.push(newPrice.price_id);
     }
   }
