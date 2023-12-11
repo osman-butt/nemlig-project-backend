@@ -5,6 +5,9 @@ import { authorizeAdminUser } from "../../../middleware/authorizeUser.js";
 
 const productsRouter = express.Router();
 
+// Update prices with pricematch // Set node cron job for this to run every 24 fx
+productsRouter.put("/pricematch", productsController.updateProductPrice)
+
 // GET LABELS
 productsRouter.get("/labels", productsController.getLabels);
 
@@ -29,6 +32,8 @@ productsRouter.put("/:id", authenticateToken, authorizeAdminUser, productsContro
 
 // DELETE
 productsRouter.delete("/:id", authenticateToken, authorizeAdminUser, productsController.deleteProduct);
+
+
 
 
 

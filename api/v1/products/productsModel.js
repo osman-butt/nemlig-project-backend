@@ -329,4 +329,36 @@ async function getAllCategoriesFromDB() {
   return await prisma.category.findMany();
 }
 
-export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail, getAllLabelsFromDB, getAllCategoriesFromDB };
+async function updateProductPriceInDB(){
+  // Fetch all products from DB with associated prices
+  const allProducts = await prisma.product.findMany({
+    include: {
+      prices: true,
+    }
+  })
+  let updatedProducts = [];
+
+  // Loop over each product
+  for (let product of allProducts){
+    // Generate a random boolean to simulate whether the product is from Rema1000 or not
+    const isRema1000 = Math.random() < 0.1; // 10% chance of being true
+
+    if (isRema1000){
+      // If the product is from Rema1000, set our price to the lower of our current price and the simulated Rema1000 price
+      const rema1000Price = Math.floor(Math.random() * 90 + 10) + (Math.random() > 0.5 ? 0.5 : 0.0); // Random number between 0 and 100, with either .00 or .50
+      const oldPrice = product.prices[0].price;
+      // The new price is the lower of the old price and the Rema1000 price
+      const newPrice = Math.min(oldPrice, rema1000Price);
+
+      await prisma.price.updateMany({
+        where: { product_id: product.product_id },
+        data: {price: newPrice, is_campaign: true}
+      })
+      // Add the updated product to the updatedProducts array
+      updatedProducts.push({product_id: product.product_id, oldPrice: oldPrice, newPrice: newPrice});
+    }
+  }
+  return updatedProducts;
+}
+
+export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail, getAllLabelsFromDB, getAllCategoriesFromDB, updateProductPriceInDB };

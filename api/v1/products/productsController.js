@@ -1,4 +1,4 @@
-import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getAllLabelsFromDB, getAllCategoriesFromDB } from "./productsModel.js";
+import { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getAllLabelsFromDB, getAllCategoriesFromDB, updateProductPriceInDB } from "./productsModel.js";
 import { paginate } from "../sortUtils/paginationUtil.js";
 
 async function getProducts(req, res) {
@@ -166,4 +166,14 @@ async function getCategories(req, res){
   }
 }
 
-export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories };
+async function updateProductPrice(req, res){
+  try {
+    const updatedProducts = await updateProductPriceInDB();
+    res.json({ msg: `All product prices updated!`, updatedProducts: updatedProducts});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to update product prices!" });
+  }
+}
+
+export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories, updateProductPrice };
