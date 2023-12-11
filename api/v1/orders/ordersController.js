@@ -62,10 +62,6 @@ async function getInventory(req, res) {
 }
 
 async function createOrderItems(req, res) {
-  // TODO:
-  // When added auth, remove hard coded email
-  // BUG: Cart_items sometimes has zero quantity, this should
-  // be removed from DB
   // Get user
   const user_email = req.user_email;
   const user = await customerModel.getCustomerFromEmail(user_email);
@@ -108,6 +104,7 @@ async function createOrderItems(req, res) {
         item => item.product_id === product.product_id
       );
       const cart_item_id = cart.cart_items[index_cart_item].cart_item_id;
+      // Delete from cart if quantity = 0, else update cart
       if (product.inventory_stock === 0) {
         await deleteCartItemInDB(cart_item_id);
       } else {
@@ -118,17 +115,6 @@ async function createOrderItems(req, res) {
   }
 
   try {
-    // TODO:
-    // DONE GET CORRECT unit_price_at_purchase
-    // DONE NOTE THIS OPERATION SHOULD BE ATOMIC!!!
-
-    // // Update inventory
-    // inventory.forEach(async product => {
-    //   await updateInventoryInDB(product);
-    // });
-    // Create order and order items
-
-    console.log(isCartUpdated);
     if (isCartUpdated) {
       // // GET Cart again
       const updatedCart = await getCartFromDb(customer.customer_id);
@@ -149,11 +135,6 @@ async function createOrderItems(req, res) {
         address_id: customer.addresses[0].address_id,
         order_items: newItems,
       };
-      // // Delete items in cart
-      // await cartModel.deleteAllCartItemsFromDb(cart.cart_id);
-
-      // // Create order with order items
-      // const newOrder = await createOrderInDB(orderData);
 
       const newOrder = await createOrderTransaction(inventory, cart, orderData);
       res.send(newOrder);
