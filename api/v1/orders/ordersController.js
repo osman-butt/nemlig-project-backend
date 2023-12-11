@@ -7,7 +7,11 @@ import {
   updateInventoryInDB,
   updateCartInDB,
   getCartFromDb,
+  createOrderTransaction,
+  deleteCartItemInDB,
 } from "./ordersModel.js";
+
+import { getValidPrice } from "./orderUtils.js";
 
 async function getOrders(req, res) {
   try {
@@ -63,7 +67,7 @@ async function createOrderItems(req, res) {
   // BUG: Cart_items sometimes has zero quantity, this should
   // be removed from DB
   // Get user
-  const user_email = "customer2@mail.dk"; //req.user_email;
+  const user_email = req.user_email;
   const user = await customerModel.getCustomerFromEmail(user_email);
   const customer = user?.customer;
   if (customer == null || customer?.addresses[0] == null) {
@@ -73,7 +77,6 @@ async function createOrderItems(req, res) {
   // Get cart
   const cart = await getCartFromDb(customer.customer_id);
   cart.cart_items = cart.cart_items.filter(item => item.quantity !== 0);
-  console.log(cart.cart_items);
   if (cart.cart_items.length == 0) {
     return res.status(404).send({ message: "Kurven er tom" });
   }
@@ -85,9 +88,9 @@ async function createOrderItems(req, res) {
 
   // Get inventory from product ids
   const inventory = await getInventoryFromDB(productListIds);
-
   // Subtract inventory logic
-  inventory.forEach(async product => {
+  let isCartUpdated = false;
+  for (const product of inventory) {
     // Find product body.req
     const index = cart.cart_items.findIndex(
       item => item.product_id == product.product_id
@@ -105,33 +108,40 @@ async function createOrderItems(req, res) {
         item => item.product_id === product.product_id
       );
       const cart_item_id = cart.cart_items[index_cart_item].cart_item_id;
-      await updateCartInDB(cart_item_id, cart.cart_items[index].quantity);
+      if (product.inventory_stock === 0) {
+        await deleteCartItemInDB(cart_item_id);
+      } else {
+        await updateCartInDB(cart_item_id, cart.cart_items[index].quantity);
+      }
+      isCartUpdated = true;
+    }
+  }
 
+  try {
+    // TODO:
+    // DONE GET CORRECT unit_price_at_purchase
+    // DONE NOTE THIS OPERATION SHOULD BE ATOMIC!!!
+
+    // // Update inventory
+    // inventory.forEach(async product => {
+    //   await updateInventoryInDB(product);
+    // });
+    // Create order and order items
+
+    console.log(isCartUpdated);
+    if (isCartUpdated) {
       // // GET Cart again
       const updatedCart = await getCartFromDb(customer.customer_id);
       updatedCart.message =
         "Kurven er opdateret da nogle produkter ikke var på lager med den ønskede mængde";
       // Send as error with new updated cart
-      return res.status(404).json(updatedCart);
-    }
-
-    try {
-      // TODO:
-      // GET CORRECT unit_price_at_purchase
-      // NOTE THIS OPERATION SHOULD BE ATOMIC!!!
-
-      // Update inventory
-      inventory.forEach(async product => {
-        await updateInventoryInDB(product);
-      });
-
-      // Create order and order items
-
+      res.status(404).json(updatedCart);
+    } else {
       // Create objects for prisma db
       const newItems = cart.cart_items.map(product => ({
         product_id: product.product_id,
         quantity: product.quantity,
-        unit_price_at_purchase: 10,
+        unit_price_at_purchase: getValidPrice(product.products.prices),
       }));
 
       const orderData = {
@@ -139,39 +149,19 @@ async function createOrderItems(req, res) {
         address_id: customer.addresses[0].address_id,
         order_items: newItems,
       };
+      // // Delete items in cart
+      // await cartModel.deleteAllCartItemsFromDb(cart.cart_id);
 
-      // Delete items in cart
-      await cartModel.deleteAllCartItemsFromDb(cart.cart_id);
+      // // Create order with order items
+      // const newOrder = await createOrderInDB(orderData);
 
-      // Create order with order items
-      const newOrder = await createOrderInDB(orderData);
-
+      const newOrder = await createOrderTransaction(inventory, cart, orderData);
       res.send(newOrder);
-    } catch (error) {
-      console.log(error);
-      res.sendStatus(500);
     }
-  });
-
-  // // Return new cart
-
-  // res.send({ inventory, orderItems });
-  // // Construct data for db
-  // const newOrderItems = {
-  //   customer_id: customer.customer_id,
-  //   order_date: new Date().toISOString(),
-  //   address_id: customer.addresses[0].address_id,
-  //   order_items: orderItems, // and array of objects containing product_id and quantity and unit_price_at_purchase
-  // };
-
-  // try {
-  //   // TODO:
-  //   // CREATE IN DATABASE
-  //   // RETRIEVE Order ID and send to client
-  // } catch (error) {
-  //   console.log(error);
-  //   res.sendStatus(500);
-  // }
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 }
 async function createOrder(req, res) {
   try {
