@@ -16,6 +16,16 @@ async function createPriceMatchPriceInDB(){
         prices: true,
       }
     })
+
+    // Delete outdated pricematch prices
+    await prisma.price.deleteMany({
+        where: {
+            is_pricematch: true,
+            ending_at: {
+                lt: new Date(),
+            },
+        }
+    })
   
     let updatedProducts = [];
   
@@ -34,6 +44,9 @@ async function createPriceMatchPriceInDB(){
       for (let remaPrice of remaProduct.prices){
       const ourPrice = ourProduct.prices[0].price;
       if (ourPrice > remaPrice.price) {
+        // Check if the new price already exists in our DB
+        const existingPrice = ourProduct.prices.find(price => price.price === remaPrice.price)
+        if (!existingPrice){
         // Create a new price in our database
         const newPrice = await prisma.price.create({
         data: {
@@ -50,6 +63,7 @@ async function createPriceMatchPriceInDB(){
         updatedProducts.push({ product_id: ourProduct.product_id, oldPrice: ourPrice, newPrice: newPrice.price });
       }
       }
+    }
     }
     return updatedProducts;
   }
