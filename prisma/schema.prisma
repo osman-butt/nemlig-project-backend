@@ -49,7 +49,6 @@ model Category {
 model Customer {
   customer_id       Int             @id @default(autoincrement())
   customer_name     String          @db.VarChar(256)
-  customer_email    String          @db.VarChar(256)
   registration_date DateTime        @db.Date
   addresses         Address[]
   favorites         Favorite[]
