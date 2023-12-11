@@ -8,6 +8,23 @@ import {
 } from "./authUtils.js";
 import { v4 as uuidv4 } from "uuid";
 
+const COOKIE_CONFIG_DEV = {
+  httpOnly: true,
+  secure: false, // Set to false for HTTP in development
+  withCredentials: true,
+  sameSite: "Lax", // Use Lax instead of None in development
+  withCredentials: true,
+};
+const COOKIE_CONFIG_PROD = {
+  httpOnly: true,
+  sameSite: "None",
+  secure: true,
+  withCredentials: true,
+};
+
+const COOKIE_CONFIG =
+  process.env.NODE_ENV === "prod" ? COOKIE_CONFIG_PROD : COOKIE_CONFIG_DEV;
+
 async function registerUser(req, res) {
   // Extract body
   const { user_email, user_password, customer } = req.body;
@@ -101,10 +118,7 @@ async function loginUser(req, res) {
       const refreshToken = generateRefreshToken(userJWTRefresh);
       await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
       res.cookie("jwt", refreshToken, {
-        httpOnly: true,
-        secure: false, // Set to false for HTTP in development
-        withCredentials: true,
-        sameSite: "Lax", // Use Lax instead of None in development
+        ...COOKIE_CONFIG,
         maxAge: 30 * 60 * 1000, // valid for 30min
       });
       res.status(200).send({
@@ -126,7 +140,7 @@ async function logoutUser(req, res) {
   const refreshToken = cookies && cookies?.jwt;
   if (refreshToken == null) return res.sendStatus(204); //No content
   // Remove cookie from header
-  res.clearCookie("jwt", { httpOnly: true, secure: true });
+  res.clearCookie("jwt", COOKIE_CONFIG);
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
@@ -171,11 +185,7 @@ async function refreshToken(req, res) {
         console.log(decoded.iat);
         console.log(currentTimeInSeconds);
         if (decoded.iat < currentTimeInSeconds) {
-          res.clearCookie("jwt", {
-            httpOnly: true,
-            sameSite: "None",
-            secure: true,
-          });
+          res.clearCookie("jwt", COOKIE_CONFIG);
           // DELETE Refresh token from db
           await authModel.deleteUserToken(decoded.uid);
           const userJWTRefresh = {
@@ -186,9 +196,7 @@ async function refreshToken(req, res) {
           const refreshToken = generateRefreshToken(userJWTRefresh);
           await authModel.setUserToken(userJWTRefresh.uid, user.user_id);
           res.cookie("jwt", refreshToken, {
-            httpOnly: true,
-            secure: true, // Set to true for HTTPS
-            sameSite: "None",
+            ...COOKIE_CONFIG,
             maxAge: 30 * 60 * 1000, // valid for 30min
           });
         }
