@@ -1,77 +1,32 @@
-import cartModel from "../cart/cartModel.js";
+// import cartModel from "../cart/cartModel.js";
 import customerModel from "../customer/customerModel.js";
-import {
-  getOrdersFromDB,
-  createOrderInDB,
-  getInventoryFromDB,
-  updateInventoryInDB,
-  updateCartInDB,
-  getCartFromDb,
-  createOrderTransaction,
-  deleteCartItemInDB,
-} from "./ordersModel.js";
+import ordersModel from "./ordersModel.js";
 
 import { getValidPrice } from "./orderUtils.js";
 
 async function getOrders(req, res) {
   try {
-    const orders = await getOrdersFromDB();
+    const orders = await ordersModel.getOrdersFromDB();
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: "Could not fetch orders" });
   }
 }
 
-// EXPECTED POST BODY
-// {
-//     "customer_id": 17,
-//     "address_id": 16,
-//     "order_items": [
-//         {
-//             "product_id": 211190,
-//             "quantity": 1
-//         }
-//     ]
-// }
-
-async function getInventory(req, res) {
-  const body = {
-    customer_id: 17,
-    address_id: 16,
-    order_items: [
-      {
-        product_id: 211190,
-        quantity: 1,
-      },
-      {
-        product_id: 100004,
-        quantity: 1,
-      },
-      {
-        product_id: 100021,
-        quantity: 1,
-      },
-    ],
-  };
-  const productListIds = body.order_items.map(item => ({
-    product_id: item.product_id,
-  }));
-  console.log(productListIds);
-  const inventory = await getInventoryFromDB(productListIds);
-  res.send(inventory);
-}
-
 async function createOrderItems(req, res) {
   // Get user
   const user_email = req.user_email;
+  if (user_email == null || user_email == undefined) {
+    return res.status(403).send({ message: "Brugeren er ikke logget ind." });
+  }
   const user = await customerModel.getCustomerFromEmail(user_email);
   const customer = user?.customer;
   if (customer == null || customer?.addresses[0] == null) {
-    res.status(404).send({ message: "Kunden eksisterer ikke." });
+    return res.status(404).send({ message: "Kunden eksisterer ikke." });
   }
 
   // Get cart
-  const cart = await getCartFromDb(customer.customer_id);
+  const cart = await ordersModel.getCartFromDb(customer.customer_id);
   cart.cart_items = cart.cart_items.filter(item => item.quantity !== 0);
   if (cart.cart_items.length == 0) {
     return res.status(404).send({ message: "Kurven er tom" });
@@ -83,7 +38,7 @@ async function createOrderItems(req, res) {
   }));
 
   // Get inventory from product ids
-  const inventory = await getInventoryFromDB(productListIds);
+  const inventory = await ordersModel.getInventoryFromDB(productListIds);
   // Subtract inventory logic
   let isCartUpdated = false;
   for (const product of inventory) {
@@ -106,9 +61,12 @@ async function createOrderItems(req, res) {
       const cart_item_id = cart.cart_items[index_cart_item].cart_item_id;
       // Delete from cart if quantity = 0, else update cart
       if (product.inventory_stock === 0) {
-        await deleteCartItemInDB(cart_item_id);
+        await ordersModel.deleteCartItemInDB(cart_item_id);
       } else {
-        await updateCartInDB(cart_item_id, cart.cart_items[index].quantity);
+        await ordersModel.updateCartInDB(
+          cart_item_id,
+          cart.cart_items[index].quantity
+        );
       }
       isCartUpdated = true;
     }
@@ -117,11 +75,11 @@ async function createOrderItems(req, res) {
   try {
     if (isCartUpdated) {
       // // GET Cart again
-      const updatedCart = await getCartFromDb(customer.customer_id);
+      const updatedCart = await ordersModel.getCartFromDb(customer.customer_id);
       updatedCart.message =
         "Kurven er opdateret da nogle produkter ikke var på lager med den ønskede mængde";
       // Send as error with new updated cart
-      res.status(404).json(updatedCart);
+      return res.status(404).json(updatedCart);
     } else {
       // Create objects for prisma db
       const newItems = cart.cart_items.map(product => ({
@@ -136,22 +94,17 @@ async function createOrderItems(req, res) {
         order_items: newItems,
       };
 
-      const newOrder = await createOrderTransaction(inventory, cart, orderData);
-      res.send(newOrder);
+      const newOrder = await ordersModel.createOrderTransaction(
+        inventory,
+        cart,
+        orderData
+      );
+      return res.send(newOrder);
     }
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 }
-async function createOrder(req, res) {
-  try {
-    const orderData = req.body;
-    const newOrder = await createOrderInDB(orderData);
-    res.json(newOrder);
-  } catch (error) {
-    res.status(500).json({ message: "Could not create order" });
-  }
-}
 
-export default { getOrders, createOrder, getInventory, createOrderItems };
+export default { getOrders, createOrderItems };

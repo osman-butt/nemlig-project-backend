@@ -22,33 +22,6 @@ async function getInventoryFromDB(productListIds) {
   });
 }
 
-async function updateInventoryInDB(inventory) {
-  return await prisma.inventory.update({
-    where: {
-      product_id: inventory.product_id,
-    },
-    data: {
-      inventory_stock: inventory.inventory_stock,
-    },
-  });
-}
-
-// CREATE A NEW ORDER IN THE DATABASE
-async function createOrderInDB(orderData) {
-  return await prisma.order.create({
-    data: {
-      customer_id: orderData.customer_id,
-      address_id: orderData.address_id,
-      order_date: new Date().toISOString(),
-      order_items: {
-        createMany: {
-          data: orderData.order_items,
-        },
-      },
-    },
-  });
-}
-
 async function updateCartInDB(cart_item_id, quantity) {
   return await prisma.cart_item.update({
     where: { cart_item_id: cart_item_id },
@@ -137,13 +110,11 @@ async function createOrderTransaction(inventory, cart, order) {
   });
 }
 
-export {
+export default {
   getOrdersFromDB,
-  createOrderInDB,
   getInventoryFromDB,
-  updateInventoryInDB,
   updateCartInDB,
+  deleteCartItemInDB,
   getCartFromDb,
   createOrderTransaction,
-  deleteCartItemInDB,
 };
