@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import axios from 'axios';
 
-export default function startCronJob() {
+function startCronJob() {
     // Every 2 days at 6am
   cron.schedule('0 06 */2 * *', async () => {
     console.log('Running the pricematch cron job at:', new Date());
