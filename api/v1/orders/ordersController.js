@@ -5,8 +5,18 @@ import ordersModel from "./ordersModel.js";
 import { getValidPrice } from "./orderUtils.js";
 
 async function getOrders(req, res) {
+  // Get user
+  const user_email = req.user_email;
+  if (user_email == null || user_email == undefined) {
+    return res.status(403).send({ message: "Brugeren er ikke logget ind." });
+  }
+  const user = await customerModel.getCustomerFromEmail(user_email);
+  const customer = user?.customer;
+  if (customer == null) {
+    return res.status(404).send({ message: "Kunden eksisterer ikke." });
+  }
   try {
-    const orders = await ordersModel.getOrdersFromDB();
+    const orders = await ordersModel.getOrdersFromDB(customer.customer_id);
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: "Could not fetch orders" });

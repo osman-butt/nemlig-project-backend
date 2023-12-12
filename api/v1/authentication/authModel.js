@@ -37,43 +37,39 @@ async function setUserCustomer(
   zip,
   country
 ) {
-  try {
-    await prisma.user.create({
-      data: {
-        user_email: email,
-        user_password: hash_pass,
-        roles: {
-          connect: {
-            user_role_id: 1, // id=1 indicates customer user role
-          },
+  return await prisma.user.create({
+    data: {
+      user_email: email,
+      user_password: hash_pass,
+      roles: {
+        connect: {
+          user_role_id: 1, // id=1 indicates customer user role
         },
-        customer: {
-          create: {
-            customer_name: name,
-            registration_date: new Date().toISOString(),
-            addresses: {
-              create: {
-                street: street,
-                city: city,
-                zip_code: zip,
-                country: country,
-              },
+      },
+      customer: {
+        create: {
+          customer_name: name,
+          registration_date: new Date().toISOString(),
+          addresses: {
+            create: {
+              street: street,
+              city: city,
+              zip_code: zip,
+              country: country,
             },
           },
         },
       },
-      include: {
-        roles: true,
-        customer: {
-          include: {
-            addresses: true,
-          },
+    },
+    include: {
+      roles: true,
+      customer: {
+        include: {
+          addresses: true,
         },
       },
-    });
-  } catch (error) {
-    console.log(error);
-  }
+    },
+  });
 }
 
 async function setUserToken(token_id, user_id) {

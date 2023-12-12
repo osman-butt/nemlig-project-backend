@@ -2,8 +2,11 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function getOrdersFromDB() {
+async function getOrdersFromDB(customer_id) {
   return await prisma.order.findMany({
+    where: {
+      customer_id: customer_id,
+    },
     include: {
       order_items: {
         include: {

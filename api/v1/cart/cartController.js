@@ -28,10 +28,15 @@ async function createCartItems(req, res) {
   const user = await cartModel.getUsersByEmail(user_email);
   if (user?.customer) {
     try {
-      const cart = await cartModel.getCartFromDb(user.customer.customer_id);
-      if (cart == null) {
-        return res.status(404).send({ message: "Cart does not exist." });
+      // Attempt to retrieve the cart from the database
+      let cart = await cartModel.getCartFromDb(user.customer.customer_id);
+
+      // If the cart doesn't exist, create a new one
+      if (!cart) {
+        await cartModel.createCart(user.customer.customer_id);
+        cart = await cartModel.getCartFromDb(user.customer.customer_id);
       }
+
       await cartModel.deleteAllCartItemsFromDb(cart.cart_id);
       const updatedCart = await cartModel.createCartItemsInDb(
         cart.cart_id,
@@ -54,10 +59,15 @@ async function updateCartItem(req, res) {
   const user_email = req.user_email;
   const user = await cartModel.getUsersByEmail(user_email);
   if (user?.customer) {
-    const cart = await cartModel.getCartFromDb(user.customer.customer_id);
-    if (cart == null) {
-      return res.status(404).send({ message: "Cart does not exist." });
+    // Attempt to retrieve the cart from the database
+    let cart = await cartModel.getCartFromDb(user.customer.customer_id);
+
+    // If the cart doesn't exist, create a new one
+    if (!cart) {
+      await cartModel.createCart(user.customer.customer_id);
+      cart = await cartModel.getCartFromDb(user.customer.customer_id);
     }
+
     // Does the product exist in cart?
     const index = cart.cart_items.findIndex(
       item => item.product_id === Number(cartItem.product_id)
