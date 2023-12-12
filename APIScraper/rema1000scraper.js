@@ -30,6 +30,7 @@ async function fetchRema1000Products() {
         prices: product.prices,
       }));
 
+      // Add the formatted products to the remaproducts array
       remaproducts = remaproducts.concat(formattedProducts);
       hasMoreData = response.data.meta.pagination.links.next !== null;
       page++;

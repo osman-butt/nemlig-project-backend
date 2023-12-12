@@ -3,13 +3,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // PRICEMATCHING
-async function createPriceMatchPriceInDB(remaProducts) {
+async function createPriceMatchPriceInDB() {
   // Fetch all products from DB with associated prices
   const allProducts = await prisma.product.findMany({
     include: {
       prices: true,
     },
   });
+
+  // Fetch all scraped products from DB
+  const remaProducts = await prisma.scrapedProduct.findMany();
 
   // Delete outdated pricematch prices
   await prisma.price.deleteMany({
@@ -74,16 +77,4 @@ async function getProductIdsFromDB() {
   return products.map((product) => product.product_id);
 }
 
-// Delete outdated pricematch prices
-async function deleteOutdatedPriceMatchPrices() {
-  await prisma.price.deleteMany({
-    where: {
-      is_pricematch: true,
-      ending_at: {
-        lt: new Date(),
-      },
-    },
-  });
-}
-
-export { createPriceMatchPriceInDB, getProductIdsFromDB, deleteOutdatedPriceMatchPrices };
+export { createPriceMatchPriceInDB, getProductIdsFromDB };

@@ -1,6 +1,5 @@
 import cron from "node-cron";
 import axios from "axios";
-import { deleteOutdatedPriceMatchPrices } from "./pricematchModel";
 
 function startCronJob() {
   // Every Sunday at 6am
@@ -15,16 +14,17 @@ function startCronJob() {
   });
 }
 
-// Delete outdated pricematch prices every day at 6am
-function deleteCronJob() {
-  cron.schedule("0 06 * * *", async () => {
-    console.log("Deleting outdated pricematch prices at:", new Date());
+// Scrape Rema1000 products every 7 days at 6am
+function scrapeCronJob() {
+  cron.schedule("0 06 * * */7", async () => {
+    console.log("Scraping products to our DB at:", new Date());
     try {
-      await deleteOutdatedPriceMatchPrices();
+      const response = await axios.post("http://localhost:3000/api/v1/pricematch/scrape");
+      console.log(response.data);
     } catch (error) {
       console.error("Error deleting outdated pricematch prices:", error);
     }
   });
 }
 
-export { startCronJob, deleteCronJob };
+export { startCronJob, scrapeCronJob };

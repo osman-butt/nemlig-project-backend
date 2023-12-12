@@ -160,3 +160,10 @@ model Cart_item {
   cart                   Cart   @relation(fields: [cart_id], references: [cart_id])
   products               Product @relation(fields: [product_id], references: [product_id])
 }
+
+model ScrapedProduct {
+  id         Int       @id @default(autoincrement())
+  product_id Int
+  name       String 
+  prices      Json
+}
