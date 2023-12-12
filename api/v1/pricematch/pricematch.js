@@ -6,4 +6,4 @@ const pricematchRouter = express.Router();
 // POST
 pricematchRouter.post("/", pricematchController.createPriceMatchPrice);
 
-export { pricematchRouter }
+export { pricematchRouter };
