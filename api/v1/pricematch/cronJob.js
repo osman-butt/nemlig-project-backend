@@ -2,8 +2,8 @@ import cron from "node-cron";
 import axios from "axios";
 
 function startCronJob() {
-  // Every Sunday at 6am
-  cron.schedule("0 06 * * 0", async () => {
+  // Every day at 6am
+  cron.schedule("0 06 * * *", async () => {
     console.log("Running the pricematch cron job at:", new Date());
     try {
       const response = await axios.post("http://localhost:3000/api/v1/pricematch");
@@ -14,9 +14,9 @@ function startCronJob() {
   });
 }
 
-// Scrape Rema1000 products every 7 days at 6am
+// Scrape Rema1000 products every sunday at 6am
 function scrapeCronJob() {
-  cron.schedule("0 06 * * */7", async () => {
+  cron.schedule("0 06 * * 0", async () => {
     console.log("Scraping products to our DB at:", new Date());
     try {
       const response = await axios.post("http://localhost:3000/api/v1/pricematch/scrape");

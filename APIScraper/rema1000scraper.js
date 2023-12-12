@@ -20,7 +20,7 @@ async function fetchRema1000Products() {
       const response = await axios.get(`https://cphapp.rema1000.dk/api/v3/products?page=${page}`);
       const products = response.data.data;
 
-      // Filter products based on our product IDS, and if they have multiple prices
+      // Filter products based on our product IDS and if the product has a price
       const matchingProducts = products.filter((product) => ourProductIds.includes(product.id) && product.prices.length > 0);
 
       // Map over matching products and create new object for each product that only includes the data we need
