@@ -96,6 +96,18 @@ async function deleteAllCartItemsFromDb(cart_id) {
   });
 }
 
+async function createCart(customer_id) {
+  return await prisma.cart.create({
+    data: {
+      customers: {
+        connect: {
+          customer_id: customer_id,
+        },
+      },
+    },
+  });
+}
+
 export default {
   getCartFromDb,
   createCartItemsInDb,
@@ -103,4 +115,5 @@ export default {
   updateCartItemQuantity,
   getUsersByEmail,
   deleteAllCartItemsFromDb,
+  createCart,
 };
