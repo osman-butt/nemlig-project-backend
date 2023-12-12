@@ -7,6 +7,7 @@ import {
   isEmailValid,
 } from "./authUtils.js";
 import { v4 as uuidv4 } from "uuid";
+import cartModel from "../cart/cartModel.js";
 
 const COOKIE_CONFIG_DEV = {
   httpOnly: true,
@@ -68,7 +69,7 @@ async function registerUser(req, res) {
       return res.status(409).json({ message: "E-mailen er allerede i brug" });
 
     // Save user in db
-    await authModel.setUserCustomer(
+    const newCustomer = await authModel.setUserCustomer(
       user_email.toLowerCase(),
       hashedPass,
       customer_name,
@@ -77,8 +78,12 @@ async function registerUser(req, res) {
       zip_code,
       country
     );
+    console.log(newCustomer.customer.customer_id);
+    // Create a cart for the user
+    await cartModel.createCart(newCustomer.customer.customer_id);
     res.sendStatus(201);
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 }
