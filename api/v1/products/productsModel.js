@@ -6,7 +6,7 @@ import { sortProducts } from "../sortUtils/sortUtils.js";
 const prisma = new PrismaClient();
 
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
-async function getCustomerIdFromUserEmail(userEmail){
+async function getCustomerIdFromUserEmail(userEmail) {
   try {
     // Fetch the user from the DB and include the related customer ID.
     const user = await prisma.user.findFirst({
@@ -18,9 +18,9 @@ async function getCustomerIdFromUserEmail(userEmail){
     return user.customer.customer_id;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to get customer ID" }); 
+    res.status(500).json({ message: "Failed to get customer ID" });
   }
-  }
+}
 
 async function getProductsFromDB(category, sort, label, userEmail) {
   // Define the where and orderBy clause for the Prisma query
@@ -29,9 +29,9 @@ async function getProductsFromDB(category, sort, label, userEmail) {
   let customerId;
 
   // Get the customer_id from the user_email only if userEmail is defined
-  if (userEmail){
-  customerId = await getCustomerIdFromUserEmail(userEmail); 
-}
+  if (userEmail) {
+    customerId = await getCustomerIdFromUserEmail(userEmail);
+  }
 
   // If a category is passed in the request query, add it to the where clause
   if (category) {
@@ -58,31 +58,38 @@ async function getProductsFromDB(category, sort, label, userEmail) {
       labels: true,
       categories: true,
       inventory: true,
-      prices: true,
+      prices: {
+        where: {
+          ending_at: {
+            gt: new Date(),
+          },
+        },
+      },
     },
   });
 
-if (customerId) {
-  // Fetch all favorites for the current user
-  const userFavorites = await prisma.favorite.findMany({
-    where: {
-      customer_id: customerId,
-    },
-  });
+  if (customerId) {
+    // Fetch all favorites for the current user
+    const userFavorites = await prisma.favorite.findMany({
+      where: {
+        customer_id: customerId,
+      },
+    });
 
-  for (let product of products) {
-    // Check if a favorite exists in the fetched favorites
-    const userFavorite = userFavorites.find(favorite => favorite.product_id === product.product_id);
-    // If a favorite is found, add its favorite_id to the product, if not return undefined
-    product.favorite_id = userFavorite ? userFavorite.favorite_id : undefined;
+    for (let product of products) {
+      // Check if a favorite exists in the fetched favorites
+      const userFavorite = userFavorites.find(
+        favorite => favorite.product_id === product.product_id
+      );
+      // If a favorite is found, add its favorite_id to the product, if not return undefined
+      product.favorite_id = userFavorite ? userFavorite.favorite_id : undefined;
+    }
   }
-}
 
   // Sort the products if a sort query is passed
   if (sort) {
     products = sortProducts(products, sort);
   }
-  
 
   return products;
 }
@@ -116,11 +123,13 @@ async function postProductsInDB(productData) {
       },
       labels: {
         // Connect existing labels to the product
-        connect: productData.labels.map((label) => ({ label_id: label })),
+        connect: productData.labels.map(label => ({ label_id: label })),
       },
       categories: {
         // Connect existing categories to the product
-        connect: productData.categories.map((category) => ({ category_id: category })),
+        connect: productData.categories.map(category => ({
+          category_id: category,
+        })),
       },
       // Create related inventory
       inventory: {
@@ -131,7 +140,7 @@ async function postProductsInDB(productData) {
       // Create related prices
       prices: {
         createMany: {
-          data: productData.prices.map((price) => ({
+          data: productData.prices.map(price => ({
             price: price.price,
             starting_at: new Date(price.starting_at).toISOString(),
             is_campaign: price.is_campaign,
@@ -154,13 +163,13 @@ async function updateProductInDB(productId, productData) {
       labels: {
         set: [],
         // Connect existing labels to the product
-        connect: productData.labels.map((label_id) => ({ label_id })),
+        connect: productData.labels.map(label_id => ({ label_id })),
       },
       // Disconnect all existing categories from the product
       categories: {
         set: [],
         // Connect existing categories to the product
-        connect: productData.categories.map((category_id) => ({ category_id })),
+        connect: productData.categories.map(category_id => ({ category_id })),
       },
       // Update related inventory
       inventory: {
@@ -273,8 +282,8 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
   let customerId;
 
   // Get the customer_id from the user_email only if userEmail is defined
-  if (userEmail){
-  customerId = await getCustomerIdFromUserEmail(userEmail);
+  if (userEmail) {
+    customerId = await getCustomerIdFromUserEmail(userEmail);
   }
 
   // If a category is passed in the request query, add it to the where clause
@@ -302,7 +311,13 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
         labels: true,
         categories: true,
         inventory: true,
-        prices: true,
+        prices: {
+          where: {
+            ending_at: {
+              gt: new Date(),
+            },
+          },
+        },
       },
     });
   } else {
@@ -312,7 +327,13 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
         labels: true,
         categories: true,
         inventory: true,
-        prices: true,
+        prices: {
+          where: {
+            ending_at: {
+              gt: new Date(),
+            },
+          },
+        },
       },
     });
   }
@@ -324,10 +345,12 @@ async function searchProductsFromDB(search, category, sort, label, userEmail) {
         customer_id: customerId,
       },
     });
-  
+
     for (let product of products) {
       // Check if a favorite exists in the fetched favorites
-      const userFavorite = userFavorites.find(favorite => favorite.product_id === product.product_id);
+      const userFavorite = userFavorites.find(
+        favorite => favorite.product_id === product.product_id
+      );
       // If a favorite is found, add its favorite_id to the product, if not return undefined
       product.favorite_id = userFavorite ? userFavorite.favorite_id : undefined;
     }
@@ -361,4 +384,14 @@ async function getAllCategoriesFromDB() {
 }
 
 
-export { getProductsFromDB, getProductByIdFromDB, postProductsInDB, updateProductInDB, deleteProductFromDB, searchProductsFromDB, getCustomerIdFromUserEmail, getAllLabelsFromDB, getAllCategoriesFromDB };
+export {
+  getProductsFromDB,
+  getProductByIdFromDB,
+  postProductsInDB,
+  updateProductInDB,
+  deleteProductFromDB,
+  searchProductsFromDB,
+  getCustomerIdFromUserEmail,
+  getAllLabelsFromDB,
+  getAllCategoriesFromDB,
+};

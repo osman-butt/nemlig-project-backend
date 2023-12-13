@@ -16,7 +16,13 @@ async function getCartFromDb(customer_id) {
               labels: true,
               categories: true,
               inventory: true,
-              prices: true,
+              prices: {
+                where: {
+                  ending_at: {
+                    gt: new Date(),
+                  },
+                },
+              },
             },
           },
         },
