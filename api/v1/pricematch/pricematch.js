@@ -6,4 +6,7 @@ const pricematchRouter = express.Router();
 // POST
 pricematchRouter.post("/", pricematchController.createPriceMatchPrice);
 
+// DELETE
+pricematchRouter.delete("/", pricematchController.deleteOutdatedPriceMatchPrices);
+
 export { pricematchRouter };

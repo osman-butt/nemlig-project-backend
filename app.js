@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import { startCronJob, deleteCronJob } from "./api/v1/pricematch/cronJob.js";
 import { productsRouter } from "./api/v1/products/products.js";
 import { cartRouter } from "./api/v1/cart/cart.js";
 import { favoritesRouter } from "./api/v1/favorites/favorites.js";
@@ -14,12 +13,6 @@ import { authenticateToken } from "./middleware/authToken.js";
 import { customerRouter } from "./api/v1/customer/customer.js";
 import { pricematchRouter } from "./api/v1/pricematch/pricematch.js";
 dotenv.config();
-
-// Start cronjob for pricematching
-startCronJob();
-
-// Start cronjob for deleting outdated pricematch prices
-deleteCronJob();
 
 // Globals
 const port = process.env.PORT || 3000;

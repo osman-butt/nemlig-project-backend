@@ -75,7 +75,7 @@ async function getProductIdsFromDB() {
 }
 
 // Delete outdated pricematch prices
-async function deleteOutdatedPriceMatchPrices() {
+async function deleteOutdatedPriceMatchPricesInDB() {
   await prisma.price.deleteMany({
     where: {
       is_pricematch: true,
@@ -86,4 +86,4 @@ async function deleteOutdatedPriceMatchPrices() {
   });
 }
 
-export { createPriceMatchPriceInDB, getProductIdsFromDB, deleteOutdatedPriceMatchPrices };
+export { createPriceMatchPriceInDB, getProductIdsFromDB, deleteOutdatedPriceMatchPricesInDB };

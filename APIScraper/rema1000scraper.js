@@ -31,9 +31,9 @@ async function fetchRema1000Products() {
       }));
 
       remaproducts = remaproducts.concat(formattedProducts);
-      hasMoreData = response.data.meta.pagination.links.next !== null;
+      hasMoreData = response.data.meta.pagination.links.next !== null && page < 60;
       page++;
-      await delay(5000);
+      await delay(1000);
     } catch (error) {
       console.log(`Error fetching page ${page}: ${error}`);
       hasMoreData = false;
