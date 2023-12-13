@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
 import { sortProducts } from "../sortUtils/sortUtils.js";
 
+
 const prisma = new PrismaClient();
 
 // Get customer ID from user ID (assuming the user ID is passed in the request body)
@@ -179,17 +180,27 @@ async function updateProductInDB(productId, productData) {
     },
   });
   // Create new images and add their image_id to updatedImageIds
-  const updatedImageIds = productData.images
-    .map(image => image.image_id)
-    .filter(Boolean);
+  const updatedImageIds = [];
   for (let image of productData.images) {
-    if (!image.image_id) {
+    // If the image already has an ID, it's an existing image
+    if (image.image_id) {
+      // Update the existing image's URL in the database 
+      const updatedImage = await prisma.productimage.update({
+        where: { image_id: image.image_id },
+        data: { image_url: image.image_url },
+      });
+      // Add the images ID to the ilst of updated image IDs
+      updatedImageIds.push(updatedImage.image_id);
+    } else {
+      // If the image doesn't have an ID, its a new image
+      // and then create a new img in the DB
       const newImage = await prisma.productimage.create({
         data: {
           image_url: image.image_url,
           product_id: productId,
         },
       });
+      // Add the new image's Id to the list of updated image IDs
       updatedImageIds.push(newImage.image_id);
     }
   }
@@ -205,11 +216,26 @@ async function updateProductInDB(productId, productData) {
   });
 
   // Create new prices and add their price_id to updatedPriceIds
-  const updatedPriceIds = productData.prices
-    .map(price => price.price_id)
-    .filter(Boolean);
+  const updatedPriceIds = [];
   for (let price of productData.prices) {
-    if (!price.price_id) {
+    // If the price already has an ID, its an existing price
+    if (price.price_id) {
+      // Update existing price in the DB
+      await prisma.price.update({
+        where: { price_id: price.price_id },
+        data: {
+          price: price.price,
+          starting_at: new Date(price.starting_at).toISOString(),
+          is_campaign: Boolean(price.is_campaign),
+          ending_at: new Date(price.ending_at).toISOString(),
+          product_id: productId,
+        },
+      });
+      // Add the price's ID to the list of updated prices IDs
+      updatedPriceIds.push(price.price_id);
+    } else {
+      // If the price doesnt have an ID, it is a new price
+      // and then create a new price in the DB
       const newPrice = await prisma.price.create({
         data: {
           price: price.price,
@@ -219,6 +245,7 @@ async function updateProductInDB(productId, productData) {
           product_id: productId,
         },
       });
+      // Add the new price's ID to the list of updated prices IDs
       updatedPriceIds.push(newPrice.price_id);
     }
   }
@@ -355,6 +382,7 @@ async function getAllLabelsFromDB() {
 async function getAllCategoriesFromDB() {
   return await prisma.category.findMany();
 }
+
 
 export {
   getProductsFromDB,

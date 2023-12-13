@@ -5,6 +5,7 @@ import { authorizeAdminUser } from "../../../middleware/authorizeUser.js";
 
 const productsRouter = express.Router();
 
+
 // GET LABELS
 productsRouter.get("/labels", productsController.getLabels);
 
@@ -29,6 +30,8 @@ productsRouter.put("/:id", authenticateToken, authorizeAdminUser, productsContro
 
 // DELETE
 productsRouter.delete("/:id", authenticateToken, authorizeAdminUser, productsController.deleteProduct);
+
+
 
 
 

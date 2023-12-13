@@ -135,6 +135,7 @@ model Price {
   price       Float
   starting_at DateTime  @db.Date
   is_campaign Boolean
+  is_pricematch Boolean @default(false)
   ending_at   DateTime? @db.Date
   product_id  Int 
   products    Product @relation(fields: [product_id], references: [product_id])

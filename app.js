@@ -11,6 +11,7 @@ import swaggerOptions from "./docs/swaggerOptions.js";
 import cookieParser from "cookie-parser";
 import { authenticateToken } from "./middleware/authToken.js";
 import { customerRouter } from "./api/v1/customer/customer.js";
+import { pricematchRouter } from "./api/v1/pricematch/pricematch.js";
 dotenv.config();
 
 // Globals
@@ -42,6 +43,7 @@ app.use("/api/v1/products", productsRouter);
 app.use("/api/v1/favorites", authenticateToken, favoritesRouter);
 app.use("/api/v1/orders", authenticateToken, ordersRouter);
 app.use("/api/v1", authRouter);
+app.use("/api/v1/pricematch", pricematchRouter);
 
 app.listen(port, (req, res) => {
   console.log(`The server is running on "http://localhost:${port}/api/v1"`);

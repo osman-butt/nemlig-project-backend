@@ -166,4 +166,5 @@ async function getCategories(req, res){
   }
 }
 
+
 export default { getProducts, getAuthenticatedProducts, getProductById, postProducts, deleteProduct, updateProduct, searchProducts, searchAuthenticatedProducts, getLabels, getCategories };
