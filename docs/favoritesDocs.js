@@ -187,10 +187,8 @@
  *     responses:
  *       201:
  *         description: The favorite was successfully created
- *       400:
- *         description: Missing or invalid request body
  *       500:
- *         description: Internal server error
+ *         description: Failed to post favorite
  */
 /**
  * @swagger
@@ -209,10 +207,8 @@
  *     responses:
  *       200:
  *         description: The favorite was successfully deleted
- *       400:
- *         description: Missing or invalid request parameters
  *       500:
- *         description: Internal server error
+ *         description: Failed to delete favorite
  */
 /**
  * @swagger

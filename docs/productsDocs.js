@@ -288,10 +288,8 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
- *       400:
- *         description: Bad request
  *       500:
- *         description: Internal server error
+ *         description: Failed to get products
  */
 /**
  * @swagger
@@ -314,10 +312,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Product'
- *       404:
- *         description: Product not found
  *       500:
- *         description: Internal server error
+ *         description: Failed to get product by ID
  */
 /**
  * @swagger
@@ -325,7 +321,7 @@
  *   post:
  *     tags:
  *       - Products
- *     summary: Create a new product
+ *     summary: Create a new product / Authorization required
  *     requestBody:
  *       required: true
  *       content:
@@ -334,11 +330,9 @@
  *             $ref: '#/components/schemas/ProductCreate'
  *     responses:
  *       201:
- *         description: The product was successfully created
- *       400:
- *         description: Missing or invalid request body
+ *         description: Posted product
  *       500:
- *         description: Internal server error
+ *         description: Failed to post product
  */
 /**
  * @swagger
@@ -346,7 +340,7 @@
  *   put:
  *     tags:
  *       - Products
- *     summary: Update a product
+ *     summary: Update a product / Authorization required
  *     parameters:
  *       - in: path
  *         name: id
@@ -362,13 +356,9 @@
  *             $ref: '#/components/schemas/ProductUpdate'
  *     responses:
  *       200:
- *         description: The product was successfully updated
- *       400:
- *         description: Invalid input, product not updated
- *       404:
- *         description: The product was not found
+ *         description: Product with ID was successfully updated
  *       500:
- *         description: Internal server error
+ *         description: Failed to update product
  */
 /**
  * @swagger
@@ -376,7 +366,7 @@
  *   delete:
  *     tags:
  *       - Products
- *     summary: Delete a product
+ *     summary: Delete a product / Authorization required
  *     parameters:
  *       - in: path
  *         name: id
@@ -386,11 +376,9 @@
  *         description: The product ID
  *     responses:
  *       200:
- *         description: The product was successfully deleted
- *       404:
- *         description: The product was not found
+ *         description: Product with ID deleted
  *       500:
- *         description: Internal server error
+ *         description: Failted to delete product
  */
 /**
  * @swagger
@@ -429,10 +417,8 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
- *       400:
- *         description: Bad request
  *       500:
- *         description: Internal server error
+ *         description: Failed to get products
  */
 /**
  * @swagger
@@ -440,7 +426,7 @@
  *   get:
  *     tags:
  *       - Products
- *     summary: Get all products, with optional filtering and sorting, for authenticated users
+ *     summary: Get all products, with optional filtering and sorting, for authenticated users / Authorization required
  *     parameters:
  *       - in: query
  *         name: label
@@ -465,10 +451,8 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
- *       400:
- *         description: Bad request
  *       500:
- *         description: Internal server error
+ *         description: Failed to get products
  */
 /**
  * @swagger
@@ -476,7 +460,7 @@
  *   get:
  *     tags:
  *       - Products
- *     summary: Search for products for authenticated users with optional filtering and sorting
+ *     summary: Search for products for authenticated users with optional filtering and sorting / Authorization required
  *     parameters:
  *       - in: query
  *         name: term
@@ -507,10 +491,8 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
- *       400:
- *         description: Bad request
  *       500:
- *         description: Internal server error
+ *         description: Failed to get products
  */
 /**
  * @swagger
@@ -529,7 +511,7 @@
  *               items:
  *                 type: string
  *       500:
- *         description: Internal server error
+ *         description: Failed to get labels
  */
 /**
  * @swagger
@@ -548,5 +530,5 @@
  *               items:
  *                 type: string
  *       500:
- *         description: Internal server error
+ *         description: Failed to get categories
  */
