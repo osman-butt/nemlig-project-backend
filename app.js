@@ -38,7 +38,7 @@ app.get(`/api/v1/`, (req, res) => {
 });
 app.use("/api/v1/customers", authenticateToken, customerRouter);
 app.use("/api/v1/cart", authenticateToken, cartRouter);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
+app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
 app.use("/api/v1/products", productsRouter);
 app.use("/api/v1/favorites", authenticateToken, favoritesRouter);
 app.use("/api/v1/orders", authenticateToken, ordersRouter);
