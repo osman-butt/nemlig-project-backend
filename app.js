@@ -36,6 +36,7 @@ app.use(cookieParser());
 app.get(`/api/v1/`, (req, res) => {
   res.json({ message: "Nemlig.com API V1" });
 });
+
 app.use("/api/v1/customers", authenticateToken, customerRouter);
 app.use("/api/v1/cart", authenticateToken, cartRouter);
 app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
@@ -44,6 +45,19 @@ app.use("/api/v1/favorites", authenticateToken, favoritesRouter);
 app.use("/api/v1/orders", authenticateToken, ordersRouter);
 app.use("/api/v1", authRouter);
 app.use("/api/v1/pricematch", pricematchRouter);
+
+// REDIRECTION TO API
+app.get("/", (req, res) => {
+  res.status(301).redirect(`/api/v1/`);
+});
+
+// Captures undefined routes
+app.use((req, res, next) => {
+  res.status(404).json({
+    status: "404 - Resource not found",
+    message: `Ensure you are using /api/v1/<Ressource>. See the api docs for further infomation: /api/v1/api-docs`,
+  });
+});
 
 app.listen(port, (req, res) => {
   console.log(`The server is running on "http://localhost:${port}/api/v1"`);
