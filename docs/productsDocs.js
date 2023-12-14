@@ -263,7 +263,7 @@
  *   get:
  *     tags:
  *       - Products
- *     summary: Get all products, with optional filtering, searching and sorting
+ *     summary: Get all products, with optional filtering and sorting
  *     parameters:
  *       - in: query
  *         name: label
@@ -398,7 +398,7 @@
  *   get:
  *     tags:
  *       - Products
- *     summary: Search products
+ *     summary: Search products with optional filtering and sorting
  *     parameters:
  *       - in: query
  *         name: search
@@ -431,6 +431,122 @@
  *                 $ref: '#/components/schemas/Product'
  *       400:
  *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+/**
+ * @swagger
+ * /products/authenticated:
+ *   get:
+ *     tags:
+ *       - Products
+ *     summary: Get all products, with optional filtering and sorting, for authenticated users
+ *     parameters:
+ *       - in: query
+ *         name: label
+ *         schema:
+ *           type: string
+ *           enum: [økologi, msc]
+ *         required: false
+ *         description: Label to filter products by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [asc, high-low, low-high]
+ *         required: false
+ *         description: Field to sort products by
+ *     responses:
+ *       200:
+ *         description: A list of products that match the search query, filter, and sort order
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+/**
+ * @swagger
+ * /products/authenticated/search:
+ *   get:
+ *     tags:
+ *       - Products
+ *     summary: Search for products for authenticated users with optional filtering and sorting
+ *     parameters:
+ *       - in: query
+ *         name: term
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Search term to find products
+ *       - in: query
+ *         name: label
+ *         schema:
+ *           type: string
+ *           enum: [økologi, msc]
+ *         required: false
+ *         description: Label to filter products by
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [asc, high-low, low-high]
+ *         required: false
+ *         description: Field to sort products by
+ *     responses:
+ *       200:
+ *         description: A list of products that match the search term, filter, and sort order
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+/**
+ * @swagger
+ * /products/labels:
+ *   get:
+ *     tags:
+ *       - Labels/categories
+ *     summary: Get all product labels
+ *     responses:
+ *       200:
+ *         description: A list of all product labels
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *       500:
+ *         description: Internal server error
+ */
+/**
+ * @swagger
+ * /products/categories:
+ *   get:
+ *     tags:
+ *       - Labels/categories
+ *     summary: Get all product categories
+ *     responses:
+ *       200:
+ *         description: A list of all product categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
  *       500:
  *         description: Internal server error
  */

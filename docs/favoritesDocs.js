@@ -5,18 +5,26 @@
  *     Favorite:
  *       type: object
  *       properties:
+ *         favorite_id:
+ *           type: integer
+ *           description: The favorite ID
+ *           example: 5
+ *         customer_id:
+ *           type: integer
+ *           description: The customer ID
+ *           example: "20"
  *         product_id:
  *           type: integer
- *           description: The ID of the product
- *           example: 11002
+ *           description: The product ID
+ *           example: "10169"
  *         product_name:
  *           type: string
  *           description: The name of the product
- *           example: "ARLA KAKAO"
+ *           example: "SUNJOY"
  *         product_underline:
  *           type: string
  *           description: The underline of the product
- *           example: "1 LTR. / LAKTOSEFRI"
+ *           example: "50 CL. / HINDBÆR"
  *         product_description:
  *           type: string
  *           description: The description of the product
@@ -29,7 +37,7 @@
  *               image_id:
  *                 type: integer
  *                 description: The ID of the image
- *                 example: 93
+ *                 example: 55
  *               image_url:
  *                 type: string
  *                 description: The URL of the product image
@@ -37,7 +45,7 @@
  *               product_id:
  *                 type: integer
  *                 description: The ID of the product
- *                 example: 11002
+ *                 example: 10169
  *         labels:
  *           type: array
  *           items:
@@ -66,15 +74,15 @@
  *             inventory_id:
  *               type: integer
  *               description: The ID of the inventory
- *               example: 384
+ *               example: 346
  *             inventory_stock:
  *               type: integer
  *               description: The stock of the product
- *               example: 78
+ *               example: 23
  *             product_id:
  *               type: integer
  *               description: The ID of the product
- *               example: 11002
+ *               example: 10169
  *         prices:
  *           type: array
  *           items:
@@ -83,11 +91,11 @@
  *               price_id:
  *                 type: integer
  *                 description: The ID of the price
- *                 example: 487
+ *                 example: 446
  *               price:
  *                 type: number
  *                 description: The price of the product
- *                 example: 15.5
+ *                 example: 10
  *               starting_at:
  *                 type: string
  *                 format: date
@@ -105,24 +113,7 @@
  *               product_id:
  *                 type: integer
  *                 description: The ID of the product
- *                 example: 11002
- *         favorites:
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               favorite_id:
- *                 type: integer
- *                 description: The ID of the favorite
- *                 example: 1
- *               product_id:
- *                 type: integer
- *                 description: The ID of the product
- *                 example: 11002
- *               customer_id:
- *                 type: integer
- *                 description: The ID of the customer
- *                 example: 7
+ *                 example: 10169
  */
 /**
  * @swagger
@@ -173,32 +164,6 @@
  */
 /**
  * @swagger
- * /favorites/{id}:
- *   get:
- *     tags:
- *       - Favorites
- *     summary: Get a favorite by ID
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: The product ID
- *     responses:
- *       200:
- *         description: A single favorite
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Favorite'
- *       404:
- *         description: Favorite not found
- *       500:
- *         description: Internal server error
- */
-/**
- * @swagger
  * /favorites:
  *   post:
  *     tags:
@@ -231,7 +196,7 @@
  * @swagger
  * /favorites/{id}:
  *   delete:
- *     summary: Delete a favorite
+ *     summary: Delete a favorite by favoriteID
  *     tags:
  *       - Favorites
  *     parameters:
@@ -285,4 +250,3 @@
  *               items:
  *                 $ref: '#/components/schemas/Favorite'
  */
-
