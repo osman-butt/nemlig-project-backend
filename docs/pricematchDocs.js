@@ -19,7 +19,7 @@
  *   delete:
  *     tags:
  *       - PriceMatch
- *     summary: Delete outdated price match prices
+ *     summary: Loop through all pricematch prices and delete the ones that are outdated
  *     responses:
  *       200:
  *         description: Outdated price match prices deleted
