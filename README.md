@@ -44,7 +44,7 @@ ACCESS_TOKEN_SECRET=
 REFRESH_TOKEN_SECRET=
 ```
 * Running the backend
-  ```bash
+```bash
 npm start
 ```
 
