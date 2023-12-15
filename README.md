@@ -8,19 +8,19 @@ Group project made by [Benjamin](https://github.com/Benjamin-Harris1), [Gustav](
 
 ## Create a MySQL database
 * Download the database backup file from [here](https://github.com/osman-butt/nemlig-project-backend/tree/main/sql/backup)
-* Open up a terminal and type
+* Open up a terminal and type (when prompted, type in your password)
 ```bash
 mysql -u [USERNAME] -p 
 ```
 
-* When prompted, type in your password
+* Create a new database
 ```sql
 CREATE DATABASE nemlig_db;
 ```
 
 * Open up a new terminal and import the data:
 ```bash
-mysqldump -u [USERNAME] -p nemlig_db < PATH_TO_FILE/backup.sql
+mysqldump -u [USERNAME] -p nemlig_db < PATH_TO_FILE/BACKUP_FILE_NAME.sql
 ```
 
 ## Installation
@@ -48,9 +48,9 @@ REFRESH_TOKEN_SECRET=
 node
 require("crypto").randomBytes(64).toString("hex")
 ```
-* Running the backend
+* Start up the backend server
 ```bash
 npm start
 ```
 
-* Installation guide to the frontend can be found [here](https://github.com/osman-butt/nemlig-project-frontend)
+Installation guide to the frontend can be found [here](https://github.com/osman-butt/nemlig-project-frontend)
