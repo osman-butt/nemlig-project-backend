@@ -43,6 +43,11 @@ NODE_ENV="dev"
 ACCESS_TOKEN_SECRET=
 REFRESH_TOKEN_SECRET=
 ```
+* To generate new access and refresh tokens run the following command in the terminal
+```bash
+node
+require("crypto").randomBytes(64).toString("hex")
+```
 * Running the backend
 ```bash
 npm start
